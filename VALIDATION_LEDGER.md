@@ -21,6 +21,9 @@ checking current repository status before a new task.
   (`c3df989f687e65e3b80619a8214a895d4a513608`).
 - Starter-pack, cleanroom-study, and legacy-migration policies established in
   the Zandi instructions repository.
+- GradTime clean-slate rebuild validated a general lesson: preserve legitimate
+  requirements, behavior, semantics, evidence, provenance, and parity needs;
+  independently synthesize the replacement architecture.
 
 ## What MiniLab validated
 

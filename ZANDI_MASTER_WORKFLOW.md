@@ -27,3 +27,58 @@ apply to the workspace.
 
 Global configuration, framework changes, remote actions, deployment, secrets,
 and destructive migrations remain explicit approval boundaries.
+
+## Adaptive architecture
+
+Repository, module, package, service, and folder architecture must be derived
+from the actual project, not inherited mechanically. Synthesize it from:
+
+1. product and domain goals;
+2. scientific or research requirements where applicable;
+3. security, privacy, and data constraints;
+4. real capability and domain boundaries;
+5. project scale, expected evolution, maintainability, and testability;
+6. runtime and deployment needs where relevant;
+7. ECC-Zandi engineering guidance; and
+8. relevant repo-study or legacy-analysis evidence.
+
+Do not mechanically copy a legacy tree, framework template, ECC example,
+external repository, previous Zandi project, or an Orchestrator suggestion.
+Repo study and legacy analysis establish what must be preserved: valuable
+behavior, requirements, constraints, failures, comparable evidence, and parity
+expectations. They do not determine how a new implementation is organized.
+A legacy architecture is retained only when it independently remains the best
+fit for current requirements.
+
+For a clean rebuild, preserve valid requirements, behavior, scientific
+semantics, product contracts, evidence, provenance, parity expectations, and
+operational knowledge. Do not automatically preserve source-tree shape,
+numbered pipeline stages, historical module boundaries, runtime or deployment
+assumptions, framework choices, or folder conventions.
+
+> **Legacy defines knowledge and parity requirements. The new product earns
+> its own architecture.**
+
+### Complexity and workflow depth
+
+Complexity must pay rent. Create directories, packages, layers, services,
+adapters, interfaces, abstractions, framework components, or infrastructure
+only for a concrete current responsibility or a clearly justified near-term
+one. Avoid architecture cosplay, empty package forests, speculative
+abstractions, premature service decomposition, enterprise layering for small
+projects, diagram-matching directories, and patterns adopted only because a
+framework demonstrates them. Prefer the smallest architecture with correct
+boundaries that remains understandable, testable, and safe to evolve.
+
+Architecture and review depth match uncertainty and risk; the workflow may
+collapse or expand. A small fix may be request → implementation → test →
+report. A bounded feature may add a short plan and review when useful. A
+substantial or ambiguous project normally uses goal → project/legacy evidence
+→ ECC-Zandi guidance → architecture synthesis → Orchestrator challenge → Human
+Lead approval → implementation → validation → independent review when
+justified. High-risk scientific, security, or data work uses stronger gates
+appropriate to its risk.
+
+The substantial-project flow is an adaptive reference, not a bureaucratic
+pipeline. Do not require Terra High, architecture documents, independent
+review, or multiple approvals when they do not materially improve the outcome.

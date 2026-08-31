@@ -25,6 +25,9 @@ guidance.
 
 ## Model routing
 
-- Terra Medium: implementation and bounded local changes.
-- Terra High: independent audit and review.
-- XHigh: exceptional complex design or debugging only.
+Roles are durable; routing is adaptive. Current defaults are Terra Medium for
+bounded implementation, Terra High for substantial architecture synthesis and
+independent review when it materially improves quality or safety, and XHigh for
+exceptional complex design or debugging. Select for task complexity, risk,
+reasoning depth, latency, efficiency, implementation volume, independent
+perspective, and currently available models; these are not permanent rules.

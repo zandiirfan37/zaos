@@ -13,6 +13,9 @@ Copy this into a future chat session:
 > if the project needs differ. Keep all work project-local, avoid global config
 > mutation, and do not install or activate framework integrations. Give me a
 > bounded plan, approval points, validation gates, and a concise final report.
+> Derive architecture from product/domain requirements and actual capability
+> boundaries; do not mechanically reuse legacy, ECC, external, or
+> previous-project folder structures.
 
 Add the specific project path, requested outcome, and any constraints after the
 prompt. Ask for explicit review before destructive, remote, deployment, or

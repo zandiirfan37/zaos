@@ -19,6 +19,9 @@ evidence into improvements through this loop:
 Classify each finding by evidence, recurrence, scope, risk, and expected value.
 Repo-study and legacy-migration lessons use the same six finding classes above;
 they do not bypass the evidence or approval requirements.
+Architecture lessons may therefore result in `PROJECT_ONLY_FIX`, `PROFILE_PATCH`,
+`GLOBAL_INSTRUCTION_PATCH`, or `NO_ACTION`, according to that evidence and
+scope. They do not make a framework or global change automatic.
 Do not turn a one-off project detail into global policy. Require explicit user
 approval before changing a framework, profile, adapter, or global instruction.
 Keep upstream repositories clean and updateable; prefer Zandi-owned adapters
