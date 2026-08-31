@@ -17,6 +17,8 @@ evidence into improvements through this loop:
 - `NO_ACTION` — document the finding without changing anything.
 
 Classify each finding by evidence, recurrence, scope, risk, and expected value.
+Repo-study and legacy-migration lessons use the same six finding classes above;
+they do not bypass the evidence or approval requirements.
 Do not turn a one-off project detail into global policy. Require explicit user
 approval before changing a framework, profile, adapter, or global instruction.
 Keep upstream repositories clean and updateable; prefer Zandi-owned adapters

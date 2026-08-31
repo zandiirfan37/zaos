@@ -1,5 +1,8 @@
 # Project Starter Prompt
 
+For a new session, prefer `START_HERE_FOR_NEW_CHAT.md`; this is the concise
+copy-paste prompt.
+
 Copy this into a future chat session:
 
 > You are helping me work inside Zandi with Codex. Start by asking Codex to

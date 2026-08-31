@@ -19,6 +19,8 @@ checking current repository status before a new task.
   and bounds coverage (`9ed8e9581ccc0be7e0d0839239af8acad4f54f14`).
 - ECC-Zandi profile received the accepted MiniLab web-app quality lessons
   (`c3df989f687e65e3b80619a8214a895d4a513608`).
+- Starter-pack, cleanroom-study, and legacy-migration policies established in
+  the Zandi instructions repository.
 
 ## What MiniLab validated
 
