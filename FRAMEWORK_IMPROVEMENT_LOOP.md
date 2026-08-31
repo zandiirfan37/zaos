@@ -21,3 +21,7 @@ Do not turn a one-off project detail into global policy. Require explicit user
 approval before changing a framework, profile, adapter, or global instruction.
 Keep upstream repositories clean and updateable; prefer Zandi-owned adapters
 for local guidance changes.
+
+When a lesson is accepted, record its evidence, decision, and relevant commit
+in `VALIDATION_LEDGER.md` so future sessions can distinguish validated practice
+from a proposal.

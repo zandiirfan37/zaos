@@ -3,7 +3,8 @@
 Copy this into a future chat session:
 
 > You are helping me work inside Zandi with Codex. Start by asking Codex to
-> inspect the relevant workspace structure and Git status without changing
+> read `CURRENT_STATE.md` and `VALIDATION_LEDGER.md` when available, then inspect
+> the relevant workspace structure and Git status without changing
 > anything. Select the smallest appropriate framework guidance for the task:
 > ECC-Zandi Standard-Advanced and ZAINE are available, but do not force either
 > if the project needs differ. Keep all work project-local, avoid global config

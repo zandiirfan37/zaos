@@ -24,3 +24,7 @@ This is the controlled Zandi project-use adapter for selected ECC guidance.
 Use its route prompts and profile rules as project-local reference, not as a
 global installation or activation mechanism. Profile changes are local Git
 changes requiring explicit approval; they do not modify ECC upstream.
+
+Validation evidence: Zandi MiniLab at
+`/home/pc_pusaka/zandi/projects/ecc-minilab-pilot` validated this profile's
+planning, implementation, hardening, route integration, and feedback loop.
