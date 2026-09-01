@@ -73,6 +73,50 @@ uncommitted or interrupted before a safe boundary, do not mark it complete;
 `PROJECT_STATE.md` may record it as `IN_PROGRESS` only when that adds handoff
 value.
 
+## Fast lane and agent quality ownership
+
+Routine bounded work runs a single fast lane, not a diagnose-then-implement
+relay: read `PROJECT_STATE.md` → locate the relevant contract/blueprint
+phase → identify the ECC gates the task type triggers → implement → test and
+verify → update `PROJECT_STATE.md` on a meaningful transition → local commit.
+When the same agent can safely diagnose and implement one bounded sprint, it
+does both.
+
+The implementation/review agent owns quality, not just literal execution. It
+detects violations of the applicable scientific, semantic, temporal,
+provenance, privacy/security, and engineering gates within its assigned
+scope — deriving them from ECC-Zandi governance (see
+`EFFICIENT_AGENTIC_ENGINEERING.md`, "Task-triggered quality gates" and
+"Agent quality ownership") — and stops to escalate only on a material,
+unresolved blocker. In particular, no modelling-critical field is promoted
+on technical checks alone; semantic evidence and permitted modelling use are
+required.
+
+A **deep gate** (independent audit, added diagnostic stage, stronger review)
+is used only when risk or ambiguity earns it: a new dataset or source; a new
+target or label; a changed estimand; unresolved semantics; opening a sealed
+test; a production-science, privacy, or security boundary; a major
+architecture change; or a release or destructive change. It is not the
+default.
+
+An audit must have a concrete decision it can change. If existing evidence
+already establishes that decision, consume it rather than rerunning
+discovery. Avoid repo rediscovery, repeated semantic audits after a gate is
+established, and audit-report-prompt loops.
+
+### Prompt compression
+
+A normal sprint prompt states the bounded objective, any important
+scientific or product constraint, and any exceptional prohibition. It does
+**not** restate standard ECC quality checks — the agent derives those from
+repository governance. The Orchestrator is not a prompt compiler for routine
+gates. Canonical pattern (see `PROMPT_EXAMPLES.md`):
+
+> Execute `<bounded objective>` from current `PROJECT_STATE.md` and active
+> contracts. Apply all relevant ECC gates automatically. Own implementation,
+> validation, state update, and local commit. Escalate only material
+> blockers.
+
 ## Adaptive architecture
 
 Repository, module, package, service, and folder architecture must be derived

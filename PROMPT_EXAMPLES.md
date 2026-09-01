@@ -60,3 +60,15 @@ Replace bracketed values. Each template is intentionally bounded.
 > destructive data/file work, migrations, network, loopback servers/browsers,
 > globals, secrets, remotes, pushes, deployment, or framework changes. Do not
 > execute them. Output: SAFE NOW, APPROVAL REQUIRED, RISK, ALTERNATIVES. STOP.
+
+## 9. Normal bounded sprint (canonical)
+
+Default pattern for routine work. Do not restate standard ECC gates — the
+agent derives them from repository governance. Add a scientific/product
+constraint or an exceptional prohibition only when one actually applies.
+
+> Execute `[BOUNDED_OBJECTIVE]` from current `PROJECT_STATE.md` and active
+> contracts. Apply all relevant ECC gates automatically. Own implementation,
+> validation, `PROJECT_STATE.md` update, and local commit. Escalate only
+> material blockers. Output: STATUS, CHANGES, TESTS, STATE UPDATE, COMMIT.
+> STOP.

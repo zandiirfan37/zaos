@@ -23,6 +23,12 @@ Roles are durable. Model and agent assignments are adaptive.
 - **Claude Code CLI** — peer implementation/review agent; filesystem, code,
   tests, and Git execution; backup/takeover implementer; independent reviewer
   when useful.
+
+  Both implementation agents own quality within their assigned scope, not
+  just literal execution: they derive and apply the ECC gates the task type
+  triggers, detect scientific/semantic/temporal/provenance/privacy/security
+  and engineering violations, and escalate only material blockers. See
+  `ZANDI_MASTER_WORKFLOW.md`, "Fast lane and agent quality ownership".
 - **ECC-Zandi** — engineering doctrine, patterns, checklists, and review
   guidance. It does not dictate universal project structure.
 
@@ -70,6 +76,16 @@ Do not rediscover the whole project from scratch.
 If one agent hits a usage limit mid-sprint and there is no urgency, waiting for
 reset is the safest default. If takeover is necessary, the receiving agent must
 first inspect current work and continue only the remaining scope.
+
+Normal checkpointing is automatic through repository truth: implementation →
+tests → verification → `PROJECT_STATE.md` update → local commit. That commit
+plus `PROJECT_STATE.md` **is** the checkpoint. No special handoff or
+checkpoint document, and no handoff commit, is required. If an agent switch
+happens mid-sprint with a dirty worktree, the receiving agent resumes from
+`PROJECT_STATE.md`, HEAD, `git status`, `git diff`, and the active contract
+and relevant tests. A manual checkpoint commit is optional and only when the
+dirty work already forms a coherent, safe boundary. Never commit knowingly
+broken work just to create a handoff. One writer per working tree.
 
 ## Project state responsibility
 
