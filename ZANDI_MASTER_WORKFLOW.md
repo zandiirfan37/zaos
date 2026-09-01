@@ -20,17 +20,58 @@ apply to the workspace.
 
 ## Standard workflow
 
-1. Inspect the target project and its Git status.
+1. Inspect the target project: read `AGENTS.md`, `PROJECT_STATE.md`, `git status`
+   and current HEAD, and the contract(s) relevant to the task before starting.
 2. Choose the smallest relevant framework guidance.
 3. For substantial work, complete the adaptive Project Intelligence Gate before
    treating architecture as stable; see `PROJECT_INTELLIGENCE_SOP.md`.
 4. Plan and agree scope before material changes.
-5. Implement locally, validate proportionately, and inspect the diff.
-6. Commit only inside the target repository when requested.
+5. Implement locally, validate proportionately, update `PROJECT_STATE.md` when
+   the sprint changes project state, and inspect the diff.
+6. Commit only inside the target repository when requested; the `PROJECT_STATE.md`
+   update normally rides in the same commit that establishes the new state.
 7. Report results, risks, and framework lessons learned.
 
 Global configuration, framework changes, remote actions, deployment, secrets,
 and destructive migrations remain explicit approval boundaries.
+
+## Canonical project state
+
+Every active Zandi project SHOULD maintain exactly one canonical
+`<project-root>/PROJECT_STATE.md` — the compact, current-state answer to *where
+is the project now*. It is tracked in the project's Git repository, human- and
+agent-readable, and references deeper files by path. It is **not** an activity
+log and **not** a replacement for Git history, contracts, research evidence, or
+intelligence reports. Template: `templates/PROJECT_STATE.template.md`.
+
+Do not maintain both `PROJECT_STATE.md` and a standing `PROJECT_HANDOFF.md`.
+`PROJECT_STATE.md` is canonical; a `PROJECT_HANDOFF.md` is generated only when a
+specific external handoff needs one.
+
+New projects are initialized with `AGENTS.md` and `PROJECT_STATE.md`. `AGENTS.md`
+carries the state-maintenance rule; a project `CLAUDE.md`, when used, stays a
+thin adapter to `AGENTS.md` and does not duplicate `PROJECT_STATE` governance.
+
+### Update triggers
+
+Update `PROJECT_STATE.md` on a meaningful state transition: a substantive sprint
+completes; a phase transition; a milestone or gate state change; a blocker found
+or resolved; a scientific/product readiness change; an active contract or
+governing decision change; a change to the next authorized sprint; a significant
+implementation-agent handoff; a project pause, milestone freeze, or release.
+
+Do not update it for typo fixes, routine test reruns, exploratory commands,
+minor in-sprint refactors, or edits that do not change project state.
+
+### Definition of Done
+
+For any sprint that changes project state, "done" means: implementation → relevant
+tests → verification → update `PROJECT_STATE.md` → diff review → commit. This is
+part of the normal Definition of Done — the Human Lead does not need to request
+the `PROJECT_STATE.md` update in each sprint prompt. If work is intentionally
+uncommitted or interrupted before a safe boundary, do not mark it complete;
+`PROJECT_STATE.md` may record it as `IN_PROGRESS` only when that adds handoff
+value.
 
 ## Adaptive architecture
 

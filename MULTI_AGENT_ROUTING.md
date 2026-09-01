@@ -57,11 +57,27 @@ edit. Preferred handoff boundary:
    restarting the task.
 
 The repository, contracts, tests, and evidence are the shared source of truth.
-Do not depend on transferring long chat transcripts.
+Do not depend on transferring long chat transcripts. The receiving agent first
+inspects, in order:
+
+1. `AGENTS.md` / project agent instructions;
+2. `PROJECT_STATE.md`;
+3. `git status` and current HEAD;
+4. the active contract(s) relevant to the assigned task.
+
+Do not rediscover the whole project from scratch.
 
 If one agent hits a usage limit mid-sprint and there is no urgency, waiting for
 reset is the safest default. If takeover is necessary, the receiving agent must
 first inspect current work and continue only the remaining scope.
+
+## Project state responsibility
+
+Codex and Claude Code are both responsible for maintaining the project's
+canonical `PROJECT_STATE.md` when they are the active writer completing a
+state-changing sprint. Updating it is part of the Definition of Done (see
+`ZANDI_MASTER_WORKFLOW.md`), normally in the same commit that establishes the
+new state — the Human Lead does not have to ask for it each sprint.
 
 ## 4. Concurrent work policy
 
@@ -95,7 +111,7 @@ audits, and duplicated agent work.
 - Do not ask each new agent to rediscover the entire project.
 - Read active contracts, current Git state, relevant evidence, and only the
   files needed for the task.
-- Use existing handoff / current-state artifacts.
+- Use the project's `PROJECT_STATE.md` and any existing handoff artifact.
 - Avoid repeating broad Project Intelligence once the gate is complete.
 - Do not have Claude duplicate Codex work merely for redundancy; use
   independent review only when it adds decision value.
@@ -127,10 +143,11 @@ evidence, and `AGENTS.md` remain authoritative.
 For a new Zandi Orchestrator chat, provide/read:
 
 1. the Zandi instructions package/repository;
-2. `START_HERE_FOR_NEW_CHAT.md`;
-3. `CURRENT_STATE.md`;
-4. the active project's compact current-state/handoff artifact when continuing
-   an existing project.
+2. the active project's `PROJECT_STATE.md`.
 
-Global instructions define **how** to work. They do not necessarily contain the
-complete live state of every project.
+Optionally add a special compact handoff only when the project is mid-sprint or
+extra context is genuinely required.
+
+Global instructions = **how we work**. `PROJECT_STATE.md` = **where the project
+is now**. The project repository = the detailed source of truth. Global
+instructions do not contain the complete live state of every project.

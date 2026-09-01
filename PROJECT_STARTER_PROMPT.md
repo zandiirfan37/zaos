@@ -9,8 +9,9 @@ Copy this into a future chat session:
 > to a peer implementation agent (Codex CLI or Claude Code CLI; Codex primary,
 > Claude Code backup/reviewer — see `MULTI_AGENT_ROUTING.md`). Start by asking
 > the implementation agent to
-> read `CURRENT_STATE.md` and `VALIDATION_LEDGER.md` when available, then inspect
-> the relevant workspace structure and Git status without changing
+> read the project's `AGENTS.md` and `PROJECT_STATE.md`, then `CURRENT_STATE.md`
+> and `VALIDATION_LEDGER.md` when available, then inspect the relevant workspace
+> structure, `git status`, and the active contract(s) without changing
 > anything. Select the smallest appropriate framework guidance for the task:
 > ECC-Zandi Standard-Advanced and ZAINE are available, but do not force either
 > if the project needs differ. Keep all work project-local, avoid global config
@@ -27,4 +28,6 @@ Copy this into a future chat session:
 Add the specific project path, requested outcome, and any constraints after the
 prompt. Ask for explicit review before destructive, remote, deployment, or
 global-configuration actions. Keep one implementation agent as the active writer
-per working tree; hand off only at a clean Git/diff/test boundary.
+per working tree; hand off only at a clean Git/diff/test boundary. Any sprint
+that changes project state updates `PROJECT_STATE.md` as part of Done — you do
+not need to ask for this each time.

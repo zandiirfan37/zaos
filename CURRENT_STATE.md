@@ -26,6 +26,14 @@ Orchestrator; the Human Lead is final authority. State/config lives in
 is currently a compatibility symlink to `/home/pc_pusaka/zandi/.claude`. One
 agent writes per working tree at a time. See `MULTI_AGENT_ROUTING.md`.
 
+## Project state protocol
+
+Every active Zandi project maintains one canonical `<project-root>/PROJECT_STATE.md`
+(template: `templates/PROJECT_STATE.template.md`) describing where that project
+is now. Keeping it current is part of the Definition of Done for any
+state-changing sprint; see `ZANDI_MASTER_WORKFLOW.md`. This file
+(`CURRENT_STATE.md`) covers the workspace and frameworks, not per-project state.
+
 ## Validated project evidence
 
 `/home/pc_pusaka/zandi/projects/ecc-minilab-pilot` is the validated ECC-Zandi
