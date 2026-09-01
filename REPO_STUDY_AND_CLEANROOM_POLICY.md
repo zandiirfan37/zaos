@@ -17,6 +17,11 @@ original.
 
 ## Required artifacts
 
+For substantial projects using the Project Intelligence Gate,
+`PROJECT_INTELLIGENCE_SOP.md` defines the compact artifact set and takes
+precedence over this list to avoid duplicate documentation. For a standalone
+cleanroom study outside that gate, use the artifacts below as appropriate.
+
 - `REPO_STUDY.md`
 - `FEATURE_MATRIX.md`
 - `ARCHITECTURE_INSIGHTS.md`

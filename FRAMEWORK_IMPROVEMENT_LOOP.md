@@ -19,6 +19,9 @@ evidence into improvements through this loop:
 Classify each finding by evidence, recurrence, scope, risk, and expected value.
 Repo-study and legacy-migration lessons use the same six finding classes above;
 they do not bypass the evidence or approval requirements.
+Project Intelligence pilot lessons may later justify an ECC-Zandi
+`PROFILE_PATCH`, but the pilot does not create one automatically: require pilot
+evidence, lessons learned, and explicit Human Lead approval first.
 Architecture lessons may therefore result in `PROJECT_ONLY_FIX`, `PROFILE_PATCH`,
 `GLOBAL_INSTRUCTION_PATCH`, or `NO_ACTION`, according to that evidence and
 scope. They do not make a framework or global change automatic.

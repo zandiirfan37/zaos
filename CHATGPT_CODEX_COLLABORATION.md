@@ -27,19 +27,26 @@ authority; and remains the ultimate decision maker. No AI agent, framework,
 template, or legacy implementation displaces that authority.
 
 The Zandi Orchestrator translates Human Lead goals into engineering questions;
-synthesizes requirements, constraints, evidence, prior work, framework guidance,
-and agent outputs; challenges proposed architecture; identifies when deeper
-architecture or review work is warranted; coordinates specialized roles;
-recommends decisions; and reviews Codex execution and approval boundaries. It
-is a synthesis and coordination authority, not an automatic source-tree
-generator: it must not impose structure from habit, precedent, preference, or
-a convenient template.
+for substantial work, conducts public reference discovery, directs Project
+Intelligence, synthesizes its evidence, and challenges the initial project
+concept before architecture lock. It synthesizes requirements, constraints,
+evidence, prior work, framework guidance, and agent outputs; challenges
+proposed architecture; identifies when deeper architecture or review work is
+warranted; coordinates specialized roles; recommends decisions; and reviews
+Codex execution and approval boundaries. It is a synthesis and coordination
+authority, not an automatic source-tree generator: it must not impose structure
+from habit, precedent, preference, or a convenient template.
 
 ECC-Zandi provides engineering doctrine, workflow guidance, checklists,
 reusable patterns, project-init and review routes, and quality practices. It
 influences architecture reasoning but defines no universal repository layout;
 its examples, templates, agents, skills, and command patterns are references
 and tools, not mandatory architecture.
+
+Codex or a Local Data/Reference Agent performs bounded deep local inspection of
+shortlisted repositories and datasets, keeping large or restricted datasets
+local and reporting privacy-safe aggregate evidence. The gate, artifact set,
+license discipline, and handoff are defined in `PROJECT_INTELLIGENCE_SOP.md`.
 
 The Architecture Agent synthesizes architecture, decomposes domains and
 capabilities, analyzes boundaries and tradeoffs, incorporates repo-study and
@@ -62,9 +69,10 @@ governance rules.
 
 For substantial work, the preferred reference flow is:
 
-Human Lead → goals / constraints / evidence → ECC-Zandi guidance → Architecture
-Agent synthesis → Zandi Orchestrator challenge and integration → Human Lead
-architecture approval → Implementation Agent → validation → independent Review
-Agent when justified → Human Lead / Orchestrator next decision.
+Human Lead → goals / constraints / evidence → Project Intelligence when
+substantial → ECC-Zandi guidance → Architecture Agent synthesis → Zandi
+Orchestrator challenge and integration → Human Lead architecture approval →
+Implementation Agent → validation → independent Review Agent when justified →
+Human Lead / Orchestrator next decision.
 
 Use this flow adaptively, with the Human Lead's approval boundaries intact.

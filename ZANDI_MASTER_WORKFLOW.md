@@ -20,10 +20,12 @@ apply to the workspace.
 
 1. Inspect the target project and its Git status.
 2. Choose the smallest relevant framework guidance.
-3. Plan and agree scope before material changes.
-4. Implement locally, validate proportionately, and inspect the diff.
-5. Commit only inside the target repository when requested.
-6. Report results, risks, and framework lessons learned.
+3. For substantial work, complete the adaptive Project Intelligence Gate before
+   treating architecture as stable; see `PROJECT_INTELLIGENCE_SOP.md`.
+4. Plan and agree scope before material changes.
+5. Implement locally, validate proportionately, and inspect the diff.
+6. Commit only inside the target repository when requested.
+7. Report results, risks, and framework lessons learned.
 
 Global configuration, framework changes, remote actions, deployment, secrets,
 and destructive migrations remain explicit approval boundaries.
@@ -73,11 +75,14 @@ boundaries that remains understandable, testable, and safe to evolve.
 Architecture and review depth match uncertainty and risk; the workflow may
 collapse or expand. A small fix may be request → implementation → test →
 report. A bounded feature may add a short plan and review when useful. A
-substantial or ambiguous project normally uses goal → project/legacy evidence
-→ ECC-Zandi guidance → architecture synthesis → Orchestrator challenge → Human
-Lead approval → implementation → validation → independent review when
-justified. High-risk scientific, security, or data work uses stronger gates
-appropriate to its risk.
+substantial or ambiguous project normally uses goal → Project Intelligence
+(reference, dataset when applicable, and opportunity synthesis) → project/legacy
+evidence → ECC-Zandi guidance → architecture synthesis → Orchestrator challenge
+→ Human Lead approval → implementation → validation → independent review when
+justified. The gate is defined in `PROJECT_INTELLIGENCE_SOP.md`; skipping a
+substantial project's reference or applicable dataset intelligence requires an
+explicit rationale. High-risk scientific, security, or data work uses stronger
+gates appropriate to its risk.
 
 The substantial-project flow is an adaptive reference, not a bureaucratic
 pipeline. Do not require Terra High, architecture documents, independent

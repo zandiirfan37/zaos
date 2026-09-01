@@ -16,6 +16,10 @@ Copy this into a future chat session:
 > Derive architecture from product/domain requirements and actual capability
 > boundaries; do not mechanically reuse legacy, ECC, external, or
 > previous-project folder structures.
+> For substantial work, determine whether external reference intelligence is
+> valuable, whether dataset intelligence is required, and whether the project
+> concept has been challenged before architecture lock; use
+> `PROJECT_INTELLIGENCE_SOP.md` proportionately.
 
 Add the specific project path, requested outcome, and any constraints after the
 prompt. Ask for explicit review before destructive, remote, deployment, or
