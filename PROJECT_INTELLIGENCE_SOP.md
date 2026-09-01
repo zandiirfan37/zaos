@@ -173,7 +173,7 @@ patterns, templates, or repositories.
 - **Zandi Orchestrator:** conducts public discovery, directs research,
   synthesizes and compares evidence, challenges assumptions, delegates bounded
   local study, and recommends the next Human Lead decision.
-- **Codex / Local Data or Reference Agent:** safely inspects cloned references
+- **Implementation agent (Codex or Claude Code) / Local Data or Reference Agent:** safely inspects cloned references
   and local datasets, profiles/analyzes, runs bounded experiments, and produces
   evidence artifacts.
 - **ECC-Zandi:** supplies reusable engineering/research workflows and quality

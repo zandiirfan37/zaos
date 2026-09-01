@@ -17,6 +17,15 @@ The adapter is not an ECC installation or global integration. Global
 configuration mutation, including `~/.codex` and `~/.claude`, remains forbidden
 unless explicitly approved.
 
+## Agents
+
+Zandi has two peer implementation/review agents: Codex CLI (primary) and Claude
+Code CLI (backup/takeover implementer, independent reviewer). ChatGPT is the
+Orchestrator; the Human Lead is final authority. State/config lives in
+`/home/pc_pusaka/zandi/.codex` and `/home/pc_pusaka/zandi/.claude`; `~/.claude`
+is currently a compatibility symlink to `/home/pc_pusaka/zandi/.claude`. One
+agent writes per working tree at a time. See `MULTI_AGENT_ROUTING.md`.
+
 ## Validated project evidence
 
 `/home/pc_pusaka/zandi/projects/ecc-minilab-pilot` is the validated ECC-Zandi
@@ -25,9 +34,14 @@ guidance.
 
 ## Model routing
 
-Roles are durable; routing is adaptive. Current defaults are Terra Medium for
-bounded implementation, Terra High for substantial architecture synthesis and
-independent review when it materially improves quality or safety, and XHigh for
-exceptional complex design or debugging. Select for task complexity, risk,
-reasoning depth, latency, efficiency, implementation volume, independent
-perspective, and currently available models; these are not permanent rules.
+Roles are durable; routing is adaptive. Current defaults: bounded implementation
+uses Terra Medium (Codex) or Sonnet Medium (Claude Code); substantial
+architecture synthesis and justified independent review use Terra High (Codex)
+or Sonnet High / a stronger reasoning model (Claude Code); exceptional complex
+design or debugging uses the strongest available tier only when complexity/risk
+justifies the cost. Select for task complexity, risk, reasoning depth, latency,
+efficiency, quota, implementation volume, independent perspective, and currently
+available models; these are not permanent rules. Claude Code routing is also
+bounded by the Claude weekly operating budget in `MULTI_AGENT_ROUTING.md`
+(>= 60% weekly usage: stop Claude work until reset unless the Human Lead
+overrides; Medium effort by default).

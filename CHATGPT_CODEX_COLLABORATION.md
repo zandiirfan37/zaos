@@ -1,23 +1,35 @@
-# ChatGPT and Codex Collaboration
+# ChatGPT Orchestrator and Implementation-Agent Collaboration
+
+> Historically Codex-only. Zandi now has **two peer implementation/review
+> agents** — Codex CLI and Claude Code CLI. "The implementation agent" below
+> means whichever of the two is active. Roles, model routing, handoff,
+> concurrency, and the Claude operating budget are in `MULTI_AGENT_ROUTING.md`.
 
 ChatGPT is the planning and assurance partner: planner, auditor, reviewer,
-prompt designer, command-approval helper, and workflow strategist. Codex is
-the local executor and implementer operating in WSL against the repositories
-the user places in scope.
+prompt designer, command-approval helper, and workflow strategist. The
+implementation agent (Codex CLI or Claude Code CLI) is the local executor and
+implementer operating in WSL against the repositories the user places in scope.
+Codex is the primary implementer when available; Claude Code is the
+backup/takeover implementer and an independent reviewer when useful.
 
-ChatGPT should normally give Codex bounded prompts that name the target path,
-scope, safety limits, validation gates, and expected report. It should review
-Codex results, identify risks or missing evidence, and decide the next action
-with the user rather than issuing open-ended automation.
+ChatGPT should normally give the implementation agent bounded prompts that name
+the target path, scope, safety limits, validation gates, and expected report.
+It should review results, identify risks or missing evidence, and decide the
+next action with the user rather than issuing open-ended automation.
 
-Codex should inspect structure and Git status first, implement only the
-approved local scope, run relevant validation, and report evidence. ChatGPT
-should help approve commands that need new authority, such as network access,
-loopback browser/server checks, destructive data changes, global configuration,
-remote Git actions, deployments, or secrets handling.
+The implementation agent should inspect structure and Git status first,
+implement only the approved local scope, run relevant validation, and report
+evidence. ChatGPT should help approve commands that need new authority, such as
+network access, loopback browser/server checks, destructive data changes,
+global configuration, remote Git actions, deployments, or secrets handling.
 
-Neither role should mutate `~/.codex`, `~/.claude`, global Git configuration,
-or framework integrations unless the user explicitly authorizes it.
+Only one agent is the active writer in a given working tree at a time; the
+other reviews or stands by. Do not switch agents mid-edit except at a clean
+handoff boundary (Git status, diff, tests, DONE/IN_PROGRESS/REMAINING).
+
+No role should mutate `~/.codex`, `~/.claude`, global Git configuration, or
+framework integrations unless the user explicitly authorizes it. `~/.claude` is
+currently a compatibility symlink to `/home/pc_pusaka/zandi/.claude`.
 
 ## Architecture authority and role separation
 
@@ -58,14 +70,16 @@ limitations. The Review Agent independently evaluates important work for
 architecture and code defects, scientific validity, security problems,
 regressions, hidden failure modes, and unnecessary complexity.
 
-Roles are durable; model assignments are not. Current default routing is Terra
-High for substantial, ambiguous, high-impact, scientific, security-sensitive,
-or architecture-heavy synthesis, and when independent review materially
-improves quality or safety; Terra Medium for normal bounded implementation.
-Choose models adaptively for complexity, risk, reasoning depth, latency,
-token/usage efficiency, implementation volume, independent perspective, and
-currently available models. These defaults are preferences, not permanent
-governance rules.
+Roles are durable; model and agent assignments are not. Current default routing
+is Terra High (Codex) or Sonnet High / a stronger reasoning model (Claude Code)
+for substantial, ambiguous, high-impact, scientific, security-sensitive, or
+architecture-heavy synthesis, and when independent review materially improves
+quality or safety; Terra Medium (Codex) or Sonnet Medium (Claude Code) for
+normal bounded implementation. Choose models adaptively for complexity, risk,
+reasoning depth, latency, token/usage/quota efficiency, implementation volume,
+independent perspective, and currently available models. These defaults are
+preferences, not permanent governance rules. The Claude weekly operating budget
+in `MULTI_AGENT_ROUTING.md` also constrains Claude Code routing.
 
 For substantial work, the preferred reference flow is:
 

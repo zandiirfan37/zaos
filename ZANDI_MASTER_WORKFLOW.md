@@ -1,7 +1,9 @@
 # Zandi Master Workflow
 
-Zandi is an AI Engineering Workbench: a local workspace where a human,
-ChatGPT, and Codex collaborate on bounded, reviewable engineering work.
+Zandi is an AI Engineering Workbench: a local workspace where a Human Lead, the
+ChatGPT Orchestrator, and two peer implementation/review agents — Codex CLI and
+Claude Code CLI — collaborate on bounded, reviewable engineering work. See
+`MULTI_AGENT_ROUTING.md` for roles, model routing, handoff, and concurrency.
 
 ## Workspace model
 
@@ -87,3 +89,13 @@ gates appropriate to its risk.
 The substantial-project flow is an adaptive reference, not a bureaucratic
 pipeline. Do not require Terra High, architecture documents, independent
 review, or multiple approvals when they do not materially improve the outcome.
+
+## Multi-agent execution
+
+Codex CLI and Claude Code CLI are peer implementation/review agents; Codex is
+the primary implementer when available and Claude Code is the backup/takeover
+implementer and independent reviewer. Only one agent is the active writer in a
+working tree at a time. Handoffs cross at a clean boundary — Git status, diff,
+tests, and a DONE/IN_PROGRESS/REMAINING split — with the repository, contracts,
+tests, and evidence as the shared source of truth. Details, model routing, and
+the Claude operating budget are in `MULTI_AGENT_ROUTING.md`.
