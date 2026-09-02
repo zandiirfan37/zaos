@@ -24,6 +24,23 @@ checking current repository status before a new task.
 - GradTime clean-slate rebuild validated a general lesson: preserve legitimate
   requirements, behavior, semantics, evidence, provenance, and parity needs;
   independently synthesize the replacement architecture.
+- GradTime surfaced a second governance failure class: the R9 feature-family
+  tournament was frozen inside an already-narrowed IPS/SKS candidate set, and
+  the omitted original field `JENJANG` (degree level) later produced a large
+  improvement at R11B. The clean rebuild had also declared its experimental
+  scope complete without a systematic legacy design-intelligence recovery
+  pass. Governance patched (ECC-Zandi `c15c592`; instructions, this commit):
+  `PROJECT_INTELLIGENCE_SOP.md` gains a Canonical Intelligence Memory model, a
+  Legacy Design-Intelligence Recovery Gate (F), a Resource / Feature Universe
+  Gate (G), a strengthened Reference Design synthesis requirement, and a
+  Study-Design Freeze Gate (H); `EFFICIENT_AGENTIC_ENGINEERING.md` gains
+  feature-universe completeness in the feature-engineering gate plus matching
+  anti-patterns; `ZANDI_MASTER_WORKFLOW.md` defines the design-collaborator
+  completion envelope and reaffirms Fast Lane preservation;
+  `MULTI_AGENT_ROUTING.md` clarifies the design-collaborator role. GradTime
+  implementation unchanged (read-only failure evidence).
+- `GOVERNANCE_FREEZE` re-affirmed after this patch: no further Zandi governance
+  change without another concrete project failure. No speculative audit loop.
 
 ## What MiniLab validated
 

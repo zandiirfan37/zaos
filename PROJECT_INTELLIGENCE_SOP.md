@@ -3,10 +3,27 @@
 ## Purpose
 
 The Project Intelligence Gate is a reusable, evidence-informed step before
-architecture becomes expensive to change. It counters two opposite failures:
-**AI-from-scratch bias** (inventing architecture, pipelines, or UI mainly from
-agent preference) and **repository cargo cult** (copying a mature or popular
-reference without testing its fit).
+architecture and study design become expensive to change. It counters two
+opposite failures: **AI-from-scratch bias** (inventing architecture, pipelines,
+or UI mainly from agent preference) and **repository cargo cult** (copying a
+mature or popular reference without testing its fit).
+
+Zandi has now observed two further, related failures on real projects:
+
+- a technically clean modelling-critical field was promoted before its
+  semantic meaning was established (repaired by the semantic-readiness gates
+  in `EFFICIENT_AGENTIC_ENGINEERING.md`); and
+- a feature/model study was frozen before the complete resource and
+  candidate-feature universe had been enumerated — the tournament was rigorous
+  only inside an already-narrowed set, and an omitted original field later
+  produced a large improvement. A related process gap: a clean rebuild
+  declared its experimental scope complete without first recovering the
+  predecessor project's design intelligence.
+
+This gate therefore also exists to establish **universe completeness** and to
+make **prior work** — legacy and professional-reference — an operational input
+to project-specific study design before a scientific freeze, not merely a
+discovery artifact. Sections F–H below add the corresponding gates.
 
 Use the gate adaptively. It normally applies to substantial new products,
 legacy clean rebuilds, ML/data-science systems, unfamiliar domains,
@@ -20,6 +37,29 @@ The goal is evidence-informed synthesis, not document production or a fixed
 research quota. Counts below are scale guidance only: broad discovery may be
 roughly 20–40 candidates, a shortlist 8–12, and deep study 3–6; collapse all
 three when the domain is narrow.
+
+## Canonical intelligence memory
+
+Project Intelligence produces **durable design memory**, kept separate from
+`PROJECT_STATE.md` (where the project is now) and `PROJECT_BLUEPRINT.md` (where
+it intends to go and why). Prefer exactly one canonical synthesis per
+intelligence class, in `research/intelligence/` (or an `intelligence/` tree
+with `legacy/`, `references/`, `domain/` subfolders only when scale genuinely
+requires the split):
+
+- `LEGACY_SYNTHESIS.md` — what predecessor work teaches (Section F).
+- `REFERENCE_STUDY.md` — what relevant professional implementations teach
+  (Section A).
+- `DOMAIN_KNOWLEDGE.md` — authoritative rules, source-documented facts,
+  empirical patterns, and explicitly unresolved assumptions.
+- `DATASET_INTELLIGENCE.md`, `ADOPTION_LEDGER.md`, `PROJECT_SYNTHESIS.md` as
+  defined in Sections B–D.
+
+These are synthesis, not copied repositories, activity logs, or transcripts.
+Do not mandate a file for a class a project does not need. Once a synthesis is
+canonical, future agents consume it first and reopen raw legacy or reference
+material only when the synthesis lacks required detail, evidence conflicts, or
+a new decision genuinely requires it — never to re-scan whole repositories.
 
 ## A. Reference Intelligence
 
@@ -58,6 +98,17 @@ lifecycle, deployment/containerization, frontend structure, E2E/accessibility,
 responsive behavior, and release practices as relevant. Do not run installers,
 hooks, deployments, MCP setup, global sync, or network services merely to
 study a reference.
+
+### Reference design synthesis
+
+Reference study must not stop at "we read several professional repositories."
+Where references are materially relevant, before a major architecture or
+study-design freeze the synthesis must answer, for the patterns found: what
+each solves; what is applicable here; what is overkill here; what our current
+design is missing; and an explicit `ADOPT` / `ADAPT` / `DEFER` / `REJECT` per
+pattern with rationale. The repository-aware agent turns references into a
+project-specific design recommendation, not a catalogue. Not required for
+routine bounded work.
 
 ### License and cleanroom discipline
 
@@ -182,6 +233,90 @@ patterns, templates, or repositories.
 - **Implementation Agent:** builds the approved design.
 - **Review Agent:** independently reviews when justified.
 
-Pilot this SOP on GradTime before changing ECC-Zandi. A pilot may justify a
-future `PROFILE_PATCH` only with evidence, lessons learned, and explicit Human
-Lead approval; it creates no automatic framework change.
+For a major design decision, the repository-aware agent returns informed
+options, not a single silent choice — see `ZANDI_MASTER_WORKFLOW.md`, "Agent
+as design collaborator". The Human Lead still owns the product/scientific
+decision; the Orchestrator does not manually reproduce what the agent can
+recover from the repository itself.
+
+## F. Legacy Design-Intelligence Recovery Gate
+
+When a project replaces or rebuilds an existing one, a **read-only legacy
+design-intelligence pass is a hard prerequisite before the new experimental or
+architectural scope is declared complete**. Inventory and disposition of
+legacy *data and assets* are governed by `LEGACY_MIGRATION_POLICY.md`; this
+gate covers legacy *design and scientific intelligence*.
+
+Recover from the predecessor(s) what is materially useful: architecture and
+folder structure; datasets, features, targets, and labels; study design and
+evaluation protocol; models tried; successful experiments; failed experiments
+and why; known leakage / semantic / temporal problems; technical debt; and
+untested ideas. Classify each recovered idea exactly once:
+
+`ADOPT` · `ADAPT` · `RETEST` · `DEFER` · `REJECT` · `OBSOLETE`
+
+The goal is a clean architecture that preserves scientific and engineering
+intelligence — neither copying the legacy tree nor forgetting what it already
+learned (`ZANDI_MASTER_WORKFLOW.md`, "Adaptive architecture"). Record the pass
+in `LEGACY_SYNTHESIS.md`. Do not reopen the raw legacy repositories once that
+synthesis is canonical unless it lacks required detail or a new decision
+demands it.
+
+## G. Resource / Feature Universe Gate
+
+For modelling and analytics projects, before a feature contract is declared
+complete or frozen, **every materially available predictor resource family
+must carry an explicit, recorded disposition**. Conceptual flow:
+
+> all available resources → semantic / point-in-time / leakage / identifier /
+> support gates → complete admissible candidate universe → planned
+> feature-family study → feature freeze.
+
+Allowed dispositions, exactly one per family:
+
+`ADMITTED` · `CANDIDATE_FOR_EXPERIMENT` · `DEFERRED` · `REJECTED` ·
+`DIAGNOSTIC_ONLY` · `NOT_APPLICABLE`
+
+A structural or context field used only for slicing or calibration still
+appears in the universe with its disposition (for example `DIAGNOSTIC_ONLY`);
+it may not be silently absent. A field is never required to enter a model
+merely for ablation when a semantic, leakage, or point-in-time gate excludes
+it — record `REJECTED` with the reason.
+
+**A feature-family tournament is not evidence of universe completeness** unless
+the candidate universe was established first. Enumerating families inside an
+already-narrowed set — one domain, one source, one feature style — does not
+satisfy this gate. Record the universe and its dispositions in
+`DATASET_INTELLIGENCE.md` or `ADOPTION_LEDGER.md`; the feature contract
+references it.
+
+## H. Study-Design Freeze Gate
+
+For empirical / model projects, a feature, model, or study freeze may be
+called **FINAL** only when all of the following hold and are recorded:
+
+- target semantics established (semantic-readiness gate passed);
+- resource / feature universe established and every family dispositioned
+  (Section G);
+- legacy design-intelligence recovered and classified where a predecessor
+  exists (Section F);
+- relevant professional-reference patterns synthesised into a project-specific
+  recommendation (Section A);
+- domain knowledge classified — authoritative / source-documented / empirical
+  / unresolved;
+- temporal and evaluation protocol defined;
+- ablation / model-selection plan defined;
+- unresolved assumptions listed explicitly.
+
+Absent any of these, the freeze is **provisional**: it may still serve as a
+working checkpoint, but it may not be cited as a final scientific result. This
+gate is a Deep Gate; it does not apply to routine bounded work.
+
+---
+
+The GradTime rebuild is where these gates were validated: its clean-slate work
+demonstrated both the semantic-readiness failure (Section A of the doctrine in
+`EFFICIENT_AGENTIC_ENGINEERING.md`) and the feature-universe-completeness
+failure (Sections F–H). Further changes to this SOP require another concrete
+project failure, evidence, lessons learned, and explicit Human Lead approval;
+they create no automatic framework change.

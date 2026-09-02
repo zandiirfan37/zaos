@@ -96,13 +96,46 @@ A **deep gate** (independent audit, added diagnostic stage, stronger review)
 is used only when risk or ambiguity earns it: a new dataset or source; a new
 target or label; a changed estimand; unresolved semantics; opening a sealed
 test; a production-science, privacy, or security boundary; a major
-architecture change; or a release or destructive change. It is not the
-default.
+architecture change; a feature, model, or study-design freeze called final;
+declaring a legacy rebuild's experimental scope complete; or a release or
+destructive change. It is not the default. The study-freeze and
+intelligence-recovery gates are defined in `PROJECT_INTELLIGENCE_SOP.md`
+(Sections F–H).
 
 An audit must have a concrete decision it can change. If existing evidence
 already establishes that decision, consume it rather than rerunning
 discovery. Avoid repo rediscovery, repeated semantic audits after a gate is
 established, and audit-report-prompt loops.
+
+### Agent as design collaborator
+
+For deep-gate design work the implementation/review agent is not only a code
+executor. Using its direct repository access it may be assigned to
+investigate, synthesise, propose architecture or study design, and compare
+options — then implement and validate the approved choice. For a major design
+decision it returns a compact envelope, not a transcript:
+
+> STATUS · EVIDENCE FOUND · CURRENT DESIGN STRENGTHS · CURRENT DESIGN GAPS ·
+> VIABLE OPTIONS · RECOMMENDED OPTION + WHY · RISKS / LIMITATIONS · WHAT NOT
+> TO DO · IMPLEMENTATION / EXPERIMENT PLAN · PROJECT_STATE · COMMIT · NEXT
+> SINGLE SPRINT.
+
+The agent must not silently make a product or scientific decision that belongs
+to the Human Lead; it must surface informed options so the Human Lead is not
+required to invent every option personally and the Orchestrator need not
+manually reproduce what a repository-aware agent can recover. Preferred flow
+for complex design: human insight → bounded investigation request → agent
+repository synthesis → Orchestrator + Human Lead decision → implementation.
+Routine fast-lane work keeps its concise report (`PROMPT_EXAMPLES.md`); this
+richer envelope is only for material design or freeze decisions.
+
+### Fast lane stays fast
+
+These intelligence, universe, and freeze gates never require a routine parser
+fix, a bounded code change, or a single-family ablation to inspect legacy
+projects, study external repositories, re-enumerate the resource universe, or
+redesign architecture. Task-triggered scope still governs; the deep gates
+activate only when their decision is material.
 
 ### Prompt compression
 
@@ -168,8 +201,12 @@ evidence → ECC-Zandi guidance → architecture synthesis → Orchestrator chal
 → Human Lead approval → implementation → validation → independent review when
 justified. The gate is defined in `PROJECT_INTELLIGENCE_SOP.md`; skipping a
 substantial project's reference or applicable dataset intelligence requires an
-explicit rationale. High-risk scientific, security, or data work uses stronger
-gates appropriate to its risk.
+explicit rationale. For modelling and analytics projects the same SOP adds a
+read-only legacy design-intelligence recovery pass, an explicit disposition
+for every materially available predictor resource family, and a study-design
+freeze gate before any feature or model freeze is called final (Sections F–H).
+High-risk scientific, security, or data work uses stronger gates appropriate
+to its risk.
 
 The substantial-project flow is an adaptive reference, not a bureaucratic
 pipeline. Do not require Terra High, architecture documents, independent

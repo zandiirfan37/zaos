@@ -29,6 +29,16 @@ Roles are durable. Model and agent assignments are adaptive.
   triggers, detect scientific/semantic/temporal/provenance/privacy/security
   and engineering violations, and escalate only material blockers. See
   `ZANDI_MASTER_WORKFLOW.md`, "Fast lane and agent quality ownership".
+
+  For deep-gate design work (major architecture, study design, resource /
+  feature universe, or a scientific freeze) either implementation agent may
+  additionally be tasked as a **repository-aware investigator and design
+  collaborator**: inspect evidence directly, synthesise legacy / reference /
+  domain intelligence, and return informed options with a recommendation and
+  an implementation/experiment plan (`ZANDI_MASTER_WORKFLOW.md`, "Agent as
+  design collaborator"). This adds no product or scientific authority — the
+  Human Lead still decides — but it means the Orchestrator does not manually
+  reproduce what a repository-aware agent can recover itself.
 - **ECC-Zandi** — engineering doctrine, patterns, checklists, and review
   guidance. It does not dictate universal project structure.
 
