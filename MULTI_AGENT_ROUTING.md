@@ -66,7 +66,9 @@ scientific/security risk.
   project may deliberately spend more tokens at the start, run intelligence as
   separate focused High passes (`PROJECT_INTELLIGENCE_SOP.md`, "Focused
   high-intelligence passes"), and front-load design to reduce downstream
-  ambiguity and rework.
+  ambiguity and rework. The Orchestrator selects the resource-intelligence
+  profile(s) (SOP Section J); the High agent supplies the archetype-specific
+  technical depth.
 - **Medium** — normal implementation, testing, bounded experiments, refactors,
   deterministic rebuilds, and routine review. Medium is the default once the
   blueprint is approved and frozen (SOP Section I); most blueprint stages are

@@ -132,6 +132,13 @@ repository synthesis → Orchestrator + Human Lead decision → implementation.
 Routine fast-lane work keeps its concise report (`PROMPT_EXAMPLES.md`); this
 richer envelope is only for material design or freeze decisions.
 
+The Orchestrator frames scope and selects the applicable resource-intelligence
+profile(s) — `STRUCTURED_RECORDS`, `TEXT_CORPUS_RETRIEVAL`, `VISUAL_MEDIA`,
+`INTERACTIVE_ENV_AGENTIC`, or a composition (`PROJECT_INTELLIGENCE_SOP.md`,
+Section J). The High agent owns the archetype-specific technical and scientific
+investigation the profile defines; the Orchestrator does not need to hold every
+archetype's methods personally, and is not the sole technical architect.
+
 ### Fast lane stays fast
 
 These intelligence, universe, and freeze gates never require a routine parser
@@ -201,8 +208,9 @@ Architecture and review depth match uncertainty and risk; the workflow may
 collapse or expand. A small fix may be request → implementation → test →
 report. A bounded feature may add a short plan and review when useful. A
 substantial or ambiguous project normally uses goal → Project Intelligence
-(reference, dataset when applicable, and opportunity synthesis) → project/legacy
-evidence → ECC-Zandi guidance → architecture synthesis → Orchestrator challenge
+(reference, archetype resource intelligence when applicable, and opportunity
+synthesis) → project/legacy evidence → ECC-Zandi guidance → architecture
+synthesis → Orchestrator challenge
 → Human-approved canonical blueprint → implementation → validation → independent
 review when justified. The gate is defined in `PROJECT_INTELLIGENCE_SOP.md`;
 skipping a substantial project's reference or applicable dataset intelligence
@@ -211,9 +219,11 @@ read-only legacy design-intelligence recovery pass, an explicit disposition
 for every materially available predictor resource family, and a study-design
 freeze gate before any feature or model freeze is called final (Sections F–H).
 For a new project or re-foundation it further recommends running legacy,
-professional-reference, deep dataset/resource, and domain intelligence as
-separate focused High-capability passes where complexity justifies, converging
-into one Human-approved `PROJECT_BLUEPRINT.md` before substantial implementation
+professional-reference, resource, and domain intelligence as separate focused
+High-capability passes where complexity justifies — the resource pass following
+the archetype profile that fits the project (`PROJECT_INTELLIGENCE_SOP.md`,
+Section J), not a tabular checklist by default — converging into one
+Human-approved `PROJECT_BLUEPRINT.md` before substantial implementation
 (Section I). After blueprint freeze, routine stage execution returns to Medium:
 `PROJECT_STATE` → relevant blueprint stage → contracts → ECC gates → implement →
 test → evidence → `PROJECT_STATE` → commit, with broad discovery repeated only

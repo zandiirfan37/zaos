@@ -57,8 +57,31 @@ checking current repository status before a new task.
   economic intent; `EFFICIENT_AGENTIC_ENGINEERING.md` gains a "Data
   intelligence depth and preprocessing discipline" doctrine plus matching
   anti-patterns. GradTime implementation unchanged (read-only replay).
+- Project-archetype audit (before the first re-foundation use of the
+  intelligence-to-blueprint workflow) established that the global lifecycle is
+  archetype-agnostic and only the **resource-intelligence completeness model**
+  and the **blueprint stage spine** need to vary by project type. Bounded
+  patch (ECC-Zandi `2590035`; instructions, this commit), no new SOP,
+  no per-project profile, no ECC-upstream change:
+  `PROJECT_INTELLIGENCE_SOP.md` retitles Section B to "Dataset / Resource
+  Intelligence" as the `STRUCTURED_RECORDS` profile, widens Section G to any
+  resource family, notes the non-empirical freeze path in Section H, makes the
+  focused High passes conditional and archetype-parameterised, adds
+  **Section J — Resource-Intelligence Profiles** (`STRUCTURED_RECORDS`,
+  `TEXT_CORPUS_RETRIEVAL`, `VISUAL_MEDIA`, `INTERACTIVE_ENV_AGENTIC`, plus a
+  software note), each a compact completeness-dimension checklist with a
+  composition rule, a disposition rule, and a downstream-optimised output /
+  registry format, and makes Section I blueprint content **CORE + archetype
+  module + project-local** with a per-profile stage spine.
+  `ZANDI_MASTER_WORKFLOW.md` and `MULTI_AGENT_ROUTING.md` record that the
+  Orchestrator selects the profile(s) and the High agent owns archetype
+  technical depth. `EFFICIENT_AGENTIC_ENGINEERING.md` generalises the
+  resource-universe-completeness doctrine to any resource kind. No GradTime
+  change; GradTime's next step is a `STRUCTURED_RECORDS` re-foundation.
 - `GOVERNANCE_FREEZE` re-affirmed after this patch: no further Zandi governance
   change without another concrete project failure. No speculative audit loop.
+  Section J gains a profile only on real project evidence and Human Lead
+  approval; if the profile set passes ~6, extract it to `instructions/profiles/`.
 
 ## What MiniLab validated
 
