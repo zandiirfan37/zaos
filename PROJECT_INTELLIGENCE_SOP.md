@@ -3,71 +3,59 @@
 ## Purpose
 
 The Project Intelligence Gate is a reusable, evidence-informed step before
-architecture and study design become expensive to change. It counters two
-opposite failures: **AI-from-scratch bias** (inventing architecture, pipelines,
-or UI mainly from agent preference) and **repository cargo cult** (copying a
-mature or popular reference without testing its fit).
+architecture and study design become expensive to change. It counters
+**AI-from-scratch bias** (inventing architecture, pipeline, or UI mainly from
+agent preference) and **repository cargo cult** (copying a mature reference
+without testing its fit), and it makes **prior work** — legacy and
+professional-reference — plus **resource-universe completeness** operational
+inputs to project-specific design before any freeze.
 
-Zandi has now observed two further, related failures on real projects:
-
-- a technically clean modelling-critical field was promoted before its
-  semantic meaning was established (repaired by the semantic-readiness gates
-  in `EFFICIENT_AGENTIC_ENGINEERING.md`); and
-- a feature/model study was frozen before the complete resource and
-  candidate-feature universe had been enumerated — the tournament was rigorous
-  only inside an already-narrowed set, and an omitted original field later
-  produced a large improvement. A related process gap: a clean rebuild
-  declared its experimental scope complete without first recovering the
-  predecessor project's design intelligence.
-
-This gate therefore also exists to establish **universe completeness** and to
-make **prior work** — legacy and professional-reference — an operational input
-to project-specific study design before a scientific freeze, not merely a
-discovery artifact. Sections F–H below add the corresponding gates.
+The concrete project failures that produced each gate below (semantic
+readiness, feature-universe completeness, legacy recovery,
+intelligence-to-blueprint, archetype generality) are recorded in
+`VALIDATION_LEDGER.md`; this SOP states only the current operating model.
 
 Use the gate adaptively. It normally applies to substantial new products,
 legacy clean rebuilds, ML/data-science systems, unfamiliar domains,
-architecture-heavy work, projects with likely mature external implementations,
-and substantial backend/frontend product design. It may be skipped or collapsed
-for small bug fixes, obvious refactors, trivial bounded features, or low-value
-research. If a substantial project skips Reference Intelligence or applicable
-Dataset Intelligence, record an explicit rationale in its synthesis.
+architecture-heavy work, and projects with likely mature external
+implementations. It may be skipped or collapsed for small bug fixes, obvious
+refactors, trivial bounded features, or low-value research. If a substantial
+project skips Reference Intelligence or applicable Resource Intelligence,
+record an explicit rationale in its synthesis.
 
-The goal is evidence-informed synthesis, not document production or a fixed
-research quota. Counts below are scale guidance only: broad discovery may be
-roughly 20–40 candidates, a shortlist 8–12, and deep study 3–6; collapse all
-three when the domain is narrow.
+The goal is evidence-informed synthesis, not document production or a research
+quota. Counts are scale guidance only: broad discovery ~20–40 candidates, a
+shortlist ~8–12, deep study ~3–6; collapse all three when the domain is narrow.
 
 ## Canonical intelligence memory
 
-Project Intelligence produces **durable design memory**, kept separate from
-`PROJECT_STATE.md` (where the project is now) and `PROJECT_BLUEPRINT.md` (where
-it intends to go and why). Prefer exactly one canonical synthesis per
-applicable intelligence class, in `research/intelligence/` (or an
-`intelligence/` tree with `legacy/`, `references/`, `data/`, and `domain/`
-subfolders only when scale genuinely requires the split):
+Project Intelligence produces **durable design memory**, separate from
+`PROJECT_STATE.md` (where the project is now) and `PROJECT_BLUEPRINT.md` (the
+recommended design and why). Keep **exactly one canonical synthesis per
+applicable class**, in `research/intelligence/` (or an `intelligence/` tree
+with `legacy/`, `references/`, `data/`, `domain/` subfolders only when scale
+requires it). This table is the single authoritative artifact list — other
+sections reference it, they do not restate it:
 
-- `LEGACY_SYNTHESIS.md` — what predecessor work teaches (Section F).
-- `REFERENCE_STUDY.md` — what relevant professional implementations teach
-  (Section A).
-- `DOMAIN_KNOWLEDGE.md` — authoritative rules, source-documented facts,
-  empirical patterns, and explicitly unresolved assumptions.
-- the resource-intelligence synthesis, named for its archetype profile
-  (`DATASET_INTELLIGENCE.md` for `STRUCTURED_RECORDS`, otherwise
-  `RESOURCE_INTELLIGENCE.md` or a profile-specific name), `ADOPTION_LEDGER.md`,
-  and `PROJECT_SYNTHESIS.md` as defined in Sections B–D and J. A sufficiently
-  complex project may additionally carry **one** small machine-readable
-  registry (Section J) beside the human synthesis; trivial projects do not
-  need one.
+| Artifact | Job | Gate |
+| --- | --- | --- |
+| `LEGACY_SYNTHESIS.md` | what predecessor work teaches | F |
+| `REFERENCE_STUDY.md` | what relevant professional implementations teach (plus a UI reference board only if evidence volume warrants) | A |
+| `DOMAIN_KNOWLEDGE.md` | domain rules classified authoritative / source-documented / empirical / unresolved | H, I |
+| resource-intelligence synthesis — `DATASET_INTELLIGENCE.md` for `STRUCTURED_RECORDS`, else `RESOURCE_INTELLIGENCE.md` | what our own data / corpus / media / tools are and what they support | B, G, J |
+| `ADOPTION_LEDGER.md` | per-pattern `ADOPT` / `ADAPT` / `REIMPLEMENT` / `REJECT` / `DEFER` decisions with benefit, cost, risk | D |
+| `PROJECT_BLUEPRINT.md` | the convergence: recommended design, options, staged plan | I |
 
-Only create classes the project actually has. These are synthesis, not copied
-repositories, activity logs, or transcripts; raw evidence may live elsewhere.
-Avoid one report per experiment, repository, or dataset when a canonical
-synthesis represents the knowledge safely. Do not mandate a file for a class a
-project does not need. Once a synthesis is canonical, future agents consume it
-first and reopen raw legacy or reference material only when the synthesis lacks
-required detail, evidence conflicts, or a new decision genuinely requires it —
-never to re-scan whole repositories.
+A project that runs the gate but does **not** need a full blueprint (smaller
+scope) may record the convergence in a compact `PROJECT_SYNTHESIS.md` instead —
+never both. A sufficiently complex project may add **one** machine-readable
+registry beside the resource synthesis (Section J); trivial projects do not.
+
+Only create classes the project has. These are synthesis — not copied
+repositories, activity logs, or transcripts; raw evidence lives elsewhere.
+Avoid one report per experiment, repository, or dataset. Once a synthesis is
+canonical, consume it first; reopen raw material only when it lacks required
+detail, evidence conflicts, or a new decision genuinely requires it.
 
 ## Focused high-intelligence passes
 
@@ -152,7 +140,14 @@ routine bounded work.
 
 ### License and cleanroom discipline
 
-Consider the license of every candidate that influences implementation.
+Study external repositories to learn, not to disguise copying. Method: collect
+candidates and check licences first; study architecture, features, tests, and
+UX at pattern level; extract lessons; design an original Zandi version for our
+requirements; implement from scratch unless license-compliant reuse is
+explicitly approved; validate against Zandi requirements, not superficial
+similarity; record sources, decisions, and attribution needs.
+
+Classify the license of every candidate that influences implementation:
 
 | Classification | Meaning |
 | --- | --- |
@@ -161,10 +156,11 @@ Consider the license of every candidate that influences implementation.
 | `REIMPLEMENT` | Implement an idea or architecture pattern in original code. |
 | `UNKNOWN_LICENSE` | Do not copy source. |
 
-Public visibility is not permission to copy. Preserve required attribution;
-avoid proprietary branding/assets; distinguish reusable components from visual
-inspiration. Seek appropriate legal review when license interpretation is not
-obvious or reuse has material consequences.
+Public visibility is not permission to copy. Be scientifically and ethically
+honest: preserve required attribution; never present copied work as original,
+use proprietary code or assets, or violate a licence; distinguish reusable
+components from visual inspiration. Seek appropriate legal review when license
+interpretation is not obvious or reuse has material consequences.
 
 ## B. Dataset / Resource Intelligence
 
@@ -254,9 +250,9 @@ Discipline:
 - Any learned preprocessing operation must later be fit only on the appropriate
   training partition and applied to validation / test / OOT — never learned
   from future or holdout data.
-- Dataset Intelligence may propose a processing strategy but must not silently
+- Resource intelligence may propose a processing strategy but must not silently
   execute scientific feature-selection decisions; those belong to the
-  feature-family study (Section G) and the Human Lead.
+  feature-family study, Section G, and the Human Lead.
 
 ### Optional resource registry
 
@@ -294,17 +290,12 @@ academic trajectories and test activity features with coverage-aware ablation;
 do not reproduce the reference pipeline blindly. Architecture emerges from this
 synthesis.
 
-For a substantial project, keep artifacts compact in `research/intelligence/`:
-
-- `REFERENCE_STUDY.md` — shortlist, deep-study findings, patterns,
-  strengths/weaknesses, license, and provenance.
-- `DATASET_INTELLIGENCE.md` — privacy-safe aggregate evidence; data projects only.
-- `ADOPTION_LEDGER.md` — decisions below.
-- `PROJECT_SYNTHESIS.md` — what to build and why, challenge outcome, feasibility,
-  sufficiency, external-data decision, architecture implications, and open questions.
-
-Use `UI_REFERENCE_BOARD.md` only when the evidence volume warrants it. Do not
-create further artifacts unless they add decision value.
+Keep intelligence artifacts compact and canonical — see "Canonical intelligence
+memory" for the authoritative list. The challenge outcome, feasibility,
+sufficiency, external-data decision, architecture implications, and open
+questions land in `PROJECT_BLUEPRINT.md` (or `PROJECT_SYNTHESIS.md` for a
+gate-without-blueprint project). Do not create further artifacts unless they
+add decision value.
 
 ## D. Adoption Decisions
 
@@ -326,33 +317,18 @@ evidence rather than intuition.
 
 ## E. Architecture Handoff
 
-For substantial projects, architecture is provisional until the Project
-Intelligence Gate has enough evidence. The Architecture Agent receives product
-goals, `PROJECT_SYNTHESIS.md`, `ADOPTION_LEDGER.md`, applicable dataset and
-reference studies, and ECC-Zandi guidance. It selects the smallest coherent
-architecture for the actual project; it must not mechanically merge discovered
+For substantial projects, architecture is provisional until the gate has enough
+evidence. The synthesis draws on the blueprint inputs (`PROJECT_BLUEPRINT.md`
+or `PROJECT_SYNTHESIS.md`), `ADOPTION_LEDGER.md`, the applicable resource and
+reference syntheses, and ECC-Zandi guidance, and selects the smallest coherent
+architecture for the actual project — it must not mechanically merge discovered
 patterns, templates, or repositories.
 
-### Roles
-
-- **Human Lead:** sets goals, preferences, constraints, and final decisions.
-- **Zandi Orchestrator:** conducts public discovery, directs research,
-  synthesizes and compares evidence, challenges assumptions, delegates bounded
-  local study, and recommends the next Human Lead decision.
-- **Implementation agent (Codex or Claude Code) / Local Data or Reference Agent:** safely inspects cloned references
-  and local datasets, profiles/analyzes, runs bounded experiments, and produces
-  evidence artifacts.
-- **ECC-Zandi:** supplies reusable engineering/research workflows and quality
-  doctrine.
-- **Architecture Agent:** derives an architecture from Project Intelligence.
-- **Implementation Agent:** builds the approved design.
-- **Review Agent:** independently reviews when justified.
-
-For a major design decision, the repository-aware agent returns informed
-options, not a single silent choice — see `ZANDI_MASTER_WORKFLOW.md`, "Agent
-as design collaborator". The Human Lead still owns the product/scientific
-decision; the Orchestrator does not manually reproduce what the agent can
-recover from the repository itself.
+Roles are defined once in `MULTI_AGENT_ROUTING.md` §1. For a major design
+decision the repository-aware High agent returns informed options, not a single
+silent choice (`ZANDI_MASTER_WORKFLOW.md`, "Agent as design collaborator"); the
+Human Lead owns the product/scientific decision and the Orchestrator does not
+manually reproduce what the agent can recover from the repository.
 
 ## F. Legacy Design-Intelligence Recovery Gate
 
@@ -413,8 +389,8 @@ resource contract references it.
 
 ## H. Study-Design Freeze Gate
 
-For empirical / model projects, a feature, model, or study freeze may be
-called **FINAL** only when all of the following hold and are recorded:
+This is the **empirical / model** freeze gate. A feature, model, or study freeze
+may be called **FINAL** only when all of the following hold and are recorded:
 
 - target semantics established (semantic-readiness gate passed);
 - resource / feature universe established and every family dispositioned
@@ -432,15 +408,14 @@ called **FINAL** only when all of the following hold and are recorded:
   intelligence streams have converged into a Human-approved
   `PROJECT_BLUEPRINT.md` (Section I).
 
-Absent any of these, the freeze is **provisional**: it may still serve as a
-working checkpoint, but it may not be cited as a final scientific result. This
-gate is a Deep Gate; it does not apply to routine bounded work.
+Absent any of these, the freeze is **provisional** — a working checkpoint that
+may not be cited as a final scientific result. This is a Deep Gate; it does not
+apply to routine bounded work.
 
-For a project archetype without an empirical study spine (for example general
-software, or an agentic system evaluated by task-suite rather than an
-estimand), the freeze checklist is the completeness dimensions of its
-Section J profile plus the Section I blueprint, not the study-design items
-above.
+A non-empirical project (general software, or an agent evaluated by task-suite
+rather than an estimand) has **no** study-design freeze. Its freeze is the
+Blueprint freeze (Section I), checked against the applicable Section J profile
+completeness dimensions plus the Section G dispositions.
 
 ## I. Blueprint Synthesis Gate
 
@@ -525,6 +500,9 @@ study (A), domain classification, synthesis-first memory, High sessioning,
 Human approval, blueprint synthesis (I), Medium execution, `PROJECT_STATE`,
 contracts, and ECC quality ownership apply to every archetype. Only the
 **resource-intelligence completeness model** is archetype-specific.
+
+A High resource pass loads this preamble plus only its applicable profile
+subsection(s) — not the other profiles.
 
 **Composition.** A project declares the profile(s) that apply; most real
 projects compose one **evidence** profile with a product / delivery shape. A
@@ -683,11 +661,12 @@ Decisions: `TOOL_SURFACE_READINESS`; `EVAL_ENV_AVAILABILITY`;
 
 ### J.5 Software / product without a learned component
 
-General software, API, and web-app projects have no evidence profile. Their
-intelligence gate collapses toward reference study (A), domain classification,
-and the Section I blueprint; resource intelligence is limited to the data
-model, integrations, and external-service dependencies, and Sections G and H do
-not apply. Execution guidance is the ECC-Zandi route in
+General software, API, and web-app projects have no evidence profile. The gate
+collapses toward reference study (A), domain classification, and the Section I
+blueprint. Section G still applies — the data model, integrations, and
+external-service dependencies are resource families and none may silently
+disappear — though it is usually light. Section H does not apply (see
+Section H). Execution guidance is the ECC-Zandi route in
 `frameworks/ecc/zandi-profile/prompts/`.
 
 ### Adding a profile
@@ -700,20 +679,8 @@ until then, keeping them here keeps the authority single and the drift low.
 
 ---
 
-The GradTime rebuild is where these gates were validated: its clean-slate work
-demonstrated both the semantic-readiness failure (Section A of the doctrine in
-`EFFICIENT_AGENTIC_ENGINEERING.md`) and the feature-universe-completeness
-failure (Sections F–H). A subsequent GradTime replay showed the same rebuild
-would also have benefited from separate focused intelligence passes, deeper
-dataset- and variable-level intelligence with explicit preprocessing and
-missing-data recommendations, and a Human-approved blueprint before experiment
-implementation and freeze; "Focused high-intelligence passes", the Section B
-depth requirements, and Section I close that gap. A GradTime archetype audit
-then generalised the resource-intelligence and blueprint layers: the global
-lifecycle is archetype-agnostic, and Section J parameterises only the
-resource-intelligence completeness model (`STRUCTURED_RECORDS`,
-`TEXT_CORPUS_RETRIEVAL`, `VISUAL_MEDIA`, `INTERACTIVE_ENV_AGENTIC`) so a
-non-tabular project is not forced through tabular checks and no project's
-resources can silently disappear. Further changes to this SOP require another
+These gates were validated on the GradTime rebuild and refined by two later
+audits — intelligence-to-blueprint, then archetype generality; the evidence and
+rationale are in `VALIDATION_LEDGER.md`. Changing this SOP requires another
 concrete project failure, evidence, lessons learned, and explicit Human Lead
-approval; they create no automatic framework change.
+approval — no automatic framework change.

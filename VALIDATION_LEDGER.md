@@ -78,10 +78,31 @@ checking current repository status before a new task.
   technical depth. `EFFICIENT_AGENTIC_ENGINEERING.md` generalises the
   resource-universe-completeness doctrine to any resource kind. No GradTime
   change; GradTime's next step is a `STRUCTURED_RECORDS` re-foundation.
-- `GOVERNANCE_FREEZE` re-affirmed after this patch: no further Zandi governance
-  change without another concrete project failure. No speculative audit loop.
-  Section J gains a profile only on real project evidence and Human Lead
-  approval; if the profile set passes ~6, extract it to `instructions/profiles/`.
+- Global instruction consolidation + authority cleanup (before the GradTime
+  re-foundation), instructions one commit + ECC-Zandi `961c95b`. One canonical
+  owner per concept: `ZANDI_MASTER_WORKFLOW.md` (operating workflow),
+  `MULTI_AGENT_ROUTING.md` (roles / routing / handoff / budget),
+  `PROJECT_INTELLIGENCE_SOP.md` (intelligence + blueprint mechanics, gates
+  A–J), `EFFICIENT_AGENTIC_ENGINEERING.md` (engineering doctrine),
+  `CURRENT_STATE.md` (framework + workspace state), `START_HERE_FOR_NEW_CHAT.md`
+  (single entrypoint). Deleted (content preserved in a canonical owner + Git
+  history): `CHATGPT_CODEX_COLLABORATION.md` (→ routing §1 + workflow),
+  `REPO_STUDY_AND_CLEANROOM_POLICY.md` (→ SOP §A), `FRAMEWORK_REGISTRY.md`
+  (→ `CURRENT_STATE.md`), `PROJECT_STARTER_PROMPT.md` (→ `START_HERE`). Resolved
+  the §H/§J.5 contradiction (§G universal-light, §H empirical-only, §I universal
+  blueprint freeze). Deduplicated fast-lane / deep-gate / quality-ownership
+  prose in `ZANDI_MASTER_WORKFLOW.md` and `AGENTS.ecc-standard-advanced.md` down
+  to pointers; collapsed the SOP's two divergent artifact lists into one table;
+  compressed SOP failure-history narration to a `VALIDATION_LEDGER.md` pointer;
+  fixed stale `A–I` and `dataset intelligence` references. `EFFICIENT_AGENTIC_
+  ENGINEERING.md` progressive-loading now includes the active staged-plan /
+  blueprint stage. No new file, no `PROJECT_INTELLIGENCE_SOP` split (4 profiles
+  < the ~6 extraction threshold). No GradTime change; no ECC-upstream change.
+- `GOVERNANCE_FREEZE` re-affirmed: no further Zandi governance change without
+  another concrete project failure or a Human-Lead-requested cleanup. No
+  speculative audit loop. Section J gains a profile only on real project
+  evidence and Human Lead approval; if the profile set passes ~6, extract it to
+  `instructions/profiles/`.
 
 ## What MiniLab validated
 

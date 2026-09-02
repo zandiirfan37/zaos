@@ -27,7 +27,7 @@ apply to the workspace.
    treating architecture as stable; for a new project, major rebuild, or
    re-foundation, converge the applicable intelligence streams into one
    Human-approved `PROJECT_BLUEPRINT.md` before substantial implementation or a
-   FINAL freeze. See `PROJECT_INTELLIGENCE_SOP.md` (Sections A–I).
+   FINAL freeze. See `PROJECT_INTELLIGENCE_SOP.md` (Sections A–J).
 4. Plan and agree scope before material changes.
 5. Implement locally, validate proportionately, update `PROJECT_STATE.md` when
    the sprint changes project state, and inspect the diff.
@@ -78,37 +78,27 @@ value.
 
 ## Fast lane and agent quality ownership
 
-Routine bounded work runs a single fast lane, not a diagnose-then-implement
-relay: read `PROJECT_STATE.md` → locate the relevant contract/blueprint
-phase → identify the ECC gates the task type triggers → implement → test and
-verify → update `PROJECT_STATE.md` on a meaningful transition → local commit.
-When the same agent can safely diagnose and implement one bounded sprint, it
-does both.
+The engineering doctrine — fast lane, deep gate, agent quality ownership,
+task-triggered gates, diff-first review, and audit stop conditions — is
+`EFFICIENT_AGENTIC_ENGINEERING.md`. In Zandi terms:
 
-The implementation/review agent owns quality, not just literal execution. It
-detects violations of the applicable scientific, semantic, temporal,
-provenance, privacy/security, and engineering gates within its assigned
-scope — deriving them from ECC-Zandi governance (see
-`EFFICIENT_AGENTIC_ENGINEERING.md`, "Task-triggered quality gates" and
-"Agent quality ownership") — and stops to escalate only on a material,
-unresolved blocker. In particular, no modelling-critical field is promoted
-on technical checks alone; semantic evidence and permitted modelling use are
+**Fast lane** (routine bounded work): read `PROJECT_STATE.md` → the relevant
+`PROJECT_BLUEPRINT.md` stage or contract phase → the ECC gates the task type
+triggers → implement → test and verify → update `PROJECT_STATE.md` on a
+meaningful transition → local commit. One agent diagnoses and implements a
+bounded sprint; do not split the two. No modelling-critical field is promoted
+on technical checks alone — semantic evidence and permitted modelling use are
 required.
 
-A **deep gate** (independent audit, added diagnostic stage, stronger review)
-is used only when risk or ambiguity earns it: a new dataset or source; a new
-target or label; a changed estimand; unresolved semantics; opening a sealed
-test; a production-science, privacy, or security boundary; a major
-architecture change; a feature, model, or study-design freeze called final;
-declaring a legacy rebuild's experimental scope complete; or a release or
-destructive change. It is not the default. The study-freeze and
-intelligence-recovery gates are defined in `PROJECT_INTELLIGENCE_SOP.md`
-(Sections F–H).
-
-An audit must have a concrete decision it can change. If existing evidence
-already establishes that decision, consume it rather than rerunning
-discovery. Avoid repo rediscovery, repeated semantic audits after a gate is
-established, and audit-report-prompt loops.
+**Deep gate** (only when risk or ambiguity earns it): a new dataset, source,
+target, label, or estimand; unresolved semantics; opening a sealed test; a
+production-science, privacy, or security boundary; a major architecture change;
+a feature / model / study-design freeze called final; declaring a rebuild's
+experimental scope complete; a release or destructive change. The intelligence,
+universe, freeze, and blueprint gates are `PROJECT_INTELLIGENCE_SOP.md`
+(Sections F–J). An audit must have a concrete decision it can change; if
+existing evidence already establishes that decision, consume it rather than
+rerunning discovery.
 
 ### Agent as design collaborator
 
@@ -204,31 +194,28 @@ projects, diagram-matching directories, and patterns adopted only because a
 framework demonstrates them. Prefer the smallest architecture with correct
 boundaries that remains understandable, testable, and safe to evolve.
 
-Architecture and review depth match uncertainty and risk; the workflow may
-collapse or expand. A small fix may be request → implementation → test →
-report. A bounded feature may add a short plan and review when useful. A
-substantial or ambiguous project normally uses goal → Project Intelligence
-(reference, archetype resource intelligence when applicable, and opportunity
-synthesis) → project/legacy evidence → ECC-Zandi guidance → architecture
-synthesis → Orchestrator challenge
-→ Human-approved canonical blueprint → implementation → validation → independent
-review when justified. The gate is defined in `PROJECT_INTELLIGENCE_SOP.md`;
-skipping a substantial project's reference or applicable dataset intelligence
-requires an explicit rationale. For modelling and analytics projects the same SOP adds a
-read-only legacy design-intelligence recovery pass, an explicit disposition
-for every materially available predictor resource family, and a study-design
-freeze gate before any feature or model freeze is called final (Sections F–H).
-For a new project or re-foundation it further recommends running legacy,
-professional-reference, resource, and domain intelligence as separate focused
-High-capability passes where complexity justifies — the resource pass following
-the archetype profile that fits the project (`PROJECT_INTELLIGENCE_SOP.md`,
-Section J), not a tabular checklist by default — converging into one
-Human-approved `PROJECT_BLUEPRINT.md` before substantial implementation
-(Section I). After blueprint freeze, routine stage execution returns to Medium:
-`PROJECT_STATE` → relevant blueprint stage → contracts → ECC gates → implement →
-test → evidence → `PROJECT_STATE` → commit, with broad discovery repeated only
-when new evidence invalidates the blueprint. High-risk scientific, security, or
-data work uses stronger gates appropriate to its risk.
+Architecture and review depth match uncertainty and risk. A small fix is
+request → implement → test → report. A bounded feature may add a short plan and
+review. A substantial or ambiguous project uses:
+
+> goal → Project Intelligence (reference, archetype resource intelligence, and
+> opportunity synthesis) → project / legacy evidence → ECC-Zandi guidance →
+> architecture synthesis → Orchestrator challenge → Human-approved
+> `PROJECT_BLUEPRINT.md` → implementation → validation → independent review when
+> justified.
+
+The gate is `PROJECT_INTELLIGENCE_SOP.md`. Skipping a substantial project's
+reference or applicable resource intelligence needs an explicit rationale. For
+a new project or re-foundation, run legacy, professional-reference, resource
+(under the archetype profile that fits — Section J, not a tabular checklist by
+default), and domain intelligence as separate focused High passes where
+complexity justifies, converging into the blueprint before substantial
+implementation. After blueprint freeze, routine stage execution returns to
+Medium: `PROJECT_STATE` → blueprint stage → contracts → ECC gates → implement →
+test → evidence → `PROJECT_STATE` → commit; broad discovery repeats only when
+new evidence invalidates the blueprint. Modelling projects add the
+legacy-recovery, resource-universe, and study-design-freeze gates (F–H).
+High-risk scientific, security, or data work uses stronger gates.
 
 The substantial-project flow is an adaptive reference, not a bureaucratic
 pipeline. Do not require Terra High, architecture documents, independent
@@ -236,10 +223,8 @@ review, or multiple approvals when they do not materially improve the outcome.
 
 ## Multi-agent execution
 
-Codex CLI and Claude Code CLI are peer implementation/review agents; Codex is
-the primary implementer when available and Claude Code is the backup/takeover
-implementer and independent reviewer. Only one agent is the active writer in a
-working tree at a time. Handoffs cross at a clean boundary — Git status, diff,
-tests, and a DONE/IN_PROGRESS/REMAINING split — with the repository, contracts,
-tests, and evidence as the shared source of truth. Details, model routing, and
-the Claude operating budget are in `MULTI_AGENT_ROUTING.md`.
+Roles, model routing, handoff, concurrency, and the Claude operating budget are
+`MULTI_AGENT_ROUTING.md`. Core rule: one active writer per working tree;
+handoffs cross at a clean boundary — Git status, diff, tests, and a
+DONE / IN_PROGRESS / REMAINING split — with the repository, contracts, tests,
+and evidence as the shared source of truth.

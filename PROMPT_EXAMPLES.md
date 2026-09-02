@@ -1,6 +1,10 @@
-# Codex Prompt Examples
+# Zandi Prompt Templates
 
-Replace bracketed values. Each template is intentionally bounded.
+Copy-paste templates for a bounded sprint given to either implementation agent
+(Codex CLI or Claude Code CLI). Replace bracketed values. The prompt-compression
+rule and the canonical pattern are `ZANDI_MASTER_WORKFLOW.md`, "Fast lane and
+agent quality ownership" and "Prompt compression"; do not restate standard ECC
+gates in a prompt.
 
 ## 1. Project inventory
 

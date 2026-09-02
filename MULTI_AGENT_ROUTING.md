@@ -1,12 +1,13 @@
 # Multi-Agent Routing
 
-Zandi now has **two peer implementation/review agents**: Codex CLI and Claude
-Code CLI. This file is the canonical reference for roles, model routing,
-handoff, concurrency, and Claude operating budget. It supplements
-`CHATGPT_CODEX_COLLABORATION.md` and `ZANDI_MASTER_WORKFLOW.md`; it does not
-replace the architecture-authority doctrine, the Project Intelligence workflow,
-the complexity-must-pay-rent principle, or the approval and
-clean-slate/repo-study policies.
+Zandi has **two peer implementation/review agents**: Codex CLI and Claude Code
+CLI. This file is the canonical reference for roles, model routing, handoff,
+concurrency, and the Claude operating budget. It supplements
+`ZANDI_MASTER_WORKFLOW.md` (operating workflow) and
+`EFFICIENT_AGENTIC_ENGINEERING.md` (engineering doctrine); it does not replace
+the Project Intelligence workflow, the complexity-must-pay-rent principle, or
+the approval and clean-slate / repo-study discipline
+(`PROJECT_INTELLIGENCE_SOP.md`, Section A).
 
 ## 1. Roles
 
@@ -14,20 +15,26 @@ Roles are durable. Model and agent assignments are adaptive.
 
 - **Human Lead** — goals, priorities, scientific/product decisions, final
   approval and final authority.
-- **Zandi Orchestrator / ChatGPT** — decides the next sprint; synthesizes
-  project evidence and references; routes work between implementation
-  agents/models; reviews approval boundaries; coordinates handoffs; challenges
-  architecture and scientific decisions.
+- **Zandi Orchestrator / ChatGPT** — decides the next sprint; conducts
+  web-level reference discovery; synthesizes project evidence and references;
+  routes work between implementation agents/models; reviews approval
+  boundaries; coordinates handoffs; challenges architecture and scientific
+  decisions. Gives bounded prompts (target path, scope, safety limits,
+  validation gates, expected report) and reviews returned evidence; it is a
+  synthesis and coordination authority, not an automatic source-tree generator.
 - **Codex CLI** — peer implementation/review agent; filesystem, code, tests,
   and Git execution; primary implementation agent when available.
 - **Claude Code CLI** — peer implementation/review agent; filesystem, code,
   tests, and Git execution; backup/takeover implementer; independent reviewer
   when useful.
 
-  Both implementation agents own quality within their assigned scope, not
-  just literal execution: they derive and apply the ECC gates the task type
-  triggers, detect scientific/semantic/temporal/provenance/privacy/security
-  and engineering violations, and escalate only material blockers. See
+  The active agent inspects repository structure and Git state first,
+  implements only the approved scope, runs relevant validation, and reports
+  evidence. Both implementation agents own quality within their assigned
+  scope, not just literal execution: they derive and apply the ECC gates the
+  task type triggers, detect
+  scientific/semantic/temporal/provenance/privacy/security and engineering
+  violations, and escalate only material blockers. See
   `ZANDI_MASTER_WORKFLOW.md`, "Fast lane and agent quality ownership".
 
   For deep-gate design work (major architecture, study design, resource /
@@ -154,7 +161,8 @@ audits, and duplicated agent work.
 - Do not ask each new agent to rediscover the entire project.
 - Read active contracts, current Git state, relevant evidence, and only the
   files needed for the task.
-- Use the project's `PROJECT_STATE.md` and any existing handoff artifact.
+- Use the project's `PROJECT_STATE.md` (and a compact handoff only if one was
+  explicitly created for a mid-sprint takeover).
 - Avoid repeating broad Project Intelligence once the gate is complete.
 - Do not have Claude duplicate Codex work merely for redundancy; use
   independent review only when it adds decision value.
