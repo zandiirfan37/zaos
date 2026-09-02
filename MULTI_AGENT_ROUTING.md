@@ -59,6 +59,21 @@ following is adaptive operational guidance for current defaults:
 Assignments adapt to capability, cost, latency, quota, task complexity, and
 scientific/security risk.
 
+### Economic intent
+
+- **High** — initial project intelligence, difficult synthesis, major
+  scientific or architecture design, and exceptional deep gates. A major
+  project may deliberately spend more tokens at the start, run intelligence as
+  separate focused High passes (`PROJECT_INTELLIGENCE_SOP.md`, "Focused
+  high-intelligence passes"), and front-load design to reduce downstream
+  ambiguity and rework.
+- **Medium** — normal implementation, testing, bounded experiments, refactors,
+  deterministic rebuilds, and routine review. Medium is the default once the
+  blueprint is approved and frozen (SOP Section I); most blueprint stages are
+  Medium execution.
+
+Do not use High by habit when Medium is sufficient.
+
 ## 3. Agent handoff policy
 
 Do not switch implementation agents arbitrarily in the middle of an unbounded

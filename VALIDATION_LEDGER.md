@@ -39,6 +39,24 @@ checking current repository status before a new task.
   completion envelope and reaffirms Fast Lane preservation;
   `MULTI_AGENT_ROUTING.md` clarifies the design-collaborator role. GradTime
   implementation unchanged (read-only failure evidence).
+- GradTime intelligence-to-blueprint replay closed three remaining
+  operating-model gaps with a bounded governance patch (ECC-Zandi `5d7d9f9`;
+  instructions, this commit): `PROJECT_INTELLIGENCE_SOP.md` gains a
+  "Focused high-intelligence passes" doctrine (separate bounded High passes for
+  legacy / reference / data / domain / synthesis, returning to Medium after
+  blueprint freeze), Section B dataset- and variable-level depth requirements
+  plus an optional machine-readable resource registry and preprocessing
+  discipline (no unevidenced MCAR/MAR/MNAR, no blind global imputation of
+  structural missingness, learned preprocessing fit on the training partition
+  only), and a Blueprint Synthesis Gate (Section I) with `INTELLIGENCE_COMPLETE`
+  / `BLUEPRINT_SYNTHESIS_REQUIRED` / `BLUEPRINT_READY_FOR_IMPLEMENTATION` freeze
+  outputs and a post-freeze Medium stage-execution loop;
+  `ZANDI_MASTER_WORKFLOW.md` adds blueprint convergence to the
+  substantial-project flow, the post-freeze Medium stage-execution model, and
+  keeps Fast Lane exempt; `MULTI_AGENT_ROUTING.md` states the High/Medium
+  economic intent; `EFFICIENT_AGENTIC_ENGINEERING.md` gains a "Data
+  intelligence depth and preprocessing discipline" doctrine plus matching
+  anti-patterns. GradTime implementation unchanged (read-only replay).
 - `GOVERNANCE_FREEZE` re-affirmed after this patch: no further Zandi governance
   change without another concrete project failure. No speculative audit loop.
 

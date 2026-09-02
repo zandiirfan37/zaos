@@ -24,7 +24,10 @@ apply to the workspace.
    and current HEAD, and the contract(s) relevant to the task before starting.
 2. Choose the smallest relevant framework guidance.
 3. For substantial work, complete the adaptive Project Intelligence Gate before
-   treating architecture as stable; see `PROJECT_INTELLIGENCE_SOP.md`.
+   treating architecture as stable; for a new project, major rebuild, or
+   re-foundation, converge the applicable intelligence streams into one
+   Human-approved `PROJECT_BLUEPRINT.md` before substantial implementation or a
+   FINAL freeze. See `PROJECT_INTELLIGENCE_SOP.md` (Sections A–I).
 4. Plan and agree scope before material changes.
 5. Implement locally, validate proportionately, update `PROJECT_STATE.md` when
    the sprint changes project state, and inspect the diff.
@@ -133,9 +136,11 @@ richer envelope is only for material design or freeze decisions.
 
 These intelligence, universe, and freeze gates never require a routine parser
 fix, a bounded code change, or a single-family ablation to inspect legacy
-projects, study external repositories, re-enumerate the resource universe, or
-redesign architecture. Task-triggered scope still governs; the deep gates
-activate only when their decision is material.
+projects, study external repositories, re-enumerate the resource universe,
+redesign architecture, re-run an intelligence pass, or reopen the blueprint.
+Task-triggered scope still governs; the deep gates activate only when their
+decision is material. After a blueprint freeze, routine work runs the Medium
+stage-execution loop (`PROJECT_INTELLIGENCE_SOP.md`, Section I), not discovery.
 
 ### Prompt compression
 
@@ -198,15 +203,22 @@ report. A bounded feature may add a short plan and review when useful. A
 substantial or ambiguous project normally uses goal → Project Intelligence
 (reference, dataset when applicable, and opportunity synthesis) → project/legacy
 evidence → ECC-Zandi guidance → architecture synthesis → Orchestrator challenge
-→ Human Lead approval → implementation → validation → independent review when
-justified. The gate is defined in `PROJECT_INTELLIGENCE_SOP.md`; skipping a
-substantial project's reference or applicable dataset intelligence requires an
-explicit rationale. For modelling and analytics projects the same SOP adds a
+→ Human-approved canonical blueprint → implementation → validation → independent
+review when justified. The gate is defined in `PROJECT_INTELLIGENCE_SOP.md`;
+skipping a substantial project's reference or applicable dataset intelligence
+requires an explicit rationale. For modelling and analytics projects the same SOP adds a
 read-only legacy design-intelligence recovery pass, an explicit disposition
 for every materially available predictor resource family, and a study-design
 freeze gate before any feature or model freeze is called final (Sections F–H).
-High-risk scientific, security, or data work uses stronger gates appropriate
-to its risk.
+For a new project or re-foundation it further recommends running legacy,
+professional-reference, deep dataset/resource, and domain intelligence as
+separate focused High-capability passes where complexity justifies, converging
+into one Human-approved `PROJECT_BLUEPRINT.md` before substantial implementation
+(Section I). After blueprint freeze, routine stage execution returns to Medium:
+`PROJECT_STATE` → relevant blueprint stage → contracts → ECC gates → implement →
+test → evidence → `PROJECT_STATE` → commit, with broad discovery repeated only
+when new evidence invalidates the blueprint. High-risk scientific, security, or
+data work uses stronger gates appropriate to its risk.
 
 The substantial-project flow is an adaptive reference, not a bureaucratic
 pipeline. Do not require Terra High, architecture documents, independent

@@ -43,9 +43,9 @@ three when the domain is narrow.
 Project Intelligence produces **durable design memory**, kept separate from
 `PROJECT_STATE.md` (where the project is now) and `PROJECT_BLUEPRINT.md` (where
 it intends to go and why). Prefer exactly one canonical synthesis per
-intelligence class, in `research/intelligence/` (or an `intelligence/` tree
-with `legacy/`, `references/`, `domain/` subfolders only when scale genuinely
-requires the split):
+applicable intelligence class, in `research/intelligence/` (or an
+`intelligence/` tree with `legacy/`, `references/`, `data/`, and `domain/`
+subfolders only when scale genuinely requires the split):
 
 - `LEGACY_SYNTHESIS.md` — what predecessor work teaches (Section F).
 - `REFERENCE_STUDY.md` — what relevant professional implementations teach
@@ -53,13 +53,43 @@ requires the split):
 - `DOMAIN_KNOWLEDGE.md` — authoritative rules, source-documented facts,
   empirical patterns, and explicitly unresolved assumptions.
 - `DATASET_INTELLIGENCE.md`, `ADOPTION_LEDGER.md`, `PROJECT_SYNTHESIS.md` as
-  defined in Sections B–D.
+  defined in Sections B–D. For a sufficiently complex modelling project the
+  data class may additionally carry **one** small machine-readable resource
+  registry (Section B) beside the human synthesis; trivial projects do not
+  need one.
 
-These are synthesis, not copied repositories, activity logs, or transcripts.
-Do not mandate a file for a class a project does not need. Once a synthesis is
-canonical, future agents consume it first and reopen raw legacy or reference
-material only when the synthesis lacks required detail, evidence conflicts, or
-a new decision genuinely requires it — never to re-scan whole repositories.
+Only create classes the project actually has. These are synthesis, not copied
+repositories, activity logs, or transcripts; raw evidence may live elsewhere.
+Avoid one report per experiment, repository, or dataset when a canonical
+synthesis represents the knowledge safely. Do not mandate a file for a class a
+project does not need. Once a synthesis is canonical, future agents consume it
+first and reopen raw legacy or reference material only when the synthesis lacks
+required detail, evidence conflicts, or a new decision genuinely requires it —
+never to re-scan whole repositories.
+
+## Focused high-intelligence passes
+
+For a new project, a major rebuild, or a deep scientific / architectural
+re-foundation, run the intelligence phase as **separate focused
+High-capability passes** when project complexity justifies it, rather than one
+overloaded discovery session that tries to discover, understand, design, and
+implement at once. Canonical conceptual passes — use only those that are
+material to the project:
+
+- **Legacy project intelligence** (Section F)
+- **Professional reference intelligence** (Section A)
+- **Data / resource intelligence** (Section B)
+- **Domain intelligence** where material (`DOMAIN_KNOWLEDGE.md`)
+- **Architecture / scientific synthesis** (Section C and Section I)
+
+Not every project uses every pass. Each pass has one bounded objective and its
+output becomes durable project intelligence. Prefer a fresh High context per
+large independent intelligence domain. Once the canonical synthesis for a pass
+exists, later agents consume the synthesis first and do not re-scan the raw
+source unless the synthesis is insufficient. High capability here is an
+investment to reduce downstream cost and rework, not a standing operating
+mode: after blueprint approval and freeze (Section I), routine work returns to
+Medium (`MULTI_AGENT_ROUTING.md`, "Economic intent").
 
 ## A. Reference Intelligence
 
@@ -155,6 +185,57 @@ the origin of missingness; cohort/system changes; historical and active/product
 population coverage; leakage; bias/coverage limits; scientifically valid and
 invalid products; stronger projects supported by the same data; and whether
 external data closes a real information gap.
+
+### Dataset and variable depth
+
+For modelling / data projects, inspect each material dataset and each
+materially relevant variable or concept deeply enough to support downstream
+preprocessing, missing-data, feature-engineering, and experimental-design
+decisions — not only a surface profile.
+
+At **dataset** level, record where applicable: source and provenance;
+business / domain purpose; grain; key / linkage structure; temporal meaning;
+cohort / time coverage; row / entity coverage; schema stability; duplicates;
+missingness patterns; structural versus accidental missingness; source-specific
+quality problems; joins and relationship cardinality; historical / version
+semantics; point-in-time usability; leakage risk; privacy / identifier risk;
+modelling roles; known limitations.
+
+At **variable / concept** level, record where applicable: semantic meaning;
+data type; unit / category domain; valid range; impossible or suspicious
+values; cohort / source coverage; temporal stability; missingness rate and
+pattern; whether missingness may itself carry information; semantic readiness;
+point-in-time readiness; leakage / post-outcome risk; identifier / proxy risk;
+subgroup / fairness considerations; raw modelling eligibility; candidate
+feature-engineering transformations; potential interactions; recommendations
+for preprocessing, imputation, missing-indicator, encoding, scaling /
+normalisation, outlier treatment, rare-category strategy, and cutoff-specific
+handling; candidate feature family; final disposition.
+
+Discipline:
+
+- Do not infer a statistical missingness mechanism (MCAR / MAR / MNAR) without
+  evidence; distinguish an observed pattern from a hypothesis.
+- Do not prescribe blind global imputation for structural missingness.
+- Any learned preprocessing operation must later be fit only on the appropriate
+  training partition and applied to validation / test / OOT — never learned
+  from future or holdout data.
+- Dataset Intelligence may propose a processing strategy but must not silently
+  execute scientific feature-selection decisions; those belong to the
+  feature-family study (Section G) and the Human Lead.
+
+### Optional resource registry
+
+For a sufficiently complex modelling project, keep a small machine-readable
+resource registry beside `DATASET_INTELLIGENCE.md` (exact format project-local)
+in addition to the human synthesis. It should support fields such as:
+`resource`, `dataset`, `variable/concept`, `source`, `grain`,
+`semantic_status`, `PIT_status`, `coverage`, `missingness_pattern`,
+`preprocessing_strategy`, `imputation_strategy`, `encoding_strategy`,
+`outlier_strategy`, `feature_family`, `allowed_use`, `disposition`, and
+`evidence/reference`. Its purpose is to stop resource families or variables
+from silently disappearing and to let later implementation agents consume
+decisions efficiently. Do not mandate it for trivial projects.
 
 At completion, record both decisions without forcing optimism:
 
@@ -306,17 +387,89 @@ called **FINAL** only when all of the following hold and are recorded:
   / unresolved;
 - temporal and evaluation protocol defined;
 - ablation / model-selection plan defined;
-- unresolved assumptions listed explicitly.
+- unresolved assumptions listed explicitly;
+- for a new project, major rebuild, or re-foundation, the applicable
+  intelligence streams have converged into a Human-approved
+  `PROJECT_BLUEPRINT.md` (Section I).
 
 Absent any of these, the freeze is **provisional**: it may still serve as a
 working checkpoint, but it may not be cited as a final scientific result. This
 gate is a Deep Gate; it does not apply to routine bounded work.
+
+## I. Blueprint Synthesis Gate
+
+For a new project, major rebuild, or scientific / architectural re-foundation,
+the applicable intelligence streams must converge into **one canonical
+project-specific blueprint** (`PROJECT_BLUEPRINT.md`) before substantial
+implementation resumes or a FINAL scientific / architecture freeze is claimed
+(Section H).
+
+The blueprint is not written from product goals alone. It explicitly
+synthesises product goals + current resource / data intelligence + legacy
+project intelligence where applicable + professional reference intelligence
+where applicable + domain knowledge + known constraints + engineering /
+scientific risks into the recommended project design. Repository-aware
+High-capability agents are used before approval where a design question is
+genuinely difficult (`ZANDI_MASTER_WORKFLOW.md`, "Agent as design
+collaborator").
+
+The synthesis agent normally returns: EVIDENCE BASE · PREDECESSOR / CURRENT
+DESIGN STRENGTHS · PREDECESSOR / CURRENT DESIGN GAPS · 2–3 VIABLE DESIGN
+OPTIONS where genuine alternatives exist · TRADE-OFFS · RECOMMENDED DESIGN ·
+WHY · RISKS / LIMITATIONS · WHAT IS DELIBERATELY NOT ADOPTED · STAGED
+IMPLEMENTATION PLAN. The Human Lead owns approval of material product and
+scientific choices.
+
+### Blueprint content
+
+The blueprint carries only sections applicable to the project. A substantial
+modelling / product project may include: product and scientific objectives and
+claims; project boundaries; minimal repository architecture and canonical
+folder responsibilities; data architecture and data / resource universe;
+preprocessing and missing-data design; semantic assumptions; target / label /
+estimand design; candidate feature universe, feature-engineering strategy, and
+feature-family ablation strategy; model-candidate, hyperparameter/tuning,
+temporal-split, validation / OOT, and calibration design; subgroup /
+generalisation design; experiment stopping rules; reproducibility; production
+architecture, model-artifact strategy, inference pipeline, API / service and
+frontend / product integration; monitoring, drift detection, retraining /
+update strategy, production data requirements; privacy / security; testing;
+CI / release; rollback; observability; known limitations; staged implementation
+plan; explicit decision gates.
+
+For each major stage the blueprint states, where useful: OBJECTIVE · INPUTS ·
+OUTPUTS · KEY DECISIONS · QUALITY GATES · DEPENDENCIES · STOP CONDITIONS ·
+NEXT STAGE. This lets Medium agents execute a stage without the Orchestrator
+reconstructing the design each sprint.
+
+### Blueprint freeze
+
+No project may claim a FINAL architecture / study-design freeze while an
+applicable intelligence stream is materially incomplete. A blueprint-gated
+freeze decision returns explicitly:
+
+- `INTELLIGENCE_COMPLETE: YES / NO`
+- `BLUEPRINT_SYNTHESIS_REQUIRED: YES / NO`
+- `BLUEPRINT_READY_FOR_IMPLEMENTATION: YES / NO`
+
+After Human approval and blueprint freeze, routine implementation flow is:
+`PROJECT_STATE` → relevant blueprint stage → active contracts → applicable ECC
+gates → implement → test → evidence → `PROJECT_STATE` → commit. Broad discovery
+is not repeated unless new evidence materially invalidates or exposes
+incompleteness in the blueprint. This gate is a Deep Gate; it does not apply to
+routine bounded work and never forces a Fast-Lane task to re-run intelligence
+or reopen the blueprint.
 
 ---
 
 The GradTime rebuild is where these gates were validated: its clean-slate work
 demonstrated both the semantic-readiness failure (Section A of the doctrine in
 `EFFICIENT_AGENTIC_ENGINEERING.md`) and the feature-universe-completeness
-failure (Sections F–H). Further changes to this SOP require another concrete
-project failure, evidence, lessons learned, and explicit Human Lead approval;
-they create no automatic framework change.
+failure (Sections F–H). A subsequent GradTime replay showed the same rebuild
+would also have benefited from separate focused intelligence passes, deeper
+dataset- and variable-level intelligence with explicit preprocessing and
+missing-data recommendations, and a Human-approved blueprint before experiment
+implementation and freeze; "Focused high-intelligence passes", the Section B
+depth requirements, and Section I close that gap. Further changes to this SOP
+require another concrete project failure, evidence, lessons learned, and
+explicit Human Lead approval; they create no automatic framework change.
