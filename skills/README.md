@@ -9,6 +9,7 @@ not folders.
 | UI/UX Pro Max | DOMAIN | TESTED | Local UI/UX design intelligence from official upstream. |
 | Ask the Council | REASONING | TESTED | Bounded multi-perspective deliberation for consequential decisions. |
 | ML Research | DOMAIN | TESTED | Scientifically rigorous tabular predictive modelling guidance. |
+| Project Re-foundation | WORKFLOW | DRAFT | Branchable, evidence-led recovery or re-foundation workflow. |
 
 - **DOMAIN** — expert knowledge to apply.
 - **REASONING** — how to deliberate.
