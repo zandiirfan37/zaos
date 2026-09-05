@@ -1,25 +1,33 @@
 # Current Zandi State
 
-Zandi is rooted at `/home/pc_pusaka/zandi`. The root is behaviorally non-Git; frameworks and projects own their own repositories, history, and remote policy. This file covers workspace state, not project state.
+Zandi root: `/home/pc_pusaka/zandi`. Canonical workspace areas are `.agents/`,
+`.runtime/`, `.secrets/`, and `projects/`. Projects and framework repositories
+own their own Git history; this file is workspace state, not project state.
 
-## Frameworks
+## Authority and routing
 
-| Framework | Path | Status |
-| --- | --- | --- |
-| ECC-Zandi adapter | `.agents/frameworks/ecc/zandi-profile` | Zandi-owned optional assurance adapter; changes require explicit approval. |
-| ECC upstream | `.agents/frameworks/ecc/upstream` @ `005eff40fd4a4ac005da7a70e713459175385516` | read-only reference; no default activation. |
-| ZAINE | `.agents/frameworks/zaine` | frozen; inspect its own guidance before use. |
+`BIG_SOP.md` is the single durable workspace doctrine. This file supplies only
+current facts. Engine bootstraps are thin native routers: Codex at
+`.runtime/engines/codex/AGENTS.md`; Claude at
+`.runtime/engines/claude/CLAUDE.md`. Project-local `AGENTS.md` / `CLAUDE.md`,
+`PROJECT_STATE.md`, and relevant contracts remain local authority.
 
-## Agents and runtime
+## Engines and skills
 
-ChatGPT orchestrates; Codex and Claude are peer executors/reviewers. One active writer per working tree. The durable operating rules are in `BIG_SOP.md`.
+`CODEX_HOME=/home/pc_pusaka/zandi/.runtime/engines/codex`.
+`CLAUDE_CONFIG_DIR=/home/pc_pusaka/zandi/.runtime/engines/claude`.
 
-Execution state lives in `.runtime/engines/codex` (`CODEX_HOME`) and `.runtime/engines/claude` (`CLAUDE_CONFIG_DIR`). Do not modify engine state or global configuration unless explicitly authorized.
+The sole shared-skill root is `.agents/skills/`. Current TESTED skills:
+
+- `ui-ux-pro-max` — DOMAIN
+- `ask-the-council` — REASONING
+- `ml-research` — DOMAIN
+
+Skills, library material, ECC, and archive material load only when relevant.
+ECC remains optional assurance; it is not normal bootstrap context.
 
 ## Project state
 
-Every active project owns one current `<project-root>/PROJECT_STATE.md`. Update it only for meaningful state transitions; it is not a task log. The template is `templates/PROJECT_STATE.template.md`. See `BIG_SOP.md` for the normal loop.
-
-## Historical evidence
-
-`archive/VALIDATION_LEDGER.md` records prior pilot evidence. It is historical, not current operating authority.
+Every active project owns `<project-root>/PROJECT_STATE.md`; update it only for
+meaningful state transitions. Historical evidence remains under `archive/` and
+is not current operating authority.
