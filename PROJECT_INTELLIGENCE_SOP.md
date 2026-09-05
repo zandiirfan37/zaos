@@ -667,14 +667,14 @@ blueprint. Section G still applies — the data model, integrations, and
 external-service dependencies are resource families and none may silently
 disappear — though it is usually light. Section H does not apply (see
 Section H). Execution guidance is the ECC-Zandi route in
-`frameworks/ecc/zandi-profile/prompts/`.
+`.agents/frameworks/ecc/zandi-profile/prompts/`.
 
 ### Adding a profile
 
 A new profile is justified only by a real project whose resource intelligence
 does not fit an existing profile, plus lessons learned and Human Lead approval
 (`FRAMEWORK_IMPROVEMENT_LOOP.md`). If the profile set grows past roughly six,
-extract Section J to `instructions/profiles/` as one compact file per profile;
+extract Section J to `.agents/instructions/profiles/` as one compact file per profile;
 until then, keeping them here keeps the authority single and the drift low.
 
 ---

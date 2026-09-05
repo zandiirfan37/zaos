@@ -102,7 +102,7 @@ checking current repository status before a new task.
   another concrete project failure or a Human-Lead-requested cleanup. No
   speculative audit loop. Section J gains a profile only on real project
   evidence and Human Lead approval; if the profile set passes ~6, extract it to
-  `instructions/profiles/`.
+  `.agents/instructions/profiles/`.
 
 ## What MiniLab validated
 

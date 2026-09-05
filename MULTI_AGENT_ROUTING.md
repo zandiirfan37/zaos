@@ -172,15 +172,22 @@ session while the same bounded task continues; use Medium effort by default.
 
 ## 7. Agent configuration (no credentials)
 
-- `/home/pc_pusaka/zandi/.codex` — Codex state/config.
-- `/home/pc_pusaka/zandi/.claude` — Claude Code state/config.
+- `/home/pc_pusaka/zandi/.runtime/engines/codex` — Codex state/config
+  (`CODEX_HOME`; migrated from the former `/home/pc_pusaka/zandi/.codex`).
+- `/home/pc_pusaka/zandi/.claude` — Claude Code state/config, still live for
+  this session.
 - `~/.claude` — currently a compatibility symlink to
   `/home/pc_pusaka/zandi/.claude`.
+- `/home/pc_pusaka/zandi/.runtime/engines/claude` — prepared cutover target
+  (`CLAUDE_CONFIG_DIR`, exported for future shells); not yet the active home.
 
-Do not migrate `.codex` / `.claude` into a common folder now. A possible future
-housekeeping target is `/home/pc_pusaka/zandi/.ai/{codex,claude}/`; this is
-**not approved** for implementation. Global configuration mutation, including
-`~/.codex` and `~/.claude` contents, remains an explicit approval boundary.
+Codex and Claude now live under `.runtime/engines/{codex,claude}` per the
+foundation migration. Final Claude cutover (retiring `~/.claude` and the old
+`zandi/.claude` directory) is deferred to a session that is not the active
+writer of that home. `~/.codex/packages/` (installer/updater binary store)
+is a separate, unavoidable OS-home artifact and is not part of this
+migration. Global configuration mutation, including `~/.codex` and
+`~/.claude` contents, remains an explicit approval boundary.
 
 ## 8. Project-level Claude adapter
 

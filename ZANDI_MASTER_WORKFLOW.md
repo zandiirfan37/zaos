@@ -7,11 +7,11 @@ Claude Code CLI — collaborate on bounded, reviewable engineering work. See
 
 ## Workspace model
 
-- `frameworks/` contains reusable engineering frameworks and their adapters.
+- `.agents/frameworks/` contains reusable engineering frameworks and their adapters.
 - `projects/` contains independent project repositories and their artifacts.
-- `runtime/` contains local runtime support such as browser and dependency
-  caches; it is not a project deliverable.
-- `instructions/` contains Zandi-owned, human-readable operating guidance.
+- `.runtime/` contains local runtime support such as browser and dependency
+  caches, plus engine (Codex/Claude) state; it is not a project deliverable.
+- `.agents/instructions/` contains Zandi-owned, human-readable operating guidance.
 
 The Zandi root is intentionally behaviorally non-Git. Each framework and
 project owns its own Git repository, history, status, and remote policy. Check
