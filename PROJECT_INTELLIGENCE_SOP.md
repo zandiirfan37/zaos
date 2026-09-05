@@ -13,7 +13,8 @@ inputs to project-specific design before any freeze.
 The concrete project failures that produced each gate below (semantic
 readiness, feature-universe completeness, legacy recovery,
 intelligence-to-blueprint, archetype generality) are recorded in
-`VALIDATION_LEDGER.md`; this SOP states only the current operating model.
+`archive/VALIDATION_LEDGER.md`; this SOP states only the current operating
+model.
 
 Use the gate adaptively. It normally applies to substantial new products,
 legacy clean rebuilds, ML/data-science systems, unfamiliar domains,
@@ -87,7 +88,7 @@ freeze. Once the canonical synthesis for a pass exists, later agents consume it
 first and do not re-scan the raw source unless it is insufficient. High
 capability here is an investment to reduce downstream cost and rework, not a
 standing operating mode: after blueprint approval and freeze (Section I),
-routine work returns to Medium (`MULTI_AGENT_ROUTING.md`, "Economic intent").
+routine work returns to the normal task loop in `BIG_SOP.md`.
 
 ## A. Reference Intelligence
 
@@ -325,11 +326,10 @@ reference syntheses, and ECC-Zandi guidance, and selects the smallest coherent
 architecture for the actual project — it must not mechanically merge discovered
 patterns, templates, or repositories.
 
-Roles are defined once in `MULTI_AGENT_ROUTING.md` §1. For a major design
-decision the repository-aware High agent returns informed options, not a single
-silent choice (`ZANDI_MASTER_WORKFLOW.md`, "Agent as design collaborator"); the
-Human Lead owns the product/scientific decision and the Orchestrator does not
-manually reproduce what the agent can recover from the repository.
+Roles and authority are defined once in `BIG_SOP.md`. For a major design
+decision the repository-aware executor returns informed options, not a single
+silent choice; the Human Lead owns the product/scientific decision and the
+Orchestrator does not manually reproduce what the executor can recover.
 
 ## F. Legacy Design-Intelligence Recovery Gate
 
@@ -349,10 +349,9 @@ untested ideas. Classify each recovered idea exactly once:
 
 The goal is a clean architecture that preserves scientific and engineering
 intelligence — neither copying the legacy tree nor forgetting what it already
-learned (`ZANDI_MASTER_WORKFLOW.md`, "Adaptive architecture"). Record the pass
-in `LEGACY_SYNTHESIS.md`. Do not reopen the raw legacy repositories once that
-synthesis is canonical unless it lacks required detail or a new decision
-demands it.
+learned. Record the pass in `LEGACY_SYNTHESIS.md`. Do not reopen the raw legacy
+repositories once that synthesis is canonical unless it lacks required detail
+or a new decision demands it.
 
 ## G. Resource / Feature Universe Gate
 
@@ -430,10 +429,8 @@ The blueprint is not written from product goals alone. It explicitly
 synthesises product goals + current resource / data intelligence + legacy
 project intelligence where applicable + professional reference intelligence
 where applicable + domain knowledge + known constraints + engineering /
-scientific risks into the recommended project design. Repository-aware
-High-capability agents are used before approval where a design question is
-genuinely difficult (`ZANDI_MASTER_WORKFLOW.md`, "Agent as design
-collaborator").
+scientific risks into the recommended project design. Use a repository-aware
+executor before approval where a design question is genuinely difficult.
 
 The synthesis agent normally returns: EVIDENCE BASE · PREDECESSOR / CURRENT
 DESIGN STRENGTHS · PREDECESSOR / CURRENT DESIGN GAPS · 2–3 VIABLE DESIGN
@@ -667,8 +664,9 @@ collapses toward reference study (A), domain classification, and the Section I
 blueprint. Section G still applies — the data model, integrations, and
 external-service dependencies are resource families and none may silently
 disappear — though it is usually light. Section H does not apply (see
-Section H). Execution guidance is the ECC-Zandi route in
-`.agents/frameworks/ecc/zandi-profile/prompts/`.
+Section H). Execution guidance may use the ECC-Zandi route in
+`.agents/frameworks/ecc/zandi-profile/prompts/` when the task earns
+second-layer assurance; it is not a default requirement.
 
 ### Adding a profile
 
@@ -682,6 +680,6 @@ until then, keeping them here keeps the authority single and the drift low.
 
 These gates were validated on the GradTime rebuild and refined by two later
 audits — intelligence-to-blueprint, then archetype generality; the evidence and
-rationale are in `VALIDATION_LEDGER.md`. Changing this SOP requires another
+rationale are in `archive/VALIDATION_LEDGER.md`. Changing this SOP requires another
 concrete project failure, evidence, lessons learned, and explicit Human Lead
 approval — no automatic framework change.

@@ -31,5 +31,6 @@ Keep upstream repositories clean and updateable; prefer Zandi-owned adapters
 for local guidance changes.
 
 When a lesson is accepted, record its evidence, decision, and relevant commit
-in `VALIDATION_LEDGER.md` so future sessions can distinguish validated practice
-from a proposal.
+in the relevant project's durable record. The historical pilot evidence remains
+in `archive/VALIDATION_LEDGER.md`; do not turn a one-off lesson into global
+policy.
