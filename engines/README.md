@@ -1,20 +1,41 @@
 # Engine adapters
 
-The one canonical workspace doctrine is
-[`../instructions/BIG_SOP.md`](../instructions/BIG_SOP.md). Its compact current
-facts are in `../instructions/CURRENT_STATE.md`; neither is copied here.
+The Git-tracked, Zandi-authored adapters are
+[`codex/AGENTS.md`](codex/AGENTS.md) and
+[`claude/CLAUDE.md`](claude/CLAUDE.md). They route rather than duplicate the
+one canonical doctrine: [`../instructions/BIG_SOP.md`](../instructions/BIG_SOP.md).
+`CURRENT_STATE.md` is conditional, not bootstrap payload.
 
-Codex uses the thin native bootstrap at
-`.runtime/engines/codex/AGENTS.md`. Claude uses the thin native bootstrap at
-`.runtime/engines/claude/CLAUDE.md`. Each contains paths and routing only:
-canonical doctrine, conditional current state, local project authority, and the
-shared skill root.
+## Routing model
 
-Codex and Claude execution/session/cache state remains in `.runtime/engines/`.
+`ENGINE BOOTSTRAP → minimal engine adapter → BIG_SOP when substantive →
+CURRENT_STATE when relevant → project-local authority/state/contracts →
+relevant skill only → current task`
+
+Default exclusions are unrelated skills, Council, ECC, archive material, deep
+library material, and unrelated project history.
+
+## Deployment
+
+Claude's runtime bootstrap is a native import stub for the canonical Claude
+adapter. Codex has no proven equivalent native import; deploy the canonical
+Codex adapter as an exact runtime copy at
+`.runtime/engines/codex/AGENTS.md` when runtime state is created or refreshed.
+Runtime state is disposable and is not Git-tracked.
+
 Shared skills have one physical owner at `.agents/skills/<skill>/SKILL.md`.
-Codex discovers that root natively. Claude's installed client does not register
-an external skill root; its bootstrap directs task-matched loading from the
-same canonical paths. Do not copy or symlink skills into either engine home.
+Claude's normal launches use canonical-path, task-matched lazy routing; do not
+copy or symlink skills into either engine tree. `--plugin-dir` is an optional
+future per-session capability, not the default architecture.
 
-Archive material, library references, and ECC are explicit on-demand context;
-they are not bootstrap payload.
+## Resource policy
+
+| Engine | Normal model | Normal effort |
+| --- | --- | --- |
+| Codex | GPT-5.6 Terra | medium |
+| Claude | Sonnet | medium |
+
+Use high effort only for consequential architecture, difficult debugging,
+scientific ambiguity, security/release assurance, or an explicit
+Human/Orchestrator request. Model and engine policy belongs here, not in
+`BIG_SOP.md`.
