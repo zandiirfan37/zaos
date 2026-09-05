@@ -1,0 +1,5 @@
+# Independent repositories retained outside this Zandi-owned agent-assets repository.
+instructions/
+frameworks/ecc/upstream/
+frameworks/ecc/zandi-profile/
+frameworks/zaine/
