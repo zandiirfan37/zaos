@@ -15,3 +15,4 @@ Lifecycle: `DRAFT → TESTED → TRUSTED → STABLE`.
 ## Registered
 
 - **UI/UX Pro Max** — Category: DOMAIN; Status: TESTED; Purpose: UI/UX design intelligence; Source: official `nextlevelbuilder/ui-ux-pro-max-skill`.
+- **Ask the Council** — Category: REASONING; Status: TESTED; Purpose: bounded multi-perspective deliberation; Source: official `tsenart/council-skill`.

@@ -7,3 +7,4 @@
 - [MLflow](mlflow.md) — ML/LLMOps tracking, evaluation, and observability.
 - [OULAD Exploration](oulad-exploration.md) — learning-analytics data preparation and visualization.
 - [UI/UX Pro Max](ui-ux-pro-max.md) — local UI/UX design-intelligence skill.
+- [Ask the Council](ask-the-council.md) — local bounded multi-perspective deliberation skill.
