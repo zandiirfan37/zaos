@@ -113,10 +113,11 @@ patterns. Choose UI from usability, workflow, and technical fit—not novelty.
 
 ### Controlled deep study
 
-Codex or a Local Reference Agent may clone or partially clone shortlisted
-repositories into `/home/pc_pusaka/zandi/shared/reference-repos/<project>/`.
-This cache is not a runtime dependency, is not automatically committed, may be
-rebuilt or deleted, and must retain source URL and license provenance. Prefer
+Codex or a Local Reference Agent may inspect shortlisted repositories outside
+Zandi's canonical root. Do not retain full reference clones in the workspace:
+record source URL, license provenance, and reusable lessons in
+`.agents/library/open-source/`, then remove the clone. This catalog is not a
+runtime dependency and is not automatically committed. Prefer
 shallow, blobless, or sparse clone when sufficient.
 
 Study implementation rather than README claims: module boundaries, data
