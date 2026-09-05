@@ -30,6 +30,14 @@ approval before changing a framework, profile, adapter, or global instruction.
 Keep upstream repositories clean and updateable; prefer Zandi-owned adapters
 for local guidance changes.
 
+Agents may proactively surface reusable workflow friction—repeated prompt
+instructions, a recurring workaround, an avoidable audit, context-loading
+inefficiency, or architecture/workflow rework—by routing it through these same
+finding classes: a local issue is a `PROJECT_ONLY_FIX`; a reusable pattern is a
+`PROFILE_PATCH`/`FRAMEWORK_ADAPTER_PATCH` candidate; a systemic or
+consequential issue goes to `GLOBAL_INSTRUCTION_PATCH` review. This is not a
+new taxonomy—do not recommend a global change for an isolated project quirk.
+
 When a lesson is accepted, record its evidence, decision, and relevant commit
 in the relevant project's durable record. The historical pilot evidence remains
 in `archive/VALIDATION_LEDGER.md`; do not turn a one-off lesson into global

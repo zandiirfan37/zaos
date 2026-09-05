@@ -53,6 +53,12 @@ Verification is proportional: a small text edit needs focused inspection; a beha
 
 Escalate before destructive actions, remote writes, deployments, credentials or secrets changes, irreversible migrations, material scope expansion, or a product/scientific decision. Escalate also when required evidence is missing, constraints conflict, or progress depends on a Human Lead choice. Do not escalate merely because work is difficult when safe, bounded investigation can resolve it.
 
+A task that appeared routine can cross into a material scientific,
+architecture, security, or migration decision boundary mid-task—for example,
+"refactor VIS" reveals that a formula's semantics would change. Stop, name the
+boundary crossed, and recommend the relevant skill, evidence, or Council
+instead of silently proceeding past it.
+
 ## Task framing
 
 Before writing, establish:
