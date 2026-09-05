@@ -39,6 +39,17 @@ irreparably unsafe/obsolete, or incremental repair retains more accidental
 complexity than it removes. Record material rationale, compatibility duties,
 and rollback/migration implications locally.
 
+When Human intent for a `REBUILD_CLEAN` or `HYBRID_REBUILD` is "best current"
+(modernize onto the strongest available foundation, not merely repair), the
+following become conditional expectations rather than a separate mode: a
+targeted internal-evolution search across predecessor material, professional-
+reference intelligence, invoking `project-architecture` before material
+structural creation or change, and establishing data ownership/migration
+design before material data mutation. Use `project-architecture`'s
+early-clean-home threshold to time the new repository rather than waiting for
+every intelligence track to finish. Do not force these tracks for a plain
+`REPAIR_IN_PLACE`.
+
 ## Select only relevant intelligence tracks
 
 Tracks may be read-only and parallel only if independently justified. They
@@ -66,7 +77,10 @@ reference can be:
 `LEARN_ONLY` · `BORROW_PATTERN` · `ADOPT_COMPONENT` · `MAJOR_ADOPTION` ·
 `USE_AS_BASE` · `REJECT`
 
-Major adoption and use-as-base are allowed when justified. Before acquiring a
+Major adoption and use-as-base are allowed when justified; when either is a
+realistic candidate, make that reference decision before committing heavily
+to a custom architecture (see `project-architecture`'s reference-timing rule).
+Before acquiring a
 base or major component, assess license, maintenance/activity, architecture,
 tests, security, dependency/runtime burden, data assumptions, extension
 points, goal mismatch, and adaptation versus rebuild cost. Do not permanently
@@ -87,6 +101,11 @@ inventory/schema, grain, keys/linkage, labels/targets, semantic meaning,
 temporal availability, quality/missingness, leakage, privacy/fairness, and
 resource opportunity. Escalate to row-level investigation only when aggregate
 evidence cannot resolve a concrete decision. Keep sensitive records local.
+
+Decide canonical data ownership/target layout and its manifest/config/path
+contract early and cheaply; do not physically move large datasets merely for
+cleanliness — move only once a concrete trigger exists and migration impact
+is understood (see `project-architecture`'s data-architecture section).
 
 ### Data-source discovery / acquisition
 
@@ -113,7 +132,9 @@ it has durable decision value. It should state, as applicable:
 REMOVE · DATA PLAN · OPEN RISKS · BLOCKERS · NEXT 1–3 DECISIONS · NEXT BOUNDED
 SPRINT`
 
-Do not create numbered intelligence folders or empty artifacts. Project truth
+Invoke `project-architecture` before material structural creation or change,
+rather than deriving architecture inline here. Do not create numbered
+intelligence folders or empty artifacts. Project truth
 remains in `AGENTS.md`, `PROJECT_STATE.md`, direction/briefs when needed, and
 relevant locks/contracts. A permanent giant `PROJECT_BLUEPRINT.md` is not the
 default. Use an explicit, scope-bound Blueprint/freeze only when locking is

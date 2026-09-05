@@ -17,6 +17,15 @@ questions, ordinary file edits, decisions already locked, or any task where a
 second opinion cannot change the outcome. State that the council is
 unnecessary and proceed directly for those cases.
 
+A task that starts routine can cross into a consequential decision boundary
+mid-task (for example, a routine refactor reveals that a scientific formula's
+semantics would materially change). When that happens, stop, name the
+boundary crossed, and recommend Council or the relevant skill/evidence rather
+than silently continuing — this is `RECOMMEND_COUNCIL_AND_STOP`, the default.
+Self-convening Council automatically (`AUTO_USE_COUNCIL`) is not a global
+default; it requires explicit, project-local Human authority recorded in that
+project's `AGENTS.md`.
+
 Council delegates are advisory and read-only by default: give them only the
 minimum context needed, do not ask them to modify files, and keep outputs
 bounded. Use the default three-member triad; enlarge the panel only when the
