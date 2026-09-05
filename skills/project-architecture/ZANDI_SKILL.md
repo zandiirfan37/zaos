@@ -21,4 +21,10 @@
 - **Known limitations:** does not itself decide recovery/build mode (owned by
   `project-refoundation`); does not run Council; does not create a lineage
   framework beyond a status note in `PROJECT_STATE.md`.
-- **Change history:** v0.1 created 2026-09-05 as DRAFT.
+- **Change history:** v0.1 created 2026-09-05 as DRAFT. v0.2 (2026-09-05): added the
+  "Freeze / evidence-promotion pattern" section, a recognizable
+  workbench→evidence→decision-gate→frozen-contract shape independently
+  observed across unrelated Zandi projects (Paper_Q1's Stage-numbered
+  freezes, GradTime's EXPLORE→CONVERGE→DECISION GATE→LOCK loop),
+  documented as a pattern to recognize and offer, not a mandatory template.
+  Status unchanged (DRAFT).

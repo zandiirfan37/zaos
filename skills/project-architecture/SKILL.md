@@ -106,6 +106,31 @@ canonical APIs, standard or tool-required files (`pyproject.toml`,
 represent navigation/research order, not a claim of strict causal or
 execution order.
 
+## Freeze / evidence-promotion pattern
+
+When a research project starts producing exploratory work, evidence, and
+consequential scientific decisions, a recognizable separation recurs across
+unrelated Zandi projects independently:
+
+```
+WORKBENCH / EXPLORATION
+→ EVIDENCE
+→ DECISION GATE
+→ FROZEN/CANONICAL CONTRACT (+ provenance/hash)
+→ HARDEN / RELEASE / CONTINUE
+```
+
+Exploratory work stays cheap and reversible; only evidence that survives a
+decision gate is promoted; a frozen contract records what was decided, with
+enough provenance (a hash, a pointer, a version) to know exactly what was
+frozen and why. This is a pattern to **recognize and offer** when a
+project's own state shows the need emerging — not a mandatory template, not
+a folder structure to impose in advance, and not a reason to invent stage
+numbering or freeze infrastructure for a small project that has no
+consequential decision to protect yet. Use whatever terminology the project
+already has for these roles rather than renaming an existing convention to
+match this list.
+
 ## Data architecture
 
 Separate three distinct decisions:

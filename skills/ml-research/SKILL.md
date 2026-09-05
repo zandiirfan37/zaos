@@ -86,3 +86,10 @@ complex model without demonstrated incremental benefit.
 A winning experiment is not automatically a production model. Promotion needs
 the intended deployment contract, reproducible evidence, operational fit, and
 an explicit decision owner.
+
+When promotion means picking a winner from many candidates (models,
+hyperparameters, or non-tabular candidates such as a hand-crafted scoring
+formula) using validation data, read
+[candidate selection and stability](references/candidate-selection-and-stability.md)
+for resampling-based stability, practical-tie, and freeze-before-confirmation
+guidance — it applies beyond tabular modelling and is written domain-neutral.
