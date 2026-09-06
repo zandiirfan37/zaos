@@ -5,5 +5,7 @@
 3. Identify the active project.
 4. Read that project's `AGENTS.md`, `PROJECT_STATE.md`, and only the relevant contract or current stage.
 5. Load an on-demand skill only when the task needs it.
+6. For a substantive engineering, data, or ML sprint, read `ENGINEERING_DOCTRINE.md`.
 
-Do not load the full global instruction set for normal work.
+Do not load the full global instruction set for normal work. `.agents/reference/`
+and `.agents/_retired/` are never part of bootstrap; see `CURRENT_STATE.md`.

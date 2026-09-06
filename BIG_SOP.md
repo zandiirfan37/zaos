@@ -47,6 +47,8 @@ Normal loading is intentionally narrow:
 
 Read `CURRENT_STATE.md` only when workspace-level state matters. Do not load every global instruction, unrelated project file, or library item for routine work. Skills are on-demand reusable guidance; deeper reference material stays in `.agents/library/` and is opened only when it informs a live decision.
 
+`ENGINEERING_DOCTRINE.md` is the on-demand deeper layer for engineering, data, and ML work: how to spend context/tokens as finite resources, progressive loading, diff-first review, task-triggered quality gates, and "technical quality is not semantic validity." Load it for a substantive engineering or scientific-modelling sprint, not for routine edits. It is subordinate to this SOP, never a second authority.
+
 ## Verification and escalation
 
 Verification is proportional: a small text edit needs focused inspection; a behavioral change needs relevant tests; high-risk work needs stronger evidence. Never call a result successful solely because a command exited zero—inspect the meaningful result.
@@ -154,9 +156,13 @@ Adopt or create a skill only after repeated evidence that a compact reusable
 guide will save future context or work. A skill may cite library material, but
 the library is reference memory—not mandatory prompt payload.
 
-## ECC position
+## Reference libraries
 
-ECC is a framework/toolkit under `.agents/frameworks/ecc/`, not Zandi's global operating system. It is **light/off** for normal bounded work. Load it on-demand for hard debugging, complex migration, unfamiliar integrations, repeated failures, or high-risk work. Use heavier ECC assurance for release hardening, security/privacy, or major reliability verification. Do not modify ECC upstream without explicit approval.
+`.agents/reference/` holds read-only external material kept for pattern lookup — currently a pinned sparse checkout of ECC (`reference/ecc/`, provenance in `reference/ecc.lock.json`). It is not a framework, not an operating layer, and is never installed, activated, or loaded by default. Consult one named file when a specific pattern would genuinely help a hard problem; cite it as an idea, never as authority.
+
+`.agents/_retired/` holds frameworks Zandi evaluated and stood down (ECC-Zandi profile, ZAINE). They are inert history. Nothing loads them. `CURRENT_STATE.md` records why each was retired and where any still-useful mechanism can be retrieved if a real need appears.
+
+Do not modify vendored upstream in `reference/` without explicit approval.
 
 ## Stop conditions
 
