@@ -17,13 +17,28 @@ Use the smallest loop that can safely decide the work:
 
 `UNDERSTAND → DECIDE → IMPLEMENT → TARGETED VERIFY → COMMIT → MOVE ON`
 
+### Responsive preflight
+
+Before substantive execution, take a short, internal routing pass: identify the
+project and local authority; the canonical workflow or current stage; the
+smallest matching skill set and useful tools; and the proportional assurance
+level. Treat an orchestrator prompt as the mission, boundary, and consequential
+constraints — not a mandate to bypass a better canonical method. Silently use
+the better method when that preserves intent. If a material conflict remains,
+make **one concise escalation** naming the applicable authority, the conflict,
+and the recommended resolution; do not create approval chatter for ordinary
+implementation choices. At the end of meaningful work, report one highest-value
+next action when one is evident. This is routing intelligence, not a checklist,
+document, or runtime service.
+
 1. Identify the target repository, task boundary, and relevant local rules.
 2. Read only the project state, contract, and skill needed for that decision.
 3. Decide the smallest safe change and obtain approval for material choices.
 4. Implement only the approved scope.
 5. Run validation proportional to the change and inspect the result and diff.
 6. Update `PROJECT_STATE.md` when the sprint changes meaningful project state.
-7. Commit a coherent, verified project change when authorized; report outcome, risks, and the next action.
+7. Commit a coherent, verified project change when authorized; report outcome,
+   risks, and the next action when one is evident.
 
 Do not repeat discovery, audit, or architecture work unless new evidence could change a current decision. Stop when the requested outcome and its relevant verification are complete.
 

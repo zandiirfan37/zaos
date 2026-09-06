@@ -151,22 +151,28 @@ material, unresolved blocker prevents safe completion. The Human Lead and
 Orchestrator do not restate standard gates in each prompt; the agent derives
 them from repository governance.
 
-## Fast lane and deep gate
+## Proportional assurance
 
-**Fast lane** is the default for routine bounded work: read current state →
-locate the relevant contract/blueprint phase → identify applicable
-task-triggered gates → implement → test and verify → update current state on
-a meaningful transition → local commit. When the same agent can safely
-diagnose and implement in one bounded sprint, do not split diagnosis and
-implementation into separate stages.
+Choose the lightest assurance level that can support the actual claim; the
+levels are guidance, not ceremony.
 
-**Deep gate** applies only when risk or ambiguity justifies it: a new
-dataset or source; a new target or label; a changed scientific estimand;
-unresolved semantics; opening a sealed test; a production-science gate; a
-privacy or security boundary; a major architecture change; a feature,
-model, or study-design freeze called final; declaring a legacy rebuild's
-experimental scope complete; a release/promotion; or a destructive or
-high-impact change. Deep audits are not the default.
+- **FAST** — routine, reversible, low-risk work: implement and inspect a smoke
+  or directly relevant check, then move on. Do not manufacture state or a broad
+  test run for a tiny change.
+- **STANDARD** — normal serious project work (the default): recover local
+  authority/current state, use the matching workflow, run targeted verification,
+  inspect the meaningful result and diff, then make a clean commit/state update
+  when the work changes durable project state. Safely diagnose and implement in
+  one bounded sprint rather than splitting work into ceremony.
+- **HARDENED** — use stronger, task-specific evidence for a scientific lock or
+  confirmation, security-sensitive work, destructive migration, high-impact
+  architecture, release-critical change, sealed-test boundary, or other
+  consequential ambiguity. Use Council only when independent views could change
+  a material decision.
+
+Do not upgrade work merely because it is difficult, and do not downgrade a
+known high-risk boundary for speed. The task-triggered gates above still define
+what must be checked at each level.
 
 ## Handoff and concurrency
 
