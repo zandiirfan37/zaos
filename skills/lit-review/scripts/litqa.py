@@ -29,6 +29,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 logging.getLogger("pypdf").setLevel(logging.ERROR)
@@ -145,12 +146,15 @@ EXCERPTS:
 """
 
 
-def synth(question: str, hits: list[dict], timeout: int, max_budget: float) -> dict:
+def _prompt(question: str, hits: list[dict]) -> str:
     ex = "\n\n".join(
         f"[E{i+1}] (file: {h['file']}, page {h['page']})\n{h['text'][:1600]}"
         for i, h in enumerate(hits)
     )
-    prompt = SYNTH.format(question=question, excerpts=ex)
+    return SYNTH.format(question=question, excerpts=ex)
+
+
+def synth_claude(prompt: str, timeout: int, max_budget: float) -> dict:
     env = {**os.environ, "CLAUDE_CONFIG_DIR": str(CLAUDE_CONFIG)}
     with tempfile.TemporaryDirectory(prefix="litqa-") as cwd:
         p = subprocess.run(
@@ -163,7 +167,42 @@ def synth(question: str, hits: list[dict], timeout: int, max_budget: float) -> d
         sys.exit(f"[2] claude failed: {(p.stderr or p.stdout)[:500]}")
     d = json.loads(p.stdout)
     return {"text": d.get("result", "") or "", "cost_usd": d.get("total_cost_usd"),
-            "duration_ms": d.get("duration_ms")}
+            "duration_ms": d.get("duration_ms"), "tokens": None,
+            "synthesizer": "claude"}
+
+
+def synth_codex(prompt: str, timeout: int) -> dict:
+    """Run an authenticated Codex CLI synthesis without tool access.
+
+    Codex does not expose a reliable monetary-cost field, so it reports an
+    observed token count when the CLI emits one. This is opt-in because Codex
+    has higher startup overhead than Claude for short, bounded answers.
+    """
+    started = time.monotonic()
+    with tempfile.TemporaryDirectory(prefix="litqa-codex-") as cwd:
+        answer_path = Path(cwd) / "answer.md"
+        p = subprocess.run(
+            ["codex", "exec", "--ephemeral", "--skip-git-repo-check",
+             "--sandbox", "read-only", "-C", cwd,
+             "--output-last-message", str(answer_path), prompt],
+            capture_output=True, text=True, timeout=timeout, cwd=cwd,
+        )
+        if p.returncode != 0 or not answer_path.is_file():
+            sys.exit(f"[2] codex failed: {(p.stderr or p.stdout)[:500]}")
+        text = answer_path.read_text(errors="replace")
+    token_match = re.search(r"tokens used\s*\n\s*([\d,]+)", p.stderr + "\n" + p.stdout)
+    return {"text": text, "cost_usd": None,
+            "duration_ms": round((time.monotonic() - started) * 1000),
+            "tokens": int(token_match.group(1).replace(",", "")) if token_match else None,
+            "synthesizer": "codex"}
+
+
+def synth(question: str, hits: list[dict], timeout: int, max_budget: float,
+          synthesizer: str) -> dict:
+    prompt = _prompt(question, hits)
+    if synthesizer == "claude":
+        return synth_claude(prompt, timeout, max_budget)
+    return synth_codex(prompt, timeout)
 
 
 def ground_check(answer: str, hits: list[dict]) -> tuple[bool, list[str]]:
@@ -184,6 +223,8 @@ def main() -> int:
     a.add_argument("--out", help="write the markdown answer here")
     a.add_argument("--timeout", type=int, default=180)
     a.add_argument("--max-budget", type=float, default=0.40)
+    a.add_argument("--synthesizer", choices=("claude", "codex"), default="claude",
+                   help="Claude is the lightweight default; Codex is an opt-in portability fallback.")
     i = sub.add_parser("index"); i.add_argument("corpus")
     args = ap.parse_args()
 
@@ -207,7 +248,7 @@ def main() -> int:
                           "grounding_problems": ["no chunk matched the question"],
                           "cost_usd": 0.0, "duration_ms": 0, "out": args.out}, indent=2))
         return 1
-    s = synth(args.question, hits, args.timeout, args.max_budget)
+    s = synth(args.question, hits, args.timeout, args.max_budget, args.synthesizer)
     answer = s["text"].strip()
     insufficient = answer.startswith("INSUFFICIENT_CORPUS")
     grounded, problems = (False, ["insufficient"]) if insufficient else ground_check(answer, hits)
@@ -228,6 +269,7 @@ def main() -> int:
         "status": "INSUFFICIENT_CORPUS" if insufficient else ("GROUNDED" if grounded else "UNGROUNDED_CITATION"),
         "grounding_problems": problems,
         "cost_usd": s["cost_usd"], "duration_ms": s["duration_ms"],
+        "tokens": s["tokens"], "synthesizer": s["synthesizer"],
         "out": args.out,
     }
     print(json.dumps(report, indent=2))
