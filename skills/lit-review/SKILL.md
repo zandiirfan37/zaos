@@ -35,7 +35,8 @@ Exit `0` = grounded answer. `1` = INSUFFICIENT_CORPUS or ungrounded citation.
   text just as happily as good text.
 - The corpus lives in the **owning project**, gitignored:
   `projects/<p>/research/literature/corpus/`. It is not a global store and not
-  shared between projects.
+  shared between projects. Full layout, provenance ledger, and the paper-q1 pilot
+  checklist: `references/corpus-setup.md`.
 - Copyright: only put files you are licensed to hold (open-access, your own, or
   institutionally licensed). Do not have the agent bulk-download paywalled PDFs.
 
