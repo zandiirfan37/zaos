@@ -10,6 +10,7 @@ not folders.
 | Ask the Council | REASONING | TESTED | Bounded multi-perspective deliberation for consequential decisions. |
 | ML Research | DOMAIN | TESTED | Scientifically rigorous tabular predictive modelling guidance. |
 | Browser QA | WORKFLOW | TESTED | Verify an already-running local web UI: screenshots, responsive/visual checks, console errors, route/form smoke. Canonical owner of browser automation. |
+| Lit Review | WORKFLOW | TESTED | Citation-grounded Q&A over a curated local paper/note corpus (TF-IDF retrieval + `claude` CLI synthesis, no API key). Lightweight tier below PaperQA2. |
 | Project Re-foundation | WORKFLOW | DRAFT | Branchable, evidence-led recovery or re-foundation workflow. |
 | Project Architecture | WORKFLOW | DRAFT | Narrow, reusable derivation of minimum project architecture, early-clean-home timing, and numbering convention. |
 | Medical Imaging Research | DOMAIN | DRAFT | Reusable medical-imaging research decisions: data semantics, preprocessing, evaluation, validation, reconstruction/segmentation fairness. |
@@ -111,6 +112,15 @@ needs resolved, not by which skills mention the same word.
   Reach for it when: a web app, dashboard, or presentation needs to be checked
   in a real browser, or the engineering doctrine's browser-smoke evidence is due.
   Not for: scraping, external sites, load testing, pixel-diffing.
+
+- **Lit Review**
+  Owns: citation-grounded answers over a curated local corpus — retrieve, cite
+  every claim to an excerpt, refuse (`INSUFFICIENT_CORPUS`) when the corpus does
+  not support an answer, and keep outputs as project-local evidence.
+  Reach for it when: a project needs "what does prior work / our own frozen
+  material say about X" with traceable references.
+  Not for: open web research, a cross-project knowledge store, or anything that
+  would enter a manuscript or contract without human citation-checking.
 
 ### Direct routing cue: candidate/model-selection stability
 
