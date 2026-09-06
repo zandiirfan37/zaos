@@ -8,7 +8,7 @@ one canonical doctrine: [`../instructions/BIG_SOP.md`](../instructions/BIG_SOP.m
 
 ## Routing model
 
-`ENGINE BOOTSTRAP → minimal engine adapter → BIG_SOP when substantive →
+`ENGINE BOOTSTRAP → minimal engine adapter → BIG_SOP + responsive preflight when substantive →
 CURRENT_STATE when relevant → project-local authority/state/contracts →
 relevant skill only → current task`
 

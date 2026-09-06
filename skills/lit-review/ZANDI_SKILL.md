@@ -3,7 +3,9 @@
 - **Name:** lit-review
 - **Category:** WORKFLOW (tool wrapper)
 - **Owner:** Zandi (native)
-- **Status:** TESTED (mechanism); TRUSTED requires a real project pilot
+- **Status:** PATCH / NOT YET TRUSTED — the Paper_Q1 real-corpus pilot validated
+  corpus/retrieval mechanics but could not complete grounded synthesis with the
+  available authenticated engines; see the project evidence before promotion.
 - **Created:** 2026-09-06 (capability-expansion wave 2, Track A)
 - **Capability:** citation-grounded Q&A over a curated local corpus of papers/notes.
 - **Why native, not PaperQA2:** PaperQA2 requires an LLM endpoint via litellm — a

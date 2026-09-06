@@ -10,7 +10,10 @@ not folders.
 | Ask the Council | REASONING | TESTED | Bounded multi-perspective deliberation for consequential decisions. |
 | ML Research | DOMAIN | TESTED | Scientifically rigorous tabular predictive modelling guidance. |
 | Browser QA | WORKFLOW | TESTED | Verify an already-running local web UI: screenshots, responsive/visual checks, console errors, route/form smoke. Canonical owner of browser automation. |
-| Lit Review | WORKFLOW | TESTED | Citation-grounded Q&A over a curated local paper/note corpus (TF-IDF retrieval + `claude` CLI synthesis, no API key). Lightweight tier below PaperQA2. |
+| Lit Review | WORKFLOW | PATCH | Citation-grounded Q&A over a curated local paper/note corpus. Real Paper_Q1 use exposed an unavailable synthesizer; not trusted. |
+| Systematic Debugging | WORKFLOW | TESTED | Root-cause-first diagnosis for bugs, test failures, and unexpected behavior. |
+| Scope Discipline | ASSURANCE | TESTED | Scoped anti-overengineering check for abstraction, dependency, and refactor expansion. |
+| Code Review | ASSURANCE | TESTED | Diff-based implementation review for material changes; does not replace targeted tests. |
 | Project Re-foundation | WORKFLOW | DRAFT | Branchable, evidence-led recovery or re-foundation workflow. |
 | Project Architecture | WORKFLOW | DRAFT | Narrow, reusable derivation of minimum project architecture, early-clean-home timing, and numbering convention. |
 | Medical Imaging Research | DOMAIN | DRAFT | Reusable medical-imaging research decisions: data semantics, preprocessing, evaluation, validation, reconstruction/segmentation fairness. |
@@ -29,7 +32,7 @@ should reduce future context or work, not add bureaucracy.
 Lifecycle: `DRAFT → TESTED → TRUSTED → STABLE`.
 
 - `DRAFT → TESTED`:
-  - **Reasoning/domain skills** (guidance the agent applies) need an evidence-backed
+  - **Reasoning/domain or consequential-assurance skills** need an evidence-backed
     eval pass: a `<skill>/eval/cases.toml` with ≥3 behavioural cases (≥1 regression
     tripwire) and a green
     `uv run --no-project python .agents/eval/zaos_eval.py run <skill>` recorded in
@@ -38,11 +41,28 @@ Lifecycle: `DRAFT → TESTED → TRUSTED → STABLE`.
     reproducible script tests — pass path, assertion-failure path, negative/error
     path — plus one real-target demo, all recorded in `ZANDI_SKILL.md` with the
     evidence dir. Do not force behavioural eval cases onto a tool wrapper.
+  - **Low-risk procedural/behavioral skills** may use fast intake: source/provenance
+    and overlap review, `quick_validate.py`, and one or a few representative smoke
+    scenarios. They must be narrow, reversible, secret-free, and unable to make a
+    scientific, security, destructive, or external-write decision by themselves.
+    Record the checks in `ZANDI_SKILL.md`.
 - `TESTED → TRUSTED` still requires real-project use — the eval does not replace it.
 - Any skill revision re-runs its cases; a drop in pass count or `--ab` skill lift
   blocks the change until explained.
 - Eval evidence lives in `.runtime/eval/` (disposable); it is never canonical
   project truth.
+
+### Fast intake
+
+Use this only for low-risk procedural capability, not a competing scientific
+method, stateful integration, secret-bearing tool, or high-permission workflow:
+
+`DISCOVER → inspect source → overlap/owner check → adapt only the useful decision surface → pin provenance → static + representative smoke → add → move on`
+
+Do not clone a framework or import its runtime assumptions. A fast-intake skill
+stays `TESTED`, not `TRUSTED`, until real-project use supports it. If it later
+widens scope or owns a consequential decision, apply the full lifecycle from
+that revision onward.
 
 ## Proactive routing
 
@@ -121,6 +141,26 @@ needs resolved, not by which skills mention the same word.
   material say about X" with traceable references.
   Not for: open web research, a cross-project knowledge store, or anything that
   would enter a manuscript or contract without human citation-checking.
+
+- **Systematic Debugging**
+  Owns: evidence-led root-cause diagnosis of a bug, failing test, build failure,
+  unexpected runtime behavior, or unexplained performance regression.
+  Reach for it when: the cause is not already directly demonstrated. It prevents
+  speculative patch loops; it is not needed for a known trivial edit.
+
+- **Scope Discipline**
+  Owns: whether a proposed abstraction, dependency, service, rewrite, or broad
+  refactor is justified by the task's concrete need.
+  Reach for it when: implementation starts expanding beyond the stated outcome,
+  especially around architecture, dependencies, or "cleanup". It does not veto
+  necessary complexity backed by current evidence.
+
+- **Code Review**
+  Owns: a targeted review of a material diff against its requirements, likely
+  regressions, and adequate verification.
+  Reach for it when: a material feature, risky refactor, security-sensitive
+  change, or explicit review needs an independent diff pass. It does not replace
+  tests and is not mandatory for routine text or tiny isolated changes.
 
 ### Direct routing cue: candidate/model-selection stability
 

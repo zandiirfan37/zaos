@@ -85,11 +85,15 @@ skill-file bytes), so reruns are free and reproducible until an input changes;
 
 ## Lifecycle hook
 
-`DRAFT → TESTED`: a skill needs a `cases.toml` with ≥3 behavioural cases (≥1
-tripwire), a green `run --model sonnet` (floor), and — for regression cover — a
-`run --model haiku --ab` where the real skill beats the weakened/absent variant
-on ≥1 case. Record the evidence dir + pass count + new spend in `ZANDI_SKILL.md`.
-`TESTED → TRUSTED`: still requires real-project use — eval does not replace it.
+`DRAFT → TESTED`: reasoning/domain and consequential-assurance skills need a
+`cases.toml` with ≥3 behavioural cases (≥1 tripwire), a green `run --model
+sonnet` (floor), and — for regression cover — a `run --model haiku --ab` where
+the real skill beats the weakened/absent variant on ≥1 case. Low-risk,
+procedural fast-intake skills instead use source/overlap review, static
+validation, and representative smoke scenarios recorded in `ZANDI_SKILL.md`.
+They must not own scientific, security, destructive, external-write, or
+stateful-integration decisions. `TESTED → TRUSTED` still requires real-project
+use; evaluation does not replace it.
 Any skill revision re-runs its cases (`--model haiku` for a real diff signal); a
 drop in pass count or skill lift blocks the change until explained.
 
