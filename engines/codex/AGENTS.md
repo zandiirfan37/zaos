@@ -8,5 +8,6 @@ The nearest project `AGENTS.md` owns local rules; then load only its relevant
 state/contracts and the matching canonical skill at
 `/home/pc_pusaka/zandi/.agents/skills/<skill>/SKILL.md`.
 
-Do not load unrelated skills, Council, ECC, archives, or library material by
-default. This is routing only; it does not copy the doctrine.
+Do not load unrelated skills, Council, `.agents/reference/`, `.agents/_retired/`,
+archives, or library material by default. This is routing only; it does not copy
+the doctrine.

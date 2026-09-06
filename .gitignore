@@ -1,5 +1,8 @@
 # Independent repositories retained outside this Zandi-owned agent-assets repository.
 instructions/
-frameworks/ecc/upstream/
-frameworks/ecc/zandi-profile/
-frameworks/zaine/
+
+# Vendored read-only reference checkouts (own upstream remotes).
+reference/ecc/
+
+# Retired frameworks — inert, keep their own Git history, never tracked here.
+_retired/
