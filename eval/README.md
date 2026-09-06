@@ -93,6 +93,13 @@ on ≥1 case. Record the evidence dir + pass count + new spend in `ZANDI_SKILL.m
 Any skill revision re-runs its cases (`--model haiku` for a real diff signal); a
 drop in pass count or skill lift blocks the change until explained.
 
+## Benchmark contracts
+
+`benchmarks/` holds contracts for capability bake-offs that are larger than a
+skill's `cases.toml` — how to compare candidate *tools* against the ZAOS baseline
+(tasks, ground-truth keys, metrics, decision rule). `benchmarks/code-intel.md` is
+the first: baseline vs jedi / ast-grep / Serena for code navigation.
+
 ## Removability
 
 Delete `.agents/eval/` and every `skills/*/eval/` directory. Nothing else in ZAOS
