@@ -14,6 +14,12 @@ not folders.
 | Systematic Debugging | WORKFLOW | TESTED | Root-cause-first diagnosis for bugs, test failures, and unexpected behavior. |
 | Scope Discipline | ASSURANCE | TESTED | Scoped anti-overengineering check for abstraction, dependency, and refactor expansion. |
 | Code Review | ASSURANCE | TESTED | Diff-based implementation review for material changes; does not replace targeted tests. |
+| Requirements Framing | WORKFLOW | TESTED | Minimal outcome, constraints, non-goals, and acceptance evidence for an underspecified substantive request. |
+| Implementation Planning | WORKFLOW | TESTED | Short dependency-ordered execution plan for an accepted multi-step change. |
+| Testing Strategy | ASSURANCE | TESTED | Smallest meaningful tests and runtime checks that prove a changed claim. |
+| Technical Documentation | WORKFLOW | TESTED | Reader-actionable guides, runbooks, decision records, and technical explanations grounded in current project truth. |
+| Frontend Performance | WORKFLOW | TESTED | React/Next.js async, bundle, rendering, and rerender performance guidance. |
+| Scientific Writing | WORKFLOW | TESTED | Evidence-bounded drafting for manuscript claims, methods, results, and limitations. |
 | Project Re-foundation | WORKFLOW | DRAFT | Branchable, evidence-led recovery or re-foundation workflow. |
 | Project Architecture | WORKFLOW | DRAFT | Narrow, reusable derivation of minimum project architecture, early-clean-home timing, and numbering convention. |
 | Medical Imaging Research | DOMAIN | DRAFT | Reusable medical-imaging research decisions: data semantics, preprocessing, evaluation, validation, reconstruction/segmentation fairness. |
@@ -161,6 +167,47 @@ needs resolved, not by which skills mention the same word.
   Reach for it when: a material feature, risky refactor, security-sensitive
   change, or explicit review needs an independent diff pass. It does not replace
   tests and is not mandatory for routine text or tiny isolated changes.
+
+- **Requirements Framing**
+  Owns: the minimal requested outcome, acceptance evidence, material
+  constraints, and non-goals when those are not yet clear.
+  Reach for it when: an otherwise substantive request is too ambiguous to plan
+  or implement safely. It does not create a PRD ceremony or own project-local
+  product/scientific decisions.
+
+- **Implementation Planning**
+  Owns: dependency-aware sequencing and completion evidence for an accepted
+  multi-step change.
+  Reach for it when: order, handoff, or multiple affected boundaries materially
+  affect execution. It is unnecessary for a routine isolated edit and does not
+  own requirements or architecture.
+
+- **Testing Strategy**
+  Owns: selecting the lightest check that can falsify a changed implementation
+  claim and its important regression boundary.
+  Reach for it when: a task needs verification design beyond an obvious local
+  check. It does not execute a suite, replace project test contracts, or lower
+  HARDENED assurance for release/security/scientific work.
+
+- **Technical Documentation**
+  Owns: making a guide, runbook, decision record, or technical explanation
+  usable by its intended reader from current project truth.
+  Reach for it when: documentation must support an operational, reproduction,
+  or decision task. It does not own product requirements or scientific claims.
+
+- **Frontend Performance**
+  Owns: React/Next.js user-facing latency and resource cost in async/data flow,
+  bundle payload, rerenders, and rendering.
+  Reach for it when: frontend performance is measured, user-visible, or under
+  review. Pair it with UI/UX Pro Max only if visual/interaction design changes
+  too; that skill remains the accessibility/design owner.
+
+- **Scientific Writing**
+  Owns: expressing claims, methods, results, citations, and limitations without
+  exceeding the responsible project's evidence.
+  Reach for it when: writing or materially revising a paper, abstract, methods,
+  results, or discussion section. It cannot establish scientific truth or
+  replace project-local methods/results/literature authority.
 
 ### Direct routing cue: candidate/model-selection stability
 
