@@ -26,6 +26,17 @@ should reduce future context or work, not add bureaucracy.
 
 Lifecycle: `DRAFT → TESTED → TRUSTED → STABLE`.
 
+- `DRAFT → TESTED` needs an evidence-backed eval pass: a `<skill>/eval/cases.toml`
+  with ≥3 behavioural cases (≥1 regression tripwire) and a green
+  `uv run --no-project python .agents/eval/zaos_eval.py run <skill>` recorded in
+  the skill's `ZANDI_SKILL.md` (evidence path + pass count + approx cost). See
+  `.agents/eval/README.md`.
+- `TESTED → TRUSTED` still requires real-project use — the eval does not replace it.
+- Any skill revision re-runs its cases; a drop in pass count or `--ab` skill lift
+  blocks the change until explained.
+- Eval evidence lives in `.runtime/eval/` (disposable); it is never canonical
+  project truth.
+
 ## Proactive routing
 
 Reach for a skill without being explicitly asked when the task itself is

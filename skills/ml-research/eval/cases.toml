@@ -1,0 +1,138 @@
+schema_version = "1"
+skill = "ml-research"
+
+# Behavioural cases exercise the skill's method on realistic, self-contained scenarios.
+#   assert_all  : every regex must match (case-insensitive, multiline, dotall)
+#   assert_any  : at least one must match
+#   assert_none : regression tripwires — none may match
+# Run with --ab to also measure skill lift (passes with skill, fails without).
+# A case with no tripwire and no plausible failure mode is theatre — don't add it.
+
+# --- documented tested scenario B: deployment-aligned validation ---
+[[case]]
+id = "B-future-cohort-temporal-validation"
+kind = "behavioural"
+prompt = """
+We will train a model on completed historical yearly cohorts and use it to score
+people in future, not-yet-complete cohorts. Give the validation design in a few
+sentences. State explicitly whether a random train/test split is appropriate
+here, and justify the answer.
+"""
+assert_all = [
+  "temporal|chronological|time[- ]based|forward[- ]chain|expanding|rolling|out[- ]of[- ]time|cohort[- ]forward|by cohort|group(ed)? (split|by)",
+]
+assert_any = [
+  "random (train/test )?split.{0,140}(is )?(not |never )?(appropriate|inappropriate|unsafe|misleading|optimistic|drift[- ]blind|overstat|inflat|leak|wrong|the wrong|a different|easier)",
+  "\\bno\\b.{0,40}random (train/test )?split",
+  "(do not|don'?t|avoid|never)\\s+(use\\s+)?(a\\s+)?random split",
+  "random split.{0,140}(interpolation|memoris|memoriz|same (student|person|entity|subject) in (both )?train)",
+]
+assert_none = [
+  "random split(ting)?\\s+(is\\s+)?(fine|appropriate|acceptable|recommended|the primary approach|sufficient|okay|the standard choice)(?!.{0,80}(not|only as|diagnostic))",
+]
+
+# --- documented tested scenario A: IID problem still needs discipline ---
+[[case]]
+id = "A-iid-scoring-stratified-plus-guards"
+kind = "behavioural"
+prompt = """
+IID tabular binary classification. Each entity is scored once from features
+available at decision time. No repeated entities, no known time drift. Give a
+compact plan: validation choice, leakage controls, baselines, and test-set policy.
+"""
+assert_all = [
+  "stratif|repeated (k-?fold|cross)|cross[- ]validation|k-?fold",
+  "leak",
+  "baseline",
+  "(hold[- ]?out|hold out|reserve|set aside|final unbiased).{0,45}test|test set.{0,45}(untouched|once|at the start|reserved|held out)|final (unbiased )?(test|estimate)|sealed",
+]
+assert_any = [
+  "split (before|first|prior to)|(fold )?boundary before|before any (learned |fitted )?(preprocessing|encoding|imputation|feature selection|tuning|transform|step)",
+  "fold[- ]local|inside (the |a )?pipeline|fit .{0,30}on (the )?train(ing)? (fold|partition|split|data) only|nested",
+]
+
+# --- documented tested scenario C: challenge an unsafe request ---
+[[case]]
+id = "C-unsafe-request-is-challenged"
+kind = "behavioural"
+prompt = """
+A stakeholder says: "Just train XGBoost on all the columns we have and report
+accuracy. Don't overthink it." Respond.
+"""
+assert_all = [
+  "leak",
+  "baseline|trivial model|base rate",
+  "prediction (contract|unit|time)|target|estimand|what .{0,20}predict|available at (the )?(decision|prediction) time",
+]
+assert_any = [
+  "accuracy (is|can be|alone) (misleading|insufficient|not enough|a poor)|class imbalance|decision[- ]aligned|AUC|PR[- ]AUC|calibrat|recall|precision|F1|cost of (a )?(false|error)",
+]
+assert_none = [
+  "^(sure|okay|ok|got it|yes)[,.! ].{0,140}(just )?(train|run) xgboost on all",
+  "that('| i)s (a )?(fine|reasonable|solid|good) (plan|approach|start)(?!.{0,90}(but|however|caveat|first|though|with))",
+]
+
+# --- leakage audit: obvious post-outcome features must be rejected ---
+[[case]]
+id = "leakage-post-outcome-feature-rejected"
+kind = "behavioural"
+prompt = """
+Feature review for a monthly churn model (predict at month start whether a
+customer churns during that month). Two proposed features:
+`days_since_account_closed` and `amount_of_final_invoice`. Assess them.
+"""
+assert_all = [
+  "post[- ]outcome|leak|after the (outcome|event|churn|cancellation)|not (available|known|observable) at (the )?prediction time|future information|only exist(s)? (once|after)",
+]
+assert_any = [
+  "(reject|remove|exclude|drop|do not use|disallow|must not|cannot be used)",
+]
+
+# --- harder: the naive answer ("close enough") is wrong; skill's method should catch it ---
+[[case]]
+id = "practical-tie-freeze-before-confirmation"
+kind = "behavioural"
+prompt = """
+We compared 9 candidate models on the same validation set. Model 7 has the best
+validation score (0.842); models 3 and 5 are at 0.839 and 0.838. The team wants
+to pick model 7 and immediately run it on the sealed test set to confirm. Is that
+the right move? What should we do first?
+"""
+assert_all = [
+  "(bootstrap|resampl|repeated (split|fold)|perturb|seed).{0,120}(stab|rank|winner|selection|which model)|selection stability|practical(ly)? tie|within (noise|the margin|error)|not (statistically |materially )?(distinguishable|separable)|overlap",
+]
+assert_any = [
+  "freeze .{0,40}(before|prior to)|decide .{0,30}before .{0,20}(touch|open|unseal)|pre[- ]?register|commit to (the |a )?(choice|winner|decision rule) before",
+  "do not (yet |immediately )?(open|touch|use|run on) the (sealed |held[- ]out )?test",
+  "the (0\\.84|three|top).{0,40}(tie|indistinguishable|within noise|too close)",
+]
+assert_none = [
+  "^(yes|sure|correct|that('| i)s right)[,. ].{0,120}(pick|choose|go with) model 7.{0,60}(run|confirm) .{0,20}test",
+]
+
+# --- static shape: fast, free; catches a bloated or malformed SKILL.md ---
+[[case]]
+id = "static-skill-shape"
+kind = "static"
+max_lines = 110
+assert_all = [
+  "prediction contract",
+  "leakage",
+  "EXPERIMENT\\s*(→|->)\\s*EVIDENCE\\s*(→|->)\\s*DECISION\\s*(→|->)\\s*PROMOTION",
+]
+
+# --- activation: does routing reach ml-research from a raw question? ---
+[[case]]
+id = "activation-routing-to-ml-research"
+kind = "activation"
+prompt = """
+We have a tabular dataset of loan applicants and want to predict default within
+24 months to support an approval decision. How should we set up the study so the
+evaluation is trustworthy?
+"""
+assert_all = [
+  "ml[- ]research",
+]
+assert_any = [
+  "prediction contract|leakage|deployment[- ]aligned|split boundary|validation from|time[- ]based split|grouping",
+]
