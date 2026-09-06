@@ -31,7 +31,14 @@ implementation choices. At the end of meaningful work, report one highest-value
 next action when one is evident. This is routing intelligence, not a checklist,
 document, or runtime service.
 
-1. Identify the target repository, task boundary, and relevant local rules.
+When no project or repository exists, treat the request as an ad-hoc task
+context: route by task family (for example research, creative work, critique,
+or decision support), use external evidence when its freshness or provenance
+matters, and do not invent project-local authority. Project authority resumes
+as soon as the user places work in a project.
+
+1. Identify the target project/repository or ad-hoc task context, boundary, and
+   relevant local rules.
 2. Read only the project state, contract, and skill needed for that decision.
 3. Decide the smallest safe change and obtain approval for material choices.
 4. Implement only the approved scope.
