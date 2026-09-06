@@ -16,6 +16,11 @@ thin native routers: Codex at `.runtime/engines/codex/AGENTS.md`; Claude at
 `CODEX_HOME=/home/pc_pusaka/zandi/.runtime/engines/codex`.
 `CLAUDE_CONFIG_DIR=/home/pc_pusaka/zandi/.runtime/engines/claude`.
 
+Responsive Preflight is prior-art-first for nontrivial new builds, major
+rebuilds, and re-foundations: when external references or data could change the
+direction, route through Project Intelligence / project-refoundation before
+material greenfield implementation. This is proportional, not a universal gate.
+
 ## Component status
 
 | Area | Status | Owner / notes |

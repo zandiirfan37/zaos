@@ -37,6 +37,15 @@ or decision support), use external evidence when its freshness or provenance
 matters, and do not invent project-local authority. Project authority resumes
 as soon as the user places work in a project.
 
+For a nontrivial new project, major rebuild, or re-foundation, first ask whether
+external implementations, mature libraries, datasets, models, benchmarks, or
+professional workflows are likely to change the build direction. If so, route
+through the smallest relevant Project Intelligence / project-refoundation
+reference and data-source tracks before greenfield structure or implementation.
+Skip that pass only when the work is trivial or disposable, prior art has
+negligible expected value, or the Human Lead meaningfully requires a
+from-scratch path. This is a prior-art-first default, not a research ceremony.
+
 1. Identify the target project/repository or ad-hoc task context, boundary, and
    relevant local rules.
 2. Read only the project state, contract, and skill needed for that decision.

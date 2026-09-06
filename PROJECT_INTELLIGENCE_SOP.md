@@ -42,6 +42,26 @@ Stop investigating when additional evidence is unlikely to change the next
 decision. Prefer sufficient evidence, a recorded decision, and a bounded
 sprint over repeated audit.
 
+## Prior-art-first trigger
+
+For a nontrivial new build, major rebuild, or re-foundation, assess early
+whether external repositories, reference implementations, mature libraries,
+models, datasets, benchmarks, or established workflows are likely to change
+the build mode, architecture, or resource plan. When likely, select the
+smallest relevant professional-reference and/or data-source discovery tracks
+before material greenfield implementation. Do not infer suitability from stars
+or search rank alone.
+
+Discovery, cataloging, comparison, and deeper inspection are proportional:
+capture only candidates that could change a decision, then assess the applicable
+dimensions — goal fit, architecture, organization, maintenance/activity,
+license and usage limits (including model weights and data), dependencies and
+runtime, data availability, documentation/tests, security, extensibility,
+deployment, performance, and adaptation burden. Assign the canonical
+reference disposition and converge on a build direction. Skip the pass for a
+trivial/disposable task, negligible expected value, or a meaningful Human Lead
+from-scratch constraint.
+
 ## Decisions and exceptional gates
 
 The recovery/build mode and any material adoption, rebuild, data, architecture,
