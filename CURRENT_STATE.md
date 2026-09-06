@@ -22,7 +22,8 @@ thin native routers: Codex at `.runtime/engines/codex/AGENTS.md`; Claude at
 | --- | --- | --- |
 | `.agents/instructions/` | LIVE | Canonical doctrine. `BIG_SOP` + `ENGINEERING_DOCTRINE` + `PROJECT_INTELLIGENCE_SOP` + `LEGACY_MIGRATION_POLICY` + `FRAMEWORK_IMPROVEMENT_LOOP` + `START_HERE`. Own Git repo (see "Repository layout"). |
 | `.agents/engines/` | LIVE | Thin Claude + Codex adapters. Route only; never duplicate doctrine. |
-| `.agents/skills/` | LIVE | Sole shared-skill root. On-demand only. TESTED: `ui-ux-pro-max` (DOMAIN), `ask-the-council` (REASONING), `ml-research` (DOMAIN). DRAFT: `project-refoundation`, `project-architecture`, `medical-imaging-research`. Skill files follow the Agent Skills shape (`SKILL.md` + `references/`); `ZANDI_SKILL.md` records provenance. |
+| `.agents/skills/` | LIVE | Sole shared-skill root. On-demand only. TESTED: `ui-ux-pro-max` (DOMAIN), `ask-the-council` (REASONING), `ml-research` (DOMAIN), `browser-qa` (WORKFLOW). DRAFT: `project-refoundation`, `project-architecture`, `medical-imaging-research`. Skill files follow the Agent Skills shape (`SKILL.md` + `references/`); `ZANDI_SKILL.md` records provenance. |
+| `.agents/eval/` | LIVE | ZAOS-native evaluation harness (`zaos_eval.py`, stdlib). On-demand only; drives the `claude`/`codex` CLIs. Evidence → `.runtime/eval/` (disposable). |
 | `.agents/library/` | LIVE (passive) | Zandi-curated knowledge cards. Never auto-loaded; a skill may cite one. |
 | `.agents/reference/` | REFERENCE | Read-only vendored external material for pattern lookup. `reference/ecc/` = pinned sparse checkout of `affaan-m/ECC` @ `005eff40` (provenance: `reference/ecc.lock.json`). Never installed, activated, or default-loaded. |
 | `.agents/_retired/ecc-zandi-profile/` | RETIRED | Was the "ECC-Zandi Standard-Advanced" profile. Retired 2026-09-06: its engineering doctrine was promoted verbatim to `instructions/ENGINEERING_DOCTRINE.md`; its container had drifted (dangling refs to deleted `ZANDI_MASTER_WORKFLOW.md`). The web-app quality guardrail and depth-by-scale ladder remain in `_retired/ecc-zandi-profile/AGENTS.ecc-standard-advanced.md` pending a reviewed fold into `ENGINEERING_DOCTRINE.md`. |
@@ -42,10 +43,13 @@ prior drift victim) is retired.
 ## Runtime roots
 
 `.runtime/` is derived, disposable, not Git-tracked. `.runtime/uv/` (centralized
-uv Python, tools, cache) and `.runtime/browsers/playwright/` (browser + ffmpeg
-payloads) are cleaned only by their own tool-native commands, never automatically.
-Playwright binaries are present but not wired to any skill; a `browser-automation`
-skill would be added only when a real task needs one.
+uv Python, tools, cache), `.runtime/bin/` (uv-managed CLIs), and
+`.runtime/browsers/playwright/` (chromium build 1234 + ffmpeg, ~656 MB) are
+cleaned only by their own tool-native commands, never automatically.
+
+The Playwright payload is owned by the `browser-qa` skill (chromium build 1234,
+matched to `playwright==1.62.0` which `uv run` resolves on demand — no `node`,
+nothing downloaded). Regenerable if deleted.
 
 ## Project state
 
