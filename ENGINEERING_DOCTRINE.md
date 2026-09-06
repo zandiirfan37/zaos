@@ -235,6 +235,23 @@ CLI proxy, was evaluated 2026-09-06 and rejected: net-neutral on this command
 mix, lossy on debugging output, and it scatters state in `$HOME`. Evidence:
 `.runtime/eval/rtk/`.)
 
+## Code navigation
+
+`Read` + `Grep` + `Glob` is the sufficient, canonical way to navigate a project.
+A code-intelligence tournament (2026-09-07, `.agents/eval/benchmarks/code-intel.md`)
+ran jedi and ast-grep against this baseline across eight navigation task classes
+and found **8/8 correctness parity** — no tool improved answers, only trimmed
+~17% of cost. No standing tool was adopted.
+
+The one place a tool pulls its weight is **impact analysis on a widely-used
+symbol** — "list every real caller / what breaks if I change this signature."
+There, `grep` scoped to `src/` silently misses call sites in `tests/`, `app/`, and
+study scripts, and unscoped `grep` buries them in import-line and comment noise.
+For that specific job, reach deliberately for import-resolved references —
+`jedi.Script(...).get_references(...)`; a runnable reference is at
+`.agents/eval/benchmarks/code-nav-ref.py` (`refs` / `callers` / `imports` /
+`usedby`). It is a technique, not an installed capability.
+
 ## Complexity must pay rent
 
 Every additional framework, abstraction, service, agent, document, workflow,
