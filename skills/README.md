@@ -9,6 +9,7 @@ not folders.
 | UI/UX Pro Max | DOMAIN | TESTED | Local UI/UX design intelligence from official upstream. |
 | Ask the Council | REASONING | TESTED | Bounded multi-perspective deliberation for consequential decisions. |
 | ML Research | DOMAIN | TESTED | Scientifically rigorous tabular predictive modelling guidance. |
+| Browser QA | WORKFLOW | TESTED | Verify an already-running local web UI: screenshots, responsive/visual checks, console errors, route/form smoke. Canonical owner of browser automation. |
 | Project Re-foundation | WORKFLOW | DRAFT | Branchable, evidence-led recovery or re-foundation workflow. |
 | Project Architecture | WORKFLOW | DRAFT | Narrow, reusable derivation of minimum project architecture, early-clean-home timing, and numbering convention. |
 | Medical Imaging Research | DOMAIN | DRAFT | Reusable medical-imaging research decisions: data semantics, preprocessing, evaluation, validation, reconstruction/segmentation fairness. |
@@ -26,11 +27,16 @@ should reduce future context or work, not add bureaucracy.
 
 Lifecycle: `DRAFT → TESTED → TRUSTED → STABLE`.
 
-- `DRAFT → TESTED` needs an evidence-backed eval pass: a `<skill>/eval/cases.toml`
-  with ≥3 behavioural cases (≥1 regression tripwire) and a green
-  `uv run --no-project python .agents/eval/zaos_eval.py run <skill>` recorded in
-  the skill's `ZANDI_SKILL.md` (evidence path + pass count + approx cost). See
-  `.agents/eval/README.md`.
+- `DRAFT → TESTED`:
+  - **Reasoning/domain skills** (guidance the agent applies) need an evidence-backed
+    eval pass: a `<skill>/eval/cases.toml` with ≥3 behavioural cases (≥1 regression
+    tripwire) and a green
+    `uv run --no-project python .agents/eval/zaos_eval.py run <skill>` recorded in
+    `ZANDI_SKILL.md` (evidence path + pass count + cost). See `.agents/eval/README.md`.
+  - **Tool-wrapper skills** (a script + a checklist; e.g. `browser-qa`) instead need
+    reproducible script tests — pass path, assertion-failure path, negative/error
+    path — plus one real-target demo, all recorded in `ZANDI_SKILL.md` with the
+    evidence dir. Do not force behavioural eval cases onto a tool wrapper.
 - `TESTED → TRUSTED` still requires real-project use — the eval does not replace it.
 - Any skill revision re-runs its cases; a drop in pass count or `--ab` skill lift
   blocks the change until explained.
@@ -97,6 +103,14 @@ needs resolved, not by which skills mention the same word.
   Owns: UI/UX design decisions (layout, style, accessibility, motion,
   stack-specific implementation).
   Reach for it when: substantive UI/UX design work is being done.
+
+- **Browser QA**
+  Owns: how to verify a running web UI — screenshots as evidence, responsive
+  breakpoints, console-error detection, route/form/presentation smoke, and the
+  "never touch the server lifecycle" boundary.
+  Reach for it when: a web app, dashboard, or presentation needs to be checked
+  in a real browser, or the engineering doctrine's browser-smoke evidence is due.
+  Not for: scraping, external sites, load testing, pixel-diffing.
 
 ### Direct routing cue: candidate/model-selection stability
 
