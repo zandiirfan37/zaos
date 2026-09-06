@@ -218,6 +218,23 @@ required detail, evidence conflicts, or a new decision genuinely requires it —
 not to re-scan whole repositories. Intelligence synthesis exists to cut
 repeated context consumption, not add to it.
 
+## Command output economy
+
+Verbose command output is context spend. Ask for the smallest output that
+answers the question, using the tool's own flags — not a wrapper:
+
+- history / status: `git log --oneline -N`, `git log --stat`, `git status --porcelain`
+- diffs: `git diff --stat` first; the full diff only for the files that matter
+- tests: `pytest -q`; on failure `pytest --tb=short` (or `-x` to stop at the first)
+- search: `rg -n -m N` (cap matches), `rg -l` (files only) before full context
+- listings: `ls -1`, `find ... | head`, name-only before full detail
+
+Keep the full output one re-run away — never trade away a traceback, an error
+chain, or a diff hunk you actually need to reason about. (RTK, a token-compressing
+CLI proxy, was evaluated 2026-09-06 and rejected: net-neutral on this command
+mix, lossy on debugging output, and it scatters state in `$HOME`. Evidence:
+`.runtime/eval/rtk/`.)
+
 ## Complexity must pay rent
 
 Every additional framework, abstraction, service, agent, document, workflow,
