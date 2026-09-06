@@ -15,8 +15,17 @@ This protocol is harness-agnostic. Adapters should map it onto the local orchest
 1. If the user specifies `--members`, use exactly those members.
 2. Else if the user specifies `--triad`, resolve that triad inside the chosen profile.
 3. Else if the user specifies `--profile`, use that profile's default triad.
-4. Else inspect the problem statement for a known keyword triad.
-5. Else use `classic` + `architecture`.
+4. Else derive a three-role panel from the decision surface: domain/craft,
+   skeptical or methodological counterweight, and reader/user/stakeholder.
+5. Use a known keyword triad, then `classic` + `architecture`, only when that
+   dynamic role selection is not informative.
+
+Dynamic roles are not limited to the retained historical personas. Select a
+compact role description that gives each member a non-overlapping job. For
+example, a novel may use novelist / developmental editor / reader; a
+philosophical essay philosopher / argument critic / editor; web research
+analyst / source skeptic / domain specialist. Preserve the same blind-first,
+cross-examination protocol regardless of role names.
 
 Default behavior should prefer 3 members for speed and clarity. Use the full panel only when the user asks for it or when the decision is unusually ambiguous.
 

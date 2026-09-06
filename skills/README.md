@@ -20,6 +20,15 @@ not folders.
 | Technical Documentation | WORKFLOW | TESTED | Reader-actionable guides, runbooks, decision records, and technical explanations grounded in current project truth. |
 | Frontend Performance | WORKFLOW | TESTED | React/Next.js async, bundle, rendering, and rerender performance guidance. |
 | Scientific Writing | WORKFLOW | TESTED | Evidence-bounded drafting for manuscript claims, methods, results, and limitations. |
+| Web Research | WORKFLOW | TESTED | Proportionate external research for current, unfamiliar, or cited questions. |
+| Evidence Evaluation | ASSURANCE | TESTED | Claim-to-source support, credibility, independence, and limitation checking. |
+| Research Synthesis | WORKFLOW | TESTED | Traceable themes, agreements, disagreements, and implications from a bounded source set. |
+| Comparative Analysis | WORKFLOW | TESTED | Like-for-like comparison of claims, options, works, or approaches on explicit criteria. |
+| Creative Writing | WORKFLOW | TESTED | Imaginative prose, dialogue, scenes, poetry, and local voice craft. |
+| Narrative Development | WORKFLOW | TESTED | Long-form fiction character, causality, pacing, theme, and continuity development. |
+| Editorial Review | ASSURANCE | TESTED | Author-intent-preserving developmental, structural, line, and voice critique. |
+| Argumentation | WORKFLOW | TESTED | Critical reasoning through claims, reasons, evidence, assumptions, and counterarguments. |
+| Ideation | WORKFLOW | TESTED | Divergent-to-convergent exploration of concepts, themes, problems, and opportunities. |
 | Project Re-foundation | WORKFLOW | DRAFT | Branchable, evidence-led recovery or re-foundation workflow. |
 | Project Architecture | WORKFLOW | DRAFT | Narrow, reusable derivation of minimum project architecture, early-clean-home timing, and numbering convention. |
 | Medical Imaging Research | DOMAIN | DRAFT | Reusable medical-imaging research decisions: data semantics, preprocessing, evaluation, validation, reconstruction/segmentation fairness. |
@@ -208,6 +217,62 @@ needs resolved, not by which skills mention the same word.
   Reach for it when: writing or materially revising a paper, abstract, methods,
   results, or discussion section. It cannot establish scientific truth or
   replace project-local methods/results/literature authority.
+
+- **Web Research**
+  Owns: proportionate external discovery and source-grounded answers for a
+  current, unfamiliar, cited, or otherwise fact-sensitive question.
+  Reach for it when: model memory is not enough, a fact may have changed, or a
+  reader needs sources. It does not replace local-corpus `lit-review`.
+
+- **Evidence Evaluation**
+  Owns: whether a source directly supports a claim and its authority,
+  independence, scope, and limitations.
+  Reach for it when: facts are disputed, a citation may be weak, or source
+  credibility matters. It cannot adjudicate value judgments or replace
+  high-stakes professional authority.
+
+- **Research Synthesis**
+  Owns: traceable themes, agreements, disagreement, and implications across a
+  bounded source or note set.
+  Reach for it when: material is already gathered and needs analysis rather
+  than discovery. It does not manufacture consensus or silently broaden scope.
+
+- **Comparative Analysis**
+  Owns: a fair, criteria-based comparison of alternatives or claims under
+  comparable conditions.
+  Reach for it when: a task needs trade-offs laid out before a decision. It does
+  not own research quality or the Human Lead's consequential final choice.
+
+- **Creative Writing**
+  Owns: imaginative drafting and local prose/scene craft — voice, image,
+  movement, dialogue, and reader effect.
+  Reach for it when: the user asks to write or revise fiction, poetry, a scene,
+  or literary prose. It does not impose long-form structure.
+
+- **Narrative Development**
+  Owns: long-form story character agency, causal progression, pacing, theme,
+  and continuity.
+  Reach for it when: planning, diagnosing, or revising a novel, novella, story
+  sequence, or screenplay. It does not force a universal beat sheet.
+
+- **Editorial Review**
+  Owns: reader-effect feedback from developmental through line level while
+  preserving the author's intent and voice.
+  Reach for it when: a draft needs critique rather than replacement writing or
+  fact checking.
+
+- **Argumentation**
+  Owns: structure and critical testing of a position's claims, reasons,
+  evidence, assumptions, scope, and counterarguments.
+  Reach for it when: working on an essay, philosophical argument, debate, or
+  decision rationale. It does not gather external evidence by itself.
+
+- **Ideation**
+  Owns: structured divergent-to-convergent exploration before a direction is
+  chosen.
+  Reach for it when: a problem, opportunity, theme, or premise needs genuinely
+  different possibilities. It does not substitute a long idea list for research
+  or a final decision.
 
 ### Direct routing cue: candidate/model-selection stability
 

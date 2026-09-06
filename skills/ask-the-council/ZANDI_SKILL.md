@@ -8,8 +8,11 @@
 - **Installed:** 2026-09-05
 - **Why selected:** compact, portable protocol with blind-first independent analysis, cross-examination, disagreement-preserving synthesis, and documented Codex orchestration; it requires no external provider, API key, or runtime script.
 - **Upstream files retained:** `SKILL.md`, `references/profiles.yaml`, `references/protocol.md`, `references/verdict-template.md`, and the selected-panel persona references; `LICENSE` is retained for attribution.
-- **Local modifications:** renamed the skill to `ask-the-council` and added the Zandi usage policy and explicit read-only, bounded-cost defaults to `SKILL.md`. No executable code was added or altered.
+- **Local modifications:** renamed the skill to `ask-the-council`; added the Zandi usage policy, explicit read-only/bounded-cost defaults, and domain-general dynamic role selection before legacy profile fallback. No executable code was added or altered.
 - **Update procedure:** temporarily inspect a pinned upstream revision under `.runtime/tmp/`; review its license and diff only the retained files; copy reviewed runtime material into this directory; reapply and review the documented local policy; test discovery and bounded deliberation before committing.
 - **External model/API requirements:** none beyond the invoking agent's normal model access. Full independent mode requires host support for isolated agent contexts; no network/API call is required by the retained files. A clearly disclosed single-agent fallback is permitted when isolation is unavailable.
+- **Dynamic-role verification (2026-09-07):** `quick_validate.py` passed; a
+  read-only Codex routing smoke selected `Author / Developmental Editor /
+  Reader` for a consequential novel decision.
 
 Do not casually edit upstream-derived files. Keep local policy changes minimal and documented here.

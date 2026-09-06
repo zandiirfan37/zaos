@@ -39,7 +39,8 @@ single answer. Good triggers include:
 - "get multiple perspectives"
 - "debate this decision"
 - "stress test this plan"
-- architecture, product, strategy, debugging, risk, or founder tradeoffs
+- architecture, product, strategy, debugging, research, fiction, philosophy,
+  editorial, risk, or founder tradeoffs
 
 If `$ARGUMENTS` is non-empty, treat it as the problem statement. Otherwise ask
 the user for the question to deliberate on.
@@ -57,7 +58,16 @@ Read only the references you need:
 
 - Prefer 3 members unless the user asks for a full panel or the problem is
   unusually ambiguous.
-- Default to `classic` + `architecture` if nothing else is specified.
+- Without an explicit panel/profile, derive three complementary **roles** from
+  the decision surface rather than defaulting to an architecture panel. Include
+  a domain/craft perspective, a skeptical or methodological counterweight, and
+  the relevant reader/user/stakeholder perspective. Examples: methodology /
+  statistics / domain skeptic for science; novelist / developmental editor /
+  reader for fiction; philosopher / argument critic / editor for an essay;
+  analyst / source skeptic / domain specialist for web research.
+- Use a named persona/profile only when it was requested or clearly provides
+  the needed role. The legacy profiles are a compact fallback for generic
+  strategy/architecture questions, not a role catalog that limits domains.
 - Keep the final verdict compact unless the user asks to see the rounds.
 
 ## Workflow
@@ -69,8 +79,9 @@ Honor, in order:
 1. explicit `--members`
 2. explicit `--triad`
 3. explicit `--profile`
-4. keyword triad match
-5. fallback default
+4. a dynamically derived complementary role triad for the actual decision
+5. keyword triad or `classic` fallback only if dynamic role selection is not
+   informative
 
 ### 2. Round 1: Independent Analysis
 
