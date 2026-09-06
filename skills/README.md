@@ -95,9 +95,12 @@ needs resolved, not by which skills mention the same word.
 
 - **Project Re-foundation**
   Owns: how to triage and sequence a legacy recovery, rebuild, or
-  external-base acquisition.
-  Reach for it when: material legacy recovery, rebuild, or re-foundation is
-  in play.
+  external-base acquisition, including professional-reference and data-source
+  tracks that can change the direction.
+  Reach for it when: material legacy recovery, rebuild, re-foundation, or a
+  nontrivial new build likely benefits from prior art before greenfield work.
+  It uses the existing reference dispositions; it is not a repository catalogue
+  template.
 
 - **Project Architecture**
   Owns: how to derive the minimum project structure, when to stand up an

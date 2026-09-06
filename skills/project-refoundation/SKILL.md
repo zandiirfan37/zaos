@@ -1,6 +1,6 @@
 ---
 name: project-refoundation
-description: Recover, modernize, acquire, or re-found a software, data, or AI project using only the intelligence tracks that can change the current decision. Use for material legacy recovery, major restructuring, external-base evaluation, or a new build with important evidence gaps; not routine repairs.
+description: Recover, modernize, acquire, or re-found a software, data, or AI project using only intelligence that can change the current decision. Use before greenfield work for material recovery, major restructuring, external-base evaluation, or a nontrivial build where prior art or data could change direction; not routine repairs.
 ---
 
 # Project Re-foundation
@@ -87,6 +87,25 @@ points, goal mismatch, and adaptation versus rebuild cost. Do not permanently
 clone large repositories for study; use disposable temporary inspection when
 appropriate.
 
+Discovery is not a stars contest: catalog only candidates that could change the
+direction, then deepen the promising few. Include the applicable model-weight
+and dataset license/access terms, project organization and documentation,
+deployment/performance fit, portability, known weaknesses, and maintenance
+burden. A final direction may deliberately combine upstream roles — for
+example one product flow, another architecture pattern, a third evaluation
+technique, and an independently adopted library/data source — if every adopted
+piece has a clear role and integration cost. Do not build a Frankenstein merely
+to preserve every promising idea.
+
+When this intelligence has durable value, retain the smallest project-local
+sequence that makes candidates, dispositions, constraints, and synthesis
+auditable. Number ordered research artifacts when it helps navigation (for
+example `research/01_repo_catalog.md`, `02_component_matrix.md`, and
+`03_adoption_decisions.md`); combine stages or use a single direction note when
+that is clearer. For every material influence, record its source, disposition,
+borrowed/adopted role, relevant constraints, intentional departures, and reason.
+Git remains history; these notes explain the decisions.
+
 Reference work must become a concrete delta, not a catalogue:
 
 `KEEP` · `REPLACE` · `ADOPT` · `ADD` · `REMOVE` · `RETEST` · `DEFER`
@@ -126,7 +145,10 @@ default.
 ## Converge and execute
 
 When evidence is sufficient, record a compact `PROJECT_DIRECTION.md` only if
-it has durable decision value. It should state, as applicable:
+it has durable decision value. It is an evolvable blueprint, not a prison: mark
+what is known/locked enough to start separately from what remains open to
+upstream discovery, data reality, implementation evidence, benchmarks, UX, or
+Human Lead direction. It should state, as applicable:
 
 `MISSION · RECOVERY/BUILD MODE · WHAT EXISTS · KEEP · ADOPT · REPLACE · ADD ·
 REMOVE · DATA PLAN · OPEN RISKS · BLOCKERS · NEXT 1–3 DECISIONS · NEXT BOUNDED
@@ -134,7 +156,8 @@ SPRINT`
 
 Invoke `project-architecture` before material structural creation or change,
 rather than deriving architecture inline here. Do not create numbered
-intelligence folders or empty artifacts. Project truth
+intelligence folders or empty artifacts when they do not carry a durable
+decision. Project truth
 remains in `AGENTS.md`, `PROJECT_STATE.md`, direction/briefs when needed, and
 relevant locks/contracts. A permanent giant `PROJECT_BLUEPRINT.md` is not the
 default. Use an explicit, scope-bound Blueprint/freeze only when locking is
