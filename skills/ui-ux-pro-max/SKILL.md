@@ -13,6 +13,32 @@ Use this Skill when the task involves **UI structure, visual design decisions, i
 
 Skip it for pure backend logic, API/database design, non-visual performance work, infrastructure/DevOps, or non-visual scripts — unless the task changes how something **looks, feels, moves, or is interacted with**.
 
+## Current interface intent
+
+Before substantial interface design or review, infer the surface's current
+intent from the task and project stage: who uses it now, which work or decision
+it must make easier, and whether it is expected to evolve. Do not assume every
+interface is final product UI.
+
+- **Engineering/evaluation surface** — for building, debugging, experimentation,
+  ML/scientific evaluation, calibration, model comparison, pipeline inspection,
+  or QA. Favor inspectable state, scenario controls, visible failures,
+  reproducible context, and decision-relevant diagnostics. For AI/ML, expose
+  only the necessary non-sensitive information such as provider/model identity,
+  detection state/count, threshold and ambiguity policy, score/decision,
+  latency, pipeline stage, and evaluation condition. Do not erase useful
+  engineering context merely for product-like polish.
+- **Product/end-user surface** — for routine customer, employee, student, or
+  operator task completion. Favor clarity, accessibility, trust, consistency,
+  and low cognitive load. Keep raw diagnostics, debug controls, and internal
+  state secondary or absent unless they directly serve the user's task.
+
+Operations/admin and presentation/demo surfaces may use a different balance
+when that changes the task. A project may intentionally maintain separate
+engineering and product surfaces, or transition one as technical maturity is
+earned. Do not treat a useful building harness as final UI by default, and do
+not ship an engineering console merely because it was useful during development.
+
 ## Rule Categories by Priority
 
 *Follow priority 1→10 to decide which category to focus on first; use `--domain <Domain>` to query full details. The full rule text for every category lives in `references/quick-reference.md` — read it on demand rather than loading it every time.*
@@ -67,12 +93,19 @@ This skill handles UI/UX design intelligence and implementation guidance. It doe
 Extract from the user request:
 - **Product type**: SaaS, e-commerce, portfolio, dashboard, entertainment, tool, productivity, or hybrid
 - **Target audience & context**: age group, usage context (commute, leisure, work)
+- **Current interface intent**: engineering/evaluation, product/end-user, or a
+  justified operations/admin or presentation/demo surface
+- **Project stage and decision supported**: what must be inspected, controlled,
+  decided, or completed now
 - **Style keywords**: playful, vibrant, minimal, dark mode, content-first, immersive, etc.
 - **Stack**: detect from the project — check `package.json` deps (react/next/vue/svelte/nuxt/@angular), `pubspec.yaml` (Flutter), `*.xcodeproj`/`Package.swift` (SwiftUI), `composer.json` (Laravel), or React Native markers (`app.json` + `react-native` dep). If nothing is detectable and stack guidance matters, ask the user. **Never assume a stack** — a hardcoded default silently misroutes every recommendation.
 
-### Step 2: Generate Design System (REQUIRED for new pages/projects)
+### Step 2: Generate a Design System When the Surface Needs One
 
-Use `--design-system` when the task needs a coherent product-wide visual direction:
+Use `--design-system` when the task needs a coherent product-wide visual direction.
+For an engineering/evaluation surface, first establish the diagnostic workflow
+and information hierarchy; do not create final-product polish or a broad visual
+system unless it will improve that engineering task:
 
 ```bash
 python3 "/home/pc_pusaka/zandi/.agents/skills/ui-ux-pro-max/scripts/search.py" "<product_type> <industry> <keywords>" --design-system [-p "Project Name"]

@@ -44,6 +44,20 @@ same PEP-723 header — do not extend `shot.py` into a framework.
 
 ## QA checklist (apply what the surface warrants)
 
+First infer the surface's current intent from the project stage and task. Do
+not judge an engineering/evaluation surface as though it were a finished
+consumer product, or accept an end-user surface whose central workflow is
+buried under developer detail.
+
+- **Engineering/evaluation surface:** verify that the diagnostic state, current
+  provider/model or runtime context, relevant controls, scenario/result flow,
+  and understandable failure messages are visible and usable. Confirm that
+  sensitive raw data is not exposed unnecessarily and that the rendered state
+  corresponds to the experiment or pipeline decision being inspected.
+- **Product/end-user surface:** verify that the user's primary task, feedback,
+  and recovery path are clear; diagnostics and implementation state should not
+  dominate normal use.
+
 - **Renders**: HTTP < 400, expected heading/landmark present, no console errors.
 - **Responsive**: check the real breakpoints the design targets (`--widths`);
   look for overflow, clipped content, broken layout in each screenshot.
