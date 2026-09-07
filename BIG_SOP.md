@@ -37,6 +37,21 @@ or decision support), use external evidence when its freshness or provenance
 matters, and do not invent project-local authority. Project authority resumes
 as soon as the user places work in a project.
 
+For substantive interface work, infer the interface's **current intent** before
+choosing UI/UX method: who uses it now, which work or decision it must make
+easier, and the project's present stage. Treat an interface for building,
+debugging, experimentation, evaluation, calibration, or QA as an
+**engineering/evaluation surface**: favor observability, controllability,
+reproducibility, explicit state, useful diagnostics, and understandable failure
+paths, without exposing sensitive data unnecessarily. Treat an interface for
+ordinary end-user operation as a **product/end-user surface**: favor task
+completion, clarity, accessibility, trust, and low cognitive load; keep
+implementation internals from dominating it. Operations/admin and
+presentation/demo intent may be recognized when they materially change the
+work. A surface may evolve or split as a project matures. Do not prematurely
+polish a building harness as final product UI, or ship an engineering console as
+the final product by accident. Apply the matching UI/UX and browser-QA checks.
+
 For a nontrivial new project, major rebuild, or re-foundation, first ask whether
 external implementations, mature libraries, datasets, models, benchmarks, or
 professional workflows are likely to change the build direction. If so, route
