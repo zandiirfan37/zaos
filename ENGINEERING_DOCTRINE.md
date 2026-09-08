@@ -285,6 +285,22 @@ For that specific job, reach deliberately for import-resolved references —
 `.agents/eval/benchmarks/code-nav-ref.py` (`refs` / `callers` / `imports` /
 `usedby`). It is a technique, not an installed capability.
 
+## Workbench and promotion
+
+A project's `00_workbench/` is the unrestricted exploration area: experiments,
+audits, patches, benchmarks, scratch, debug, temporary evidence, alternative
+implementations, migration attempts. Canonical production areas — semantic
+`src/`, `pipeline/` or numbered canonical stages, `contracts/`, release
+artifacts, canonical `research/` — must not depend on a `00_workbench/` path.
+
+Promotion of a winning experiment is: understand the winner → rewrite/refactor
+it clean into the canonical area → verify proportionally → update
+`PROJECT_STATE.md`. Do not move messy workbench artifacts verbatim into
+production; the superseded workbench artifact may stay in place as provenance.
+(A project that grew a production dependency on its workbench before this rule
+existed carries that as debt to resolve at the next promotion, not a licence to
+add more.)
+
 ## Complexity must pay rent
 
 Every additional framework, abstraction, service, agent, document, workflow,
