@@ -12,8 +12,9 @@ one canonical doctrine: [`../instructions/BIG_SOP.md`](../instructions/BIG_SOP.m
 CURRENT_STATE when relevant → project-local authority/state/contracts →
 relevant skill only → current task`
 
-Default exclusions are unrelated skills, Council, `reference/` and `_retired/`
-material, archive and deep library material, and unrelated project history.
+Default exclusions are unrelated skills, Council, `.archive/` material (retired
+frameworks, vendored checkouts, closed pilots, project history), deep library
+material, and unrelated project history.
 
 ## Deployment
 
