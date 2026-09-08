@@ -32,7 +32,12 @@ The Codex runtime fragment at
 resolution or launch routing. A fresh Codex `workspace-write` fixture session
 therefore wrote `prepatch.txt` but failed `git add` with a read-only
 `.git/index.lock`. The Codex CLI help documents `--add-dir` as an additional
-writable directory. Earlier successful sessions used a different provisioning
-profile (the active maintenance session was launched with
-`--sandbox danger-full-access`); that is the meaningful difference, not Unix
-ownership or mount flags.
+writable directory. Runtime session evidence for successful ZAOS commits shows
+the Codex session was started at `/home/pc_pusaka/zandi` and committed with
+`git -C projects/04_zaos`; the failing fresh session was started directly at
+`projects/04_zaos` and reported its Git directory non-writable. The meaningful
+provisioning difference is therefore the workspace root / explicit writable
+Git-directory scope, not Unix ownership or mount flags. The active maintenance
+session separately demonstrates that an externally selected
+`danger-full-access` profile can write the maintenance repository; it is not
+the normal-project route.
