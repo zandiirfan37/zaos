@@ -1,6 +1,6 @@
 # Literature corpus boundary — project-local setup
 
-Apply this in the owning project (e.g. `projects/paper-q1-vis-tp`) once a Human
+Apply this in the owning project (e.g. `projects/02_paper-q1-vis-tp`) once a Human
 Lead has approved which papers may be held. Do not create it speculatively and do
 not have an agent bulk-download paywalled material.
 

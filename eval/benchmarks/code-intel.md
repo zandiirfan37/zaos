@@ -7,7 +7,7 @@ A baseline win is a valid, desirable outcome. The end state is one owner — or 
 
 ## Target project
 
-`projects/gradtime_v2` — 55 Python modules, ~9,400 lines, two packages
+`projects/01_gradtime_v2` — 55 Python modules, ~9,400 lines, two packages
 (`gradtime/` domain + `gradtime_ops/` ops) plus `app/`, `tests/`, and 15+
 `workbench/NN_*/run_*.py` study scripts that import from `src/`. Import-resolved
 navigation is genuinely non-trivial here: a symbol defined in `src/` is typically
