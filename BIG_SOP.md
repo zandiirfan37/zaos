@@ -79,6 +79,49 @@ For a new project, major rebuild, unfamiliar integration, or consequential desig
 
 Architecture must fit the current product, domain, risk, and operating needs. Do not copy a legacy tree, template, framework, or reference repository by habit. Complexity must pay rent.
 
+## Project design, workbench, and truth
+
+`00_workbench/` is the default home for evolvable work: exploratory design and
+planning, comparative architecture or outline work, experiments, audits,
+scratch, temporary roadmaps, unresolved specifications, and implementation
+alternatives. Importance alone is not a reason to promote an artifact.
+
+When a decision converges, promotion is: **explore/design/test in
+`00_workbench/` → understand the winner → rewrite or refactor it cleanly in its
+canonical project location → verify proportionally → update
+`PROJECT_STATE.md` and contracts as needed**. Production must never depend on
+`00_workbench/`; the original workbench item may remain as provenance.
+
+After `00_workbench/`, human-facing top-level project zones default to ordered,
+semantic paths such as `01_research/`, `02_data_pipeline/`, and
+`03_evaluation/`. Adapt those zones to the actual project; do not create empty
+folders or documents because a template shows them. Preserve machine and tool
+semantics instead: `src/`, `tests/`, `config/`, `contracts/`, `runtime/`,
+`migrations/`, scripts, framework paths, and manifests normally stay
+unnumbered. **Number human sequence; preserve machine semantics.**
+
+Do not confuse the workspace project catalog with internal zone order. Paths
+such as `projects/01_<project>/` are append-only project identities; a retired
+number is never reused. Paths such as `00_workbench/`, `01_research/`, and
+`02_deliverables/` organize one project's human-facing work and are not its
+identity.
+
+Git is durable project history; `PROJECT_STATE.md` is compact current project
+truth; contracts and evidence hold durable technical or scientific truth where
+applicable. Session/model memory is not canonical truth. Neither workbench nor
+archive/history is active production authority. Add project-local `AGENTS.md`
+only when meaningful local rules or routing diverge from these defaults.
+
+In brief: preserve **hard contracts** (including machine/tool contracts,
+scientific or product locks, append-only project IDs, production independence
+from workbench, and one active writer per working tree); apply **defaults** of
+workbench-first evolvable work, numbered human zones, Git + project-state
+discipline, prior-art before unnecessary greenfield work, and adaptive
+templates unless the project needs otherwise; add **optional** directories,
+external frameworks/tools, and local instructions only when earned; and record
+domain pipelines, locks, required machine paths, and naming rules as
+**project-specific**.
+
 ## One active writer and project isolation
 
 Only one executor writes a working tree at a time. A handoff occurs at a clean boundary: inspect status and diff, run relevant checks, state DONE / IN PROGRESS / REMAINING, then let the receiving executor read repository truth. Do not rely on long chat transcripts or commit knowingly broken work merely to handoff.
@@ -166,6 +209,17 @@ Git is the rollback and provenance layer. Commit coherent verified changes in
 the repository that owns them. Do not push, rewrite history, or use destructive
 Git operations without explicit authorization. A commit does not prove quality;
 the validation evidence does.
+
+## ZAOS maintenance boundary
+
+In a normal project session, read ZAOS doctrine and skills but write only the
+project workspace; treat canonical `.agents` authority as read-only and do not
+self-modify it. Canonical ZAOS maintenance is engine-neutral: Claude or Codex
+may make a targeted change only when the Human Lead explicitly requests it and
+the maintenance session is write-enabled for the relevant canonical ZAOS
+repository. Then inspect, make the bounded change, verify, commit, and stop.
+Session role and writable scope—not engine identity—determine authority. Keep
+one active writer per working tree.
 
 ## Verification levels
 

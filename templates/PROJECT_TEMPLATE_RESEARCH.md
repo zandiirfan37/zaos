@@ -12,19 +12,36 @@ empty directories. Number human sequence; keep machine/semantic names stable.
 - machine manifests (`pyproject.toml`, `uv.lock`, `.gitignore`) if analysis code
   exists — not counted as documentation.
 
-## Zones
+## Adaptive zones
 
-| Path | Purpose | Notes |
-| --- | --- | --- |
-| `00_workbench/` | unrestricted exploration: probes, dead ends, alternative specs, audits, migration attempts, temporary evidence | canonical research must not depend on it |
-| `research/` | canonical converged findings, in numbered stages | `research/01_<stage>/`, `research/02_<stage>/`, … plus `literature/` |
-| `src/<pkg>/`, `tests/` | analysis code | only if analysis code exists; `src/` semantic, never numbered |
-| `data/` | inputs | usually gitignored, lineage tracked |
-| `evidence/` | verification artifacts cited by `PROJECT_STATE.md` | only when needed |
-| `deliverables/` | manuscript, `figures/`, `tables/`, submission package | |
+Put evolvable planning and design in `00_workbench/`: a master plan, chapter or
+continuity map, experimental outline, alternative argument structure, temporary
+research plan, probes, reviews, and unresolved specifications belong there
+first. A research/writing project may converge to this shape; use only the
+zones it has earned:
+
+```text
+00_workbench/
+  01_design/
+  02_outline_experiments/
+  03_review_notes/
+01_research/
+02_evidence/
+03_manuscript/
+04_deliverables/
+```
+
+The numbered top-level paths express human workflow order, not a mandatory
+checklist. Analysis code and tools remain semantic where needed:
+`src/<pkg>/`, `tests/`, `data/`, `config/`, and manifests should not be numbered
+when imports, discovery, or tooling expect those names. Do not scaffold empty
+folders or permanent documents merely because this example contains them.
 
 ## Promotion
 
-Understand the winning analysis → re-run/rewrite it clean into `research/NN_*` →
-verify proportionally → update `PROJECT_STATE.md`. Workbench probes stay as
-superseded provenance; they are never cited as canonical results.
+When a planning or research decision becomes durable project truth, understand
+the winner and promote a clean distilled version into its canonical zone →
+verify proportionally → update `PROJECT_STATE.md` and evidence/contracts as
+needed. Workbench artifacts can remain as provenance, but canonical
+research/evidence and deliverables must not depend on them or cite them as
+authoritative results.

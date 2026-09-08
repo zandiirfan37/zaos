@@ -285,21 +285,65 @@ For that specific job, reach deliberately for import-resolved references —
 `.agents/eval/benchmarks/code-nav-ref.py` (`refs` / `callers` / `imports` /
 `usedby`). It is a technique, not an installed capability.
 
-## Workbench and promotion
+## Project design, workbench, and promotion
 
-A project's `00_workbench/` is the unrestricted exploration area: experiments,
-audits, patches, benchmarks, scratch, debug, temporary evidence, alternative
-implementations, migration attempts. Canonical production areas — semantic
-`src/`, `pipeline/` or numbered canonical stages, `contracts/`, release
-artifacts, canonical `research/` — must not depend on a `00_workbench/` path.
+`00_workbench/` is the default home for any artifact still expected to evolve:
+design and planning drafts, master plans, architecture explorations, chapter or
+continuity maps, alternative outlines, UI explorations, unresolved
+specifications, temporary roadmaps, research or migration planning, experiment
+design, prototypes, audits, patches, benchmarks, scratch, debug, temporary
+evidence, and alternative implementations. This holds across software, AI/data,
+research, academic writing, books, creative work, and product/design projects.
+An artifact is not promoted merely because it looks important.
 
-Promotion of a winning experiment is: understand the winner → rewrite/refactor
-it clean into the canonical area → verify proportionally → update
-`PROJECT_STATE.md`. Do not move messy workbench artifacts verbatim into
-production; the superseded workbench artifact may stay in place as provenance.
-(A project that grew a production dependency on its workbench before this rule
-existed carries that as debt to resolve at the next promotion, not a licence to
-add more.)
+Promotion follows a clean lifecycle:
+
+`EXPLORE / DESIGN / TEST → 00_workbench/ → CONVERGE → understand the winner → clean rewrite/refactor → canonical project location → proportional verification → PROJECT_STATE/contracts update`
+
+Canonical production areas — semantic `src/`, `tests/`, `contracts/`, release
+artifacts, canonical research/evidence, manuscript, or ordered project zones —
+must not depend on a `00_workbench/` path. Do not move messy workbench files
+verbatim into production. The original can remain as provenance; rewrite the
+durable, understandable version. Existing production workbench dependencies are
+debt to remove at a later approved promotion, not a licence to add more.
+
+### Human-facing zone numbering
+
+After `00_workbench/`, default to sequential numeric prefixes for human-facing
+top-level zones, while keeping names meaningful. For example, a small writing
+project may use `01_research/`, `02_evidence/`, `03_manuscript/`, and
+`04_deliverables/`; a data project may use `01_research/`,
+`02_data_pipeline/`, `03_modeling/`, `04_evaluation/`, and `05_product/`.
+These examples are not a required universal set: choose only the zones earned by
+the project.
+
+This is distinct from the workspace catalog: `projects/01_<project>/` is an
+append-only project identity whose retired numbers are not reused. Internal
+`00_`, `01_`, `02_` paths order human-facing workflow areas within that one
+project; they are not project IDs.
+
+### Preserve machine semantics
+
+Number human sequence, not machine contracts. Framework, import, discovery, and
+tool-sensitive paths remain semantic when numbering would damage them:
+`src/`, `tests/`, `config/`, `contracts/`, `runtime/`, `migrations/`, `scripts/`,
+`.github/`, and required manifests are normal examples. A mixed tree is often
+the cleanest architecture: ordered human zones beside unnumbered machine paths.
+
+### Project truth and maintenance mode
+
+Git is durable history; `PROJECT_STATE.md` is compact current truth; contracts
+and evidence are durable technical/scientific truth where applicable. Chat or
+model memory is not project truth. `00_workbench/` is not production authority,
+and archive/history is not active authority. Use a local `AGENTS.md` only when
+the project has meaningful rules or routing that diverge from global defaults.
+
+Normal project sessions read ZAOS doctrine but write the project workspace and
+do not silently alter canonical `.agents` authority. Explicit ZAOS maintenance
+is engine-neutral: either Claude or Codex may perform it when the Human Lead
+explicitly requests maintenance and the session is write-enabled for the
+relevant canonical repository. Session role and writable scope—not engine
+identity—determine authority; retain one active writer per working tree.
 
 ## Complexity must pay rent
 
@@ -349,6 +393,14 @@ truth. Complexity-must-pay-rent governs whether it exists.
 - Blind global imputation of structurally missing values.
 - Running one overloaded discovery session instead of focused intelligence
   passes for a large new project.
+- A root like `design/`, `random_notes/`, `research/`, `manuscript/`, `final/`,
+  and `misc/` with no intentional ordering or distinction between exploratory
+  and canonical work.
+- Promoting a master plan, chapter map, or other still-evolvable design artifact
+  solely because it appears important.
+- Mechanical template copying that creates empty zones or documentation.
+- Naming semantic machine paths `01_src/` or `02_tests/` when that harms imports,
+  test discovery, framework conventions, or tooling.
 - Applying the tabular resource-intelligence checklist to a corpus, media, or
   agent project instead of the matching archetype profile.
 - Beginning substantial implementation before intelligence converges into an

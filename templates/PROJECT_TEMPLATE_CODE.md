@@ -13,20 +13,38 @@ empty directories. Number human sequence; keep machine/semantic names stable.
 - machine manifests as required (`pyproject.toml`, `uv.lock`, `.gitignore`) —
   not counted as documentation.
 
-## Zones
+## Adaptive zones
 
-| Path | Purpose | Notes |
-| --- | --- | --- |
-| `00_workbench/` | unrestricted exploration: experiments, audits, patches, benchmarks, scratch, debug, temporary evidence, alternative implementations, migration attempts | canonical areas must not depend on it |
-| `src/<pkg>/` | semantic importable modules | never numbered |
-| `tests/` | test suite | preserve discovery: `test_*.py`; `test_NN_*` only inside an ordered suite |
-| `pipeline/` or numbered stage dirs | reproducible ordered workflow | `NN_` prefixes for human sequence; must not read `00_workbench/` |
-| `config/`, `contracts/` | configuration, machine contracts | contract filenames are machine names — not numbered |
-| `evidence/`, `deliverables/`, `data/`, `runtime/` | verification artifacts, outputs, inputs, disposable local state | only when needed |
+Start with `00_workbench/` for evolvable design, planning, experiments, audits,
+scratch, temporary evidence, and alternatives. A code/AI project might then
+need only the following shape; select and rename zones for the actual project:
+
+```text
+00_workbench/
+  01_design/
+  02_experiments/
+  03_audits/
+01_research/
+02_data_pipeline/
+03_evaluation/
+src/<pkg>/
+tests/
+contracts/
+config/
+runtime/
+```
+
+After `00_workbench/`, number human-facing top-level workflow zones in their
+intended order. Do not create every illustrated zone or any empty scaffold.
+Keep machine- and tool-sensitive names unnumbered: `src/`, `tests/`, `config/`,
+`contracts/`, `runtime/`, `migrations/`, `scripts/`, framework directories, and
+manifests retain their semantic names. `pipeline/`, `data/`, `evidence/`, and
+`deliverables/` are optional when the project needs them.
 
 ## Promotion
 
-Understand the winning experiment → rewrite/refactor it clean into the canonical
-area → verify proportionally → update `PROJECT_STATE.md`. Do not move messy
-workbench artifacts verbatim into production; the workbench artifact may stay as
+Understand the winning experiment or design → rewrite/refactor it clean into the
+canonical area → verify proportionally → update `PROJECT_STATE.md` and contracts
+as needed. Do not move messy workbench artifacts verbatim into production;
+production must not depend on `00_workbench/`, while the original may stay as
 superseded provenance.
