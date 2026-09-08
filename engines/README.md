@@ -29,6 +29,12 @@ Claude's normal launches use canonical-path, task-matched lazy routing; do not
 copy or symlink skills into either engine tree. `--plugin-dir` is an optional
 future per-session capability, not the default architecture.
 
+## Session capability
+
+Use [`bin/zaos-session`](bin/zaos-session) to select capability before a new
+engine session. Its three small modes and the exact Codex/Claude invocation
+routes are documented in [`SESSION_PROVISIONING.md`](SESSION_PROVISIONING.md).
+
 ## Resource policy
 
 | Engine | Normal model | Normal effort |

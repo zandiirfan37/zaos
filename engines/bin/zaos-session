@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Launch a bounded ZAOS engine session.  This is intentionally a small router,
+# not a second permission framework.
+set -euo pipefail
+
+ZAOS_ROOT=/home/pc_pusaka/zandi
+RUNTIME_ROOT="$ZAOS_ROOT/.runtime/engines"
+
+usage() {
+  printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
+  exit 64
+}
+
+[ "$#" -ge 3 ] || usage
+mode=$1
+engine=$2
+requested_root=$3
+shift 3
+[ "${1:-}" != "--" ] || shift
+
+project_root=$(git -C "$requested_root" rev-parse --show-toplevel) || {
+  printf '%s\n' "zaos-session: PROJECT_ROOT must resolve to a Git worktree" >&2
+  exit 65
+}
+project_root=$(realpath -e "$project_root")
+git_dir=$(git -C "$project_root" rev-parse --absolute-git-dir)
+git_dir=$(realpath -e "$git_dir")
+
+case "$mode" in
+  READ_ONLY)
+    ;;
+  NORMAL_MUTATIVE_PROJECT)
+    case "$project_root/" in
+      "$ZAOS_ROOT/.agents/"*)
+        printf '%s\n' "zaos-session: use ZAOS_MAINTENANCE for .agents repositories" >&2
+        exit 65
+        ;;
+    esac
+    ;;
+  ZAOS_MAINTENANCE)
+    case "$project_root/" in
+      "$ZAOS_ROOT/.agents/"*) ;;
+      *)
+        printf '%s\n' "zaos-session: ZAOS_MAINTENANCE is limited to .agents repositories" >&2
+        exit 65
+        ;;
+    esac
+    ;;
+  *) usage ;;
+esac
+
+case "$engine" in
+  codex)
+    case "$mode" in
+      READ_ONLY)
+        exec env CODEX_HOME="$RUNTIME_ROOT/codex" codex --sandbox read-only -C "$project_root" "$@"
+        ;;
+      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE)
+        # Codex excludes Git metadata from workspace-write.  The CLI-supported
+        # add-dir grants only the resolved metadata directory, including a
+        # worktree or gitdir-indirection target.
+        exec env CODEX_HOME="$RUNTIME_ROOT/codex" codex --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" "$@"
+        ;;
+    esac
+    ;;
+  claude)
+    case "$mode" in
+      READ_ONLY)
+        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode plan --permission-prompts none "$@"
+        ;;
+      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE)
+        # Claude's supported path scopes the session to its cwd plus this
+        # resolved Git directory; do not use bypassPermissions.
+        cd "$project_root"
+        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode auto --permission-prompts none --add-dir "$git_dir" "$@"
+        ;;
+    esac
+    ;;
+  *) usage ;;
+esac
