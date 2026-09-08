@@ -1,7 +1,11 @@
-# Project template — research / paper project
+# Project template — research, scientific, and writing projects
 
 Minimal adaptable standard. Create only what the project needs; never scaffold
-empty directories. Number human sequence; keep machine/semantic names stable.
+empty directories. This is the canonical template family for research,
+scientific work, academic writing, and books/long-form writing; there is no
+separate canonical "writing template." Number human sequence; keep
+machine/semantic names stable. Keep book-specific design evolvable in
+`00_workbench/` until it converges.
 
 ## Root documents (3–7)
 
@@ -45,3 +49,15 @@ verify proportionally → update `PROJECT_STATE.md` and evidence/contracts as
 needed. Workbench artifacts can remain as provenance, but canonical
 research/evidence and deliverables must not depend on them or cite them as
 authoritative results.
+
+## Transaction readiness
+
+For a substantial authorized change expected to commit, before editing resolve
+the repository and actual Git directory; confirm the worktree, intended
+destinations, and Git metadata for normal index/commit operations are writable;
+inspect repository health, status/diff, and obvious lock/rebase/merge or writer
+conflicts; and know the required verification, `PROJECT_STATE.md` need, and
+commit requirement. If Git capability is unavailable, do not begin canonical
+mutation: relaunch in the narrow project-plus-Git transaction-capable mode.
+Then use the proportional lifecycle: precheck → understand → mutate → targeted
+verify → update state when material → inspect diff → commit → clean status.

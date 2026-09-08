@@ -15,7 +15,7 @@ Authority is ordered: Human Lead direction; project `AGENTS.md`; current project
 
 Use the smallest loop that can safely decide the work:
 
-`UNDERSTAND → DECIDE → IMPLEMENT → TARGETED VERIFY → COMMIT → MOVE ON`
+`PRECHECK → UNDERSTAND → DECIDE → IMPLEMENT → TARGETED VERIFY → COMMIT → CLEAN STATUS → MOVE ON`
 
 ### Responsive preflight
 
@@ -210,14 +210,45 @@ the repository that owns them. Do not push, rewrite history, or use destructive
 Git operations without explicit authorization. A commit does not prove quality;
 the validation evidence does.
 
+### Capability before mutation
+
+For an authorized mutative canonical-project task that is expected to commit,
+complete a lightweight transaction-capability preflight **before substantial
+mutation**. Resolve the actual repository and Git directory (do not assume
+`.git` is a directory in the worktree), confirm that the working tree, required
+destinations, and Git metadata needed for normal index/commit operations are
+writable; confirm repository health, status/diff, and the absence of an obvious
+lock, merge, rebase, or conflicting active writer; and identify the required
+verification, `PROJECT_STATE.md` update, and whether a commit is required.
+
+A session that can edit project files but cannot complete the required Git
+transaction is not execution-ready. Fail precheck and relaunch or enter the
+proper execution mode/root; do not mutate first and discover the limitation at
+commit time. This applies by session capability, not engine identity. A
+read-only/analysis session does not need Git write access. A legitimate
+mutative non-commit task may omit it only when its workflow explicitly does not
+require a commit.
+
+For normal substantial work, the proportional transaction is:
+
+`PRECHECK → UNDERSTAND → MUTATE → TARGETED VERIFY → update PROJECT_STATE when materially needed → INSPECT DIFF → GIT COMMIT → VERIFY CLEAN STATUS → MOVE ON`
+
+This is not ceremony for tiny or read-only work. If commit capability
+unexpectedly disappears after mutation, stop further mutation, preserve the
+diff and error evidence, do not destructively roll back automatically, and use
+the correct transaction-capable session to verify and safely complete or
+explicitly revert the transaction.
+
 ## ZAOS maintenance boundary
 
 In a normal project session, read ZAOS doctrine and skills but write only the
-project workspace; treat canonical `.agents` authority as read-only and do not
-self-modify it. Canonical ZAOS maintenance is engine-neutral: Claude or Codex
-may make a targeted change only when the Human Lead explicitly requests it and
-the maintenance session is write-enabled for the relevant canonical ZAOS
-repository. Then inspect, make the bounded change, verify, commit, and stop.
+intended project repository, including its actual Git metadata when the task
+requires a commit; canonical global `.agents` authority remains read-only and
+must not become writable merely to support a project commit. Canonical ZAOS
+maintenance is engine-neutral: Claude or Codex may make a targeted change only
+when the Human Lead explicitly requests it and the maintenance session is
+write-enabled for the relevant canonical ZAOS repository **and its Git
+metadata**. Then precheck, make the bounded change, verify, commit, and stop.
 Session role and writable scope—not engine identity—determine authority. Keep
 one active writer per working tree.
 

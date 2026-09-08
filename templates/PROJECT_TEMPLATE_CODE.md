@@ -48,3 +48,15 @@ canonical area → verify proportionally → update `PROJECT_STATE.md` and contr
 as needed. Do not move messy workbench artifacts verbatim into production;
 production must not depend on `00_workbench/`, while the original may stay as
 superseded provenance.
+
+## Transaction readiness
+
+For a substantial authorized change expected to commit, before editing resolve
+the repository and actual Git directory; confirm the worktree, intended
+destinations, and Git metadata for normal index/commit operations are writable;
+inspect repository health, status/diff, and obvious lock/rebase/merge or writer
+conflicts; and know the required verification, `PROJECT_STATE.md` need, and
+commit requirement. If Git capability is unavailable, do not begin canonical
+mutation: relaunch in the narrow project-plus-Git transaction-capable mode.
+Then use the proportional lifecycle: precheck → understand → mutate → targeted
+verify → update state when material → inspect diff → commit → clean status.

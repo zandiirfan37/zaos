@@ -237,6 +237,22 @@ checkpoint. The state update is part of the state transition, not a later
 memory-maintenance task. Minor edits and test reruns must not create
 state-document churn.
 
+### Transaction capability is a precondition
+
+When a canonical project sprint is expected to commit, verify before mutation
+that the resolved worktree, every required destination, and the actual Git
+directory are writable enough for normal index and commit operations. Also
+check repository health, current status/diff, obvious in-progress Git state or
+locks, one-active-writer conditions, the required verification, and whether a
+`PROJECT_STATE.md` update is material. File-write capability without Git-write
+capability is an incomplete execution environment: fail precheck and relaunch
+with the narrow transaction-capable project scope. This is session- and
+workflow-dependent, not engine-dependent; it does not grant global ZAOS
+authority access to a normal project session and is unnecessary for read-only
+work. If capability disappears after mutation, stop, preserve evidence and the
+diff, then safely complete or explicitly revert from the correct session rather
+than attempting automatic destructive rollback.
+
 ## Context is an engineering resource
 
 Reduce redundant context and duplicated work before reducing reasoning quality,
