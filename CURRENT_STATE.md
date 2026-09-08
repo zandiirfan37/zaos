@@ -1,17 +1,26 @@
 # Current Zandi State
 
-Zandi root: `/home/pc_pusaka/zandi`. Canonical workspace areas are `.agents/`,
-`.runtime/`, `.secrets/`, and `projects/`. Projects and vendored repositories
-own their own Git history; this file is workspace state, not project state.
+Zandi root: `/home/pc_pusaka/zandi`. Active workspace areas are `.agents/`,
+`.runtime/`, `.secrets/`, and `projects/`. Inert history lives in `.archive/`.
+Projects and vendored repositories own their own Git history; this file is
+workspace state, not project state.
 
 ## Authority and routing
 
 `BIG_SOP.md` is the single durable workspace doctrine. `ENGINEERING_DOCTRINE.md`
 is its on-demand deeper layer for engineering/data/ML work (subordinate, never a
-second authority). This file supplies only current facts. Engine bootstraps are
-thin native routers: Codex at `.runtime/engines/codex/AGENTS.md`; Claude at
-`.runtime/engines/claude/CLAUDE.md`. Project-local `AGENTS.md` / `CLAUDE.md`,
-`PROJECT_STATE.md`, and relevant contracts remain local authority.
+second authority). `PROJECT_INTELLIGENCE_SOP.md` is the on-demand prior-art /
+project-refoundation track. `MAINTENANCE_AND_MIGRATION.md` covers how doctrine
+evolves from evidence and how legacy material is migrated or retired. This file
+supplies only current facts.
+
+Engine bootstraps are thin native routers: Codex at
+`.runtime/engines/codex/AGENTS.md`; Claude at `.runtime/engines/claude/CLAUDE.md`.
+Canonical adapters are `.agents/engines/{codex/AGENTS.md, claude/CLAUDE.md}` —
+route only, never duplicate doctrine. The Codex runtime copy must be refreshed
+from the canonical adapter whenever that adapter changes (Codex has no proven
+native import). Project-local `AGENTS.md` / `CLAUDE.md`, `PROJECT_STATE.md`, and
+relevant contracts remain local authority.
 
 `CODEX_HOME=/home/pc_pusaka/zandi/.runtime/engines/codex`.
 `CLAUDE_CONFIG_DIR=/home/pc_pusaka/zandi/.runtime/engines/claude`.
@@ -21,46 +30,80 @@ rebuilds, and re-foundations: when external references or data could change the
 direction, route through Project Intelligence / project-refoundation before
 material greenfield implementation. This is proportional, not a universal gate.
 
-## Component status
+## Active .agents/ components
 
 | Area | Status | Owner / notes |
 | --- | --- | --- |
-| `.agents/instructions/` | LIVE | Canonical doctrine. `BIG_SOP` + `ENGINEERING_DOCTRINE` + `PROJECT_INTELLIGENCE_SOP` + `LEGACY_MIGRATION_POLICY` + `FRAMEWORK_IMPROVEMENT_LOOP` + `START_HERE`. Own Git repo (see "Repository layout"). |
-| `.agents/engines/` | LIVE | Thin Claude + Codex adapters. Route only; never duplicate doctrine. |
-| `.agents/skills/` | LIVE | Sole shared-skill root. On-demand only. TESTED: `ui-ux-pro-max` (DOMAIN), `ask-the-council` (REASONING), `ml-research` (DOMAIN), `browser-qa` (WORKFLOW), plus fast-intake capabilities: engineering/project (`systematic-debugging`, `scope-discipline`, `code-review`, `requirements-framing`, `implementation-planning`, `testing-strategy`, `technical-documentation`, `frontend-performance`, `scientific-writing`) and general intellectual/creative (`web-research`, `evidence-evaluation`, `research-synthesis`, `comparative-analysis`, `creative-writing`, `narrative-development`, `editorial-review`, `argumentation`, `ideation`). PATCH: `lit-review` (real pilot blocked by available synthesizer auth; not trusted). DRAFT: `project-refoundation`, `project-architecture`, `medical-imaging-research`. Skill files follow the Agent Skills shape (`SKILL.md` + `references/`); `ZANDI_SKILL.md` records provenance. |
+| `.agents/instructions/` | LIVE | Canonical doctrine. `README` + `BIG_SOP` + `ENGINEERING_DOCTRINE` + `PROJECT_INTELLIGENCE_SOP` + `MAINTENANCE_AND_MIGRATION` + this file, plus `archive/` (historical evidence, not authority) and `templates/`. Own Git repo (see "Repository layout"). |
+| `.agents/engines/` | LIVE | Thin Claude + Codex adapters. Route only. |
+| `.agents/skills/` | LIVE | Sole shared-skill root. On-demand, lazy, task-matched. Add a skill as `.agents/skills/<skill>/SKILL.md` (+ `references/`); no runtime-framework change and no standing-context growth. TESTED: `ui-ux-pro-max`, `ask-the-council`, `ml-research`, `browser-qa`, plus engineering/project and general intellectual/creative fast-intake skills. PATCH: `lit-review`. DRAFT: `project-refoundation`, `project-architecture`, `medical-imaging-research`. |
 | `.agents/eval/` | LIVE | ZAOS-native evaluation harness (`zaos_eval.py`, stdlib). On-demand only; drives the `claude`/`codex` CLIs. Evidence → `.runtime/eval/` (disposable). |
 | `.agents/library/` | LIVE (passive) | Zandi-curated knowledge cards. Never auto-loaded; a skill may cite one. |
-| `.agents/reference/` | REFERENCE | Read-only vendored external material for pattern lookup. `reference/ecc/` = pinned sparse checkout of `affaan-m/ECC` @ `005eff40` (provenance: `reference/ecc.lock.json`). Never installed, activated, or default-loaded. |
-| `.agents/_retired/ecc-zandi-profile/` | RETIRED | Was the "ECC-Zandi Standard-Advanced" profile. Retired 2026-09-06: its engineering doctrine was promoted verbatim to `instructions/ENGINEERING_DOCTRINE.md`; its container had drifted (dangling refs to deleted `ZANDI_MASTER_WORKFLOW.md`). The web-app quality guardrail and depth-by-scale ladder remain in `_retired/ecc-zandi-profile/AGENTS.ecc-standard-advanced.md` pending a reviewed fold into `ENGINEERING_DOCTRINE.md`. |
-| `.agents/_retired/zaine/` | RETIRED | "ZAINE" engineering platform. Retired 2026-09-06: effectively never used in day-to-day work; its validators validate a `ZAINE Artifact Contract v1` / `.zaine/extensions/inventory.toml` format that no project adopted. Not deleted — inert, full history intact. If ZAOS later adds live extensions (MCP / hooks / plugins), start the capability-manifest + drift model from `_retired/zaine/scripts/extension_governance.py` and `_retired/zaine/specs/ZAINE_EXTENSION_GOVERNANCE_v1.md`; the artifact/research contract validators and `project_doctor.py` are there too. Promote only against a real consumer, never speculatively. |
 | MCP / hooks / plugins | NONE | Zero configured in either engine, by decision. |
+
+`.agents/_retired/` and `.agents/reference/` no longer exist in the active tree
+(retired 2026-09-08 — see `.archive/`).
+
+## Archive
+
+`/home/pc_pusaka/zandi/.archive/` is retrieval/provenance storage, never active
+authority. Nothing in `.agents/`, `.runtime/`, or `projects/` depends on an
+`.archive/` path.
+
+| Path | Contents |
+| --- | --- |
+| `.archive/01_legacy_systems/zaine/` | ZAINE engineering platform. Evaluated, never adopted (no project used its artifact/extension contracts). Inert; inner Git history intact. Retrieval notes in `MAINTENANCE_AND_MIGRATION.md`. |
+| `.archive/01_legacy_systems/ecc-zandi-profile/` | "ECC-Zandi Standard-Advanced" profile. Its engineering doctrine was promoted to `ENGINEERING_DOCTRINE.md` (the web-app quality guardrail and depth-by-scale ladder folded in 2026-09-08). |
+| `.archive/01_legacy_systems/ecc-reference/` | Pinned sparse checkout of `affaan-m/ECC` @ `005eff40` (its `.git` + `ecc.lock.json` preserved). Never installed or activated. |
+| `.archive/02_closed_pilots/zaine-taskboard-pilot/` | Closed taskboard validation pilot. |
+| `.archive/02_closed_pilots/ecc-minilab-pilot/` | Closed ECC-Zandi MiniLab validation pilot. |
+| `.archive/03_project_history/gradtime/` | Predecessor of the active `01_gradtime_v2` project, plus its loose migration reports under `migration_reports/`. Inner Git history intact (branch `gen2-research`). |
+| `.archive/04_legacy_runtime/` | Shadowed pre-cutover Claude engine/config backup. |
+| `.archive/05_personal_archives/` | Personal ZIP archives moved out of the active tree. |
 
 ## Repository layout
 
 Zandi-owned agent-infra is two Git repos: `.agents/` (README, `engines/`,
-`skills/`, `library/`) and the nested `.agents/instructions/` (doctrine). They
-are kept separate for now because merging them risks the doctrine history;
-`reference/ecc/` is a third repo but vendored (own upstream remote). `_retired/*`
-keep their own inert Git histories. Consolidating `instructions/` into `.agents/`
-via `git subtree` is open debt, not urgent now that the ECC-Zandi profile (the
-prior drift victim) is retired.
+`skills/`, `eval/`, `library/`) and the nested `.agents/instructions/` (doctrine).
+Kept separate for now because merging risks the doctrine history; consolidating
+`instructions/` into `.agents/` via `git subtree` is **deferred debt**, not
+active scope. Archived items keep their own inner Git histories.
 
 ## Runtime roots
 
 `.runtime/` is derived, disposable, not Git-tracked. `.runtime/uv/` (centralized
 uv Python, tools, cache), `.runtime/bin/` (uv-managed CLIs), and
 `.runtime/browsers/playwright/` (chromium build 1234 + ffmpeg, ~656 MB) are
-cleaned only by their own tool-native commands, never automatically.
+cleaned only by their own tool-native commands, never automatically. The
+Playwright payload is owned by the `browser-qa` skill and is regenerable.
 
-The Playwright payload is owned by the `browser-qa` skill (chromium build 1234,
-matched to `playwright==1.62.0` which `uv run` resolves on demand — no `node`,
-nothing downloaded). Regenerable if deleted.
+## Root vendor/tool artifacts
+
+`.codex/` (empty), `.claude/` (Claude Code project-scope: `scheduled_tasks.lock`),
+and the `.git/` stub (Claude Code runtime marker holding `info/exclude`) are
+fixed tool conventions at the workspace root. They are covered by the root
+`.gitignore` and are not fought for cosmetic cleanliness; the `.git/` stub is not
+removed.
 
 ## Project state
 
+Active projects, canonical numbered map (append-only; a closed project keeps its
+retired number):
+
+| Path | Project |
+| --- | --- |
+| `projects/01_gradtime_v2/` | Graduation-time prediction, active successor to the archived `gradtime`. |
+| `projects/02_paper-q1-vis-tp/` | Q1 paper — VIS-TP medical-imaging research. |
+| `projects/03_smart_attendance/` | Smart attendance system. |
+| `projects/04_zaos/` | Literary-philosophical book project narrated by "ZAOS". |
+
+Next new project: `05_<name>`.
+
 Every active project owns `<project-root>/PROJECT_STATE.md`; update it only for
-meaningful state transitions. Active projects: `gradtime`, `gradtime_v2`,
-`paper-q1-vis-tp`, plus the closed pilots `zaine-taskboard-pilot` and
-`ecc-minilab-pilot`. Historical evidence under `instructions/archive/` (including
-`VALIDATION_LEDGER.md`, which predates the `BIG_SOP` consolidation) is not
-current operating authority.
+meaningful state transitions. Each project standard: 3–7 root docs, an
+`00_workbench/` unrestricted exploration area, semantic `src/`, `tests/`, and
+numbered human-sequence stages where useful. Canonical production/research areas
+must not depend on `00_workbench/` paths. Templates: `instructions/templates/`.
+
+Historical evidence under `instructions/archive/` (including `VALIDATION_LEDGER.md`)
+is not current operating authority.

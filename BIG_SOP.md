@@ -202,13 +202,16 @@ Adopt or create a skill only after repeated evidence that a compact reusable
 guide will save future context or work. A skill may cite library material, but
 the library is reference memory—not mandatory prompt payload.
 
-## Reference libraries
+## Reference and retired material
 
-`.agents/reference/` holds read-only external material kept for pattern lookup — currently a pinned sparse checkout of ECC (`reference/ecc/`, provenance in `reference/ecc.lock.json`). It is not a framework, not an operating layer, and is never installed, activated, or loaded by default. Consult one named file when a specific pattern would genuinely help a hard problem; cite it as an idea, never as authority.
+`.agents/library/` holds Zandi-curated knowledge cards for pattern lookup. It is
+never auto-loaded; a skill may cite one card as an idea, never as authority.
 
-`.agents/_retired/` holds frameworks Zandi evaluated and stood down (ECC-Zandi profile, ZAINE). They are inert history. Nothing loads them. `CURRENT_STATE.md` records why each was retired and where any still-useful mechanism can be retrieved if a real need appears.
-
-Do not modify vendored upstream in `reference/` without explicit approval.
+Retired frameworks and vendored external checkouts (ECC-Zandi profile, ZAINE, the
+pinned ECC upstream) live inert under `/home/pc_pusaka/zandi/.archive/`. Nothing
+in the active workspace loads them. `MAINTENANCE_AND_MIGRATION.md` records the
+archive taxonomy and the retrieval notes for any still-useful dormant mechanism;
+`CURRENT_STATE.md` records current component status.
 
 ## Stop conditions
 

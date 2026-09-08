@@ -174,6 +174,33 @@ Do not upgrade work merely because it is difficult, and do not downgrade a
 known high-risk boundary for speed. The task-triggered gates above still define
 what must be checked at each level.
 
+Depth follows scale: a small change is understand -> implement -> targeted test
+-> review; a medium feature is plan -> design -> implement with tests -> exercise
+the integrated path -> review (and security review when relevant) -> docs; a
+large project takes Human Lead approval of the direction and architecture before
+implementation, then independently verified vertical slices. This is the same
+FAST / STANDARD / HARDENED ladder expressed as workflow shape, not a second
+process.
+
+## Web-app quality guardrail
+
+Apply this only when a task delivers or changes a web application; it is
+on-demand, not a standing checklist.
+
+- Cover persistence/unit behaviour, route integration, and a browser smoke pass
+  when a UI exists. Exercise create, detail, mutation, export, 404, invalid
+  input, and maximum-bound cases, and assert the intended redirect status
+  without silently following it.
+- Database sessions close explicitly and define commit/rollback behaviour.
+  Database paths are configurable so tests and local runtime can point
+  elsewhere. Initial schema creation in a new local project is fine; changes to
+  existing user data need approval, while scoped, idempotent, non-destructive
+  compatibility constraints or triggers are allowed.
+- A local-only app may intentionally omit auth and CSRF. A shared, networked, or
+  deployed app requires auth, CSRF protection, security headers, host/origin
+  policy, backup/export planning, and a stronger security review — this is a
+  HARDENED boundary.
+
 ## Handoff and concurrency
 
 Before switching active implementation agents, when feasible: inspect HEAD and
@@ -312,6 +339,6 @@ truth. Complexity-must-pay-rent governs whether it exists.
   approved project blueprint.
 - Re-scanning whole legacy or external repositories after a canonical
   synthesis already answers the question.
-- Restating standard ECC gates in every prompt instead of deriving them.
+- Restating standard task-triggered gates in every prompt instead of deriving them.
 - Running a deep audit for routine bounded work that the fast lane covers.
 - Splitting diagnosis and implementation when one agent can safely do both.
