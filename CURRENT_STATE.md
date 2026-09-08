@@ -105,5 +105,12 @@ meaningful state transitions. Each project standard: 3–7 root docs, an
 numbered human-sequence stages where useful. Canonical production/research areas
 must not depend on `00_workbench/` paths. Templates: `instructions/templates/`.
 
+`01_gradtime_v2` still uses `workbench/` (not `00_workbench/`): its production
+app and ops code read evidence through hash-locked `contracts/*.json` and
+`releases/model/` artifacts that embed `workbench/` paths, so a rename collides
+with the LOCK-3 scientific integrity tests. Normalisation is deferred to a
+Human-Lead-approved promotion sprint that re-homes the production-read evidence
+and re-locks, not a mechanical rename.
+
 Historical evidence under `instructions/archive/` (including `VALIDATION_LEDGER.md`)
 is not current operating authority.
