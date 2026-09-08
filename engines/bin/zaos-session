@@ -64,6 +64,7 @@ case "$engine" in
     esac
     ;;
   claude)
+    cd "$project_root"
     case "$mode" in
       READ_ONLY)
         exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode plan --permission-prompts none "$@"
@@ -71,7 +72,6 @@ case "$engine" in
       NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE)
         # Claude's supported path scopes the session to its cwd plus this
         # resolved Git directory; do not use bypassPermissions.
-        cd "$project_root"
         exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode auto --permission-prompts none --add-dir "$git_dir" "$@"
         ;;
     esac
