@@ -61,6 +61,13 @@ Skip that pass only when the work is trivial or disposable, prior art has
 negligible expected value, or the Human Lead meaningfully requires a
 from-scratch path. This is a prior-art-first default, not a research ceremony.
 
+The same reflex applies operationally: before installing or building a
+capability that crosses a real cost threshold — a large download, a GPU or
+driver stack, an external service, a parser/OCR/embedding/vector capability,
+anything already used elsewhere in the workspace, or a long build — first look
+for it on `PATH`, in nearby project environments, running services, container
+images, and model caches, and prefer verified read-only reuse.
+
 1. Identify the target project/repository or ad-hoc task context, boundary, and
    relevant local rules.
 2. Read only the project state, contract, and skill needed for that decision.
@@ -109,7 +116,16 @@ identity.
 Git is durable project history; `PROJECT_STATE.md` is compact current project
 truth; contracts and evidence hold durable technical or scientific truth where
 applicable. Session/model memory is not canonical truth. Neither workbench nor
-archive/history is active production authority. Add project-local `AGENTS.md`
+archive/history is active production authority. A clean working tree does not
+imply a reconciled runtime: where a project has deliberately modified external
+runtime state — a derived image, an edited external config, an inserted database
+row, a configured service or index — that reconstruction knowledge is durable
+project truth and belongs in a committed, one-screen runtime contract (expected
+persistent topology; what is reproducible and how; what is disposable;
+intentional external modifications, without secrets; recovery steps).
+Fast-changing observed state stays in a gitignored snapshot, never hand-edited.
+
+Add project-local `AGENTS.md`
 only when meaningful local rules or routing diverge from these defaults.
 
 In brief: preserve **hard contracts** (including machine/tool contracts,
@@ -143,6 +159,13 @@ Read `CURRENT_STATE.md` only when workspace-level state matters. Do not load eve
 Verification is proportional: a small text edit needs focused inspection; a behavioral change needs relevant tests; high-risk work needs stronger evidence. Never call a result successful solely because a command exited zero—inspect the meaningful result.
 
 Escalate before destructive actions, remote writes, deployments, credentials or secrets changes, irreversible migrations, material scope expansion, or a product/scientific decision. Escalate also when required evidence is missing, constraints conflict, or progress depends on a Human Lead choice. Do not escalate merely because work is difficult when safe, bounded investigation can resolve it.
+
+Before expensive work that depends on a declared secret, verify the secret file
+exists, is readable and non-empty, is free of stray control or escape bytes, and
+parses as `KEY=value` — but never print or log the value, and never
+auto-normalize or auto-repair a secret; report the fault class and let the Human
+Lead fix it. A live provider probe needs explicit per-sprint Human Lead
+authorization and must keep the value out of logs and error text.
 
 A task that appeared routine can cross into a material scientific,
 architecture, security, or migration decision boundary mid-task—for example,
@@ -277,6 +300,15 @@ Parallel work is safe only when writers are isolated by worktree, branch, or
 non-overlapping owner. Shared runtime, credentials, migrations, and generated
 state need explicit coordination.
 
+**Waiting on background work.** After arming a background job or monitor, stop
+and yield; do not re-read an unchanged or empty output on a loop. Prefer one
+background job that runs the whole wait, compute, and report chain over many
+thin waiters. Confirm a spawned process is alive once after a short pause.
+Suspect a stall only from two progress samples taken well apart and measured
+against the job's own clock — a runtime clock can drift from the host — and then
+past the expected duration with the work near-idle; use the supported restart
+path and record it, rather than waiting indefinitely or killing blindly.
+
 ## Framework and skill discipline
 
 Frameworks offer optional tools, not automatic process. Use only the narrow
@@ -301,3 +333,11 @@ archive taxonomy and the retrieval notes for any still-useful dormant mechanism;
 ## Stop conditions
 
 Stop and report when the goal is met, a required approval is missing, the task would exceed its stated scope, or further investigation cannot change a decision. Preserve evidence and leave the next action clear.
+
+Before recommending `/clear` or handing off after mutative or boundary work,
+account for durable state: working tree committed or explicitly ephemeral;
+`PROJECT_STATE.md` current; no owned background job left unresolved; runtime
+drift recorded in the runtime contract; open Human Lead decisions captured; next
+action stated. Emit this as a short closure block at session close and whenever
+a task ends with unresolved risk — not on every routine task. A read-only
+session states closure is safe trivially.
