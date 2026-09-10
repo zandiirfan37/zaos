@@ -336,7 +336,12 @@ the project.
 This is distinct from the workspace catalog: `projects/01_<project>/` is an
 append-only project identity whose retired numbers are not reused. Internal
 `00_`, `01_`, `02_` paths order human-facing workflow areas within that one
-project; they are not project IDs.
+project; they are not project IDs. `00_workbench/` itself may hold sequentially
+numbered subprojects (`00_workbench/01_<topic>/`) where research chronology
+matters; machine-semantic production paths are never numbered. Simulation,
+research, and experimentation are functions of `00_workbench/` — not a parallel
+`simulation/` or `research/` root — and production carries no scratch or
+aborted-iteration files that Git and `00_workbench/` already preserve.
 
 ### Preserve machine semantics
 
@@ -412,6 +417,11 @@ truth. Complexity-must-pay-rent governs whether it exists.
 - A root like `design/`, `random_notes/`, `research/`, `manuscript/`, `final/`,
   and `misc/` with no intentional ordering or distinction between exploratory
   and canonical work.
+- Standing up a separate `simulation/`, `research/`, or `experiments/` root
+  instead of working inside `00_workbench/`.
+- Committing scratch or aborted-iteration files (`final2.py`, `backup_old.json`,
+  `temp/`) or rejected prototypes into production to preserve history that Git
+  and `00_workbench/` already hold.
 - Promoting a master plan, chapter map, or other still-evolvable design artifact
   solely because it appears important.
 - Mechanical template copying that creates empty zones or documentation.

@@ -88,10 +88,23 @@ Architecture must fit the current product, domain, risk, and operating needs. Do
 
 ## Project design, workbench, and truth
 
-`00_workbench/` is the default home for evolvable work: exploratory design and
-planning, comparative architecture or outline work, experiments, audits,
-scratch, temporary roadmaps, unresolved specifications, and implementation
-alternatives. Importance alone is not a reason to promote an artifact.
+`00_workbench/` is the canonical pre-production laboratory and the default home
+for evolvable work: exploratory design and planning, comparative architecture or
+outline work, research and prior-art review, experiments, benchmarks,
+simulations, parser/model tournaments, synthetic or provisional datasets,
+prototypes and UI explorations, usability and red-team testing, migration
+rehearsal and shadow runs, audits and decision evidence, debugging done to
+understand a problem, scratch, temporary roadmaps, unresolved specifications,
+and implementation alternatives. Importance alone is not a reason to promote an
+artifact.
+
+The `00_` prefix is deliberate and permanent: it keeps the laboratory visually
+first as other top-level files and directories accumulate. Simulation, research,
+experimentation, and testing are functions of `00_workbench/`, not separate
+top-level zones — do not add a parallel `simulation/`, `research/`, or
+`experiments/` root. **Workbench owns uncertainty; production owns decisions:**
+workbench stores the journey toward the answer, production stores only the
+answer that has earned promotion.
 
 When a decision converges, promotion is: **explore/design/test in
 `00_workbench/` → understand the winner → rewrite or refactor it cleanly in its
@@ -99,19 +112,44 @@ canonical project location → verify proportionally → update
 `PROJECT_STATE.md` and contracts as needed**. Production must never depend on
 `00_workbench/`; the original workbench item may remain as provenance.
 
+Promotion is not a folder move and never a verbatim copy of an experimental tree
+into production. A dataset created or generated in `00_workbench/` stays a
+workbench artifact while it is experimental, synthetic, provisional, under
+comparison, or built only for evaluation; if it becomes production truth,
+fixture, or serving input, promote it explicitly into a production-owned
+location with preserved provenance and validation, and with no serving-time
+dependency on its workbench origin. Reproducible generated experiment output
+normally stays uncommitted unless it is needed as evidence, fixture, or decision
+record. Rejected UI prototypes and superseded designs are not kept in production
+for history — Git and `00_workbench/` own that.
+
+Production stays minimal and intentional: every committed production file has a
+clear role — runtime code, tests, config, schema/contracts, migration,
+operational script, required documentation, canonical fixture or data, or
+packaging metadata. Scratch and aborted-iteration names (`coba.py`,
+`test_fix.py`, `final2.py`, `backup_old.json`, `temp/`, `old_version/`,
+`fix_baru/`) and unused prototype trees do not belong in production; Git holds
+prior versions.
+
 After `00_workbench/`, human-facing top-level project zones default to ordered,
 semantic paths such as `01_research/`, `02_data_pipeline/`, and
 `03_evaluation/`. Adapt those zones to the actual project; do not create empty
-folders or documents because a template shows them. Preserve machine and tool
-semantics instead: `src/`, `tests/`, `config/`, `contracts/`, `runtime/`,
-`migrations/`, scripts, framework paths, and manifests normally stay
+folders or documents because a template shows them. Inside `00_workbench/`,
+subprojects may themselves carry sequential human-facing numbers
+(`00_workbench/01_<topic>/`, `02_<topic>/`, …) where research chronology and
+reasoning history matter; create one only when real work exists, never as an
+empty placeholder, and do not impose a fixed internal scaffold. Preserve machine
+and tool semantics instead: `src/`, `tests/`, `config/`, `contracts/`,
+`runtime/`, `migrations/`, scripts, framework paths, and manifests normally stay
 unnumbered. **Number human sequence; preserve machine semantics.**
 
 Do not confuse the workspace project catalog with internal zone order. Paths
 such as `projects/01_<project>/` are append-only project identities; a retired
 number is never reused. Paths such as `00_workbench/`, `01_research/`, and
 `02_deliverables/` organize one project's human-facing work and are not its
-identity.
+identity. Machine-semantic production paths (`src/`, `tests/`, `config/`,
+`contracts/`, `runtime/`, `migrations/`, `scripts/`, `.github/`) are a fourth,
+separate category and are never numbered.
 
 Git is durable project history; `PROJECT_STATE.md` is compact current project
 truth; contracts and evidence hold durable technical or scientific truth where

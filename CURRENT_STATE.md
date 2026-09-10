@@ -102,9 +102,13 @@ Next new project: `05_<name>`.
 
 Every active project owns `<project-root>/PROJECT_STATE.md`; update it only for
 meaningful state transitions. Each project standard: 3–7 root docs, an
-`00_workbench/` unrestricted exploration area, semantic `src/`, `tests/`, and
+`00_workbench/` pre-production laboratory (fixed `00_` prefix; may hold
+sequentially numbered subprojects; absorbs simulation/research/prototype/evidence
+work rather than a parallel top-level zone), semantic `src/`, `tests/`, and
 numbered human-sequence stages where useful. Canonical production/research areas
-must not depend on `00_workbench/` paths. Templates: `instructions/templates/`.
+must not depend on `00_workbench/` paths, and production stays free of scratch or
+aborted-iteration files. Promotion is a clean rewrite into a canonical location,
+not a folder move. Templates: `instructions/templates/`.
 
 `01_gradtime_v2` still uses `workbench/` (not `00_workbench/`): its production
 app and ops code read evidence through hash-locked `contracts/*.json` and
