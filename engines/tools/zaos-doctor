@@ -1,0 +1,397 @@
+#!/usr/bin/env bash
+# zaos-doctor — read-only, advisory ZAOS control-plane diagnostic.
+#
+# Canonical ZAOS tooling: .agents/engines/tools/zaos-doctor
+# Engine-neutral: callable identically from the Codex and Claude routes.
+# Role and contract: see .agents/engines/tools/README.md
+#
+# zaos-doctor is READ-ONLY and ADVISORY. It reports; the executor and the
+# Human Lead decide. It is NOT a lifecycle authority, NOT a gate, NOT a
+# replacement for executor judgement, and NOT a source of canonical project
+# truth. A WARN is advice, never a mutation permit and never a hard block;
+# an independently defined canonical hard block, if any, is triggered by the
+# underlying situation, not by this tool.
+#
+# GUARANTEES (see also self-check `--assert-readonly`):
+#   - never writes, moves, or deletes any file outside a --tmp scratch it owns
+#   - never runs a git write, never clears a lock
+#   - never starts/stops/kills a container, process, or service
+#   - never reads or prints a secret VALUE
+#   - never installs anything, never touches the network
+#   - exit code is INFORMATION, never an authority block
+#
+# Output lines: PASS: / INFO: / WARN: / FAIL_CHECK: / SKIP:
+# Exit: 0 = no WARN/FAIL_CHECK · 1 = >=1 WARN · 2 = >=1 FAIL_CHECK (check could
+#       not determine an answer) · 3 = doctor itself crashed.
+set -u
+
+VERSION="1.0.0"
+PROJECT=""
+MODE="READ_ONLY"
+GRP="git,runtime,job,resource,secret,clock,promotion"
+WARN=0
+FAILCHK=0
+
+say()  { printf '%s: %s\n' "$1" "$2"; }
+pass() { say PASS "$*"; }
+info() { say INFO "$*"; }
+warn() { say WARN "$*"; WARN=$((WARN+1)); }
+failc(){ say FAIL_CHECK "$*"; FAILCHK=$((FAILCHK+1)); }
+skip() { say SKIP "$*"; }
+have() { command -v "$1" >/dev/null 2>&1; }
+
+usage() {
+  cat <<EOF
+zaos-doctor $VERSION  (read-only, advisory)
+usage: zaos-doctor [--project <root>] [--mode READ_ONLY|NORMAL_PROJECT_MUTATION|ZAOS_MAINTENANCE]
+                   [--groups g1,g2,...] [--assert-readonly] [--capability <name>] [-h]
+groups: git runtime job resource secret clock promotion capability
+exit:  0 clean · 1 WARN present · 2 FAIL_CHECK present · 3 doctor crashed
+EOF
+}
+
+# ---- arg parse -------------------------------------------------------------
+ASSERT_RO=0
+CAP=""
+SECRETS_SCHEMA=""
+SECRET_FILE=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --project) PROJECT="${2:-}"; shift 2 ;;
+    --mode)    MODE="${2:-}"; shift 2 ;;
+    --groups)  GRP="${2:-}"; shift 2 ;;
+    --capability) CAP="${2:-}"; GRP="capability"; shift 2 ;;
+    --secrets-schema) SECRETS_SCHEMA="${2:-}"; shift 2 ;;
+    --secret-file) SECRET_FILE="${2:-}"; shift 2 ;;
+    --assert-readonly) ASSERT_RO=1; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "zaos-doctor: unknown arg: $1" >&2; usage; exit 3 ;;
+  esac
+done
+
+if [ "$ASSERT_RO" = 1 ]; then
+  # Static self-check: no mutating verbs against real targets in this script body.
+  # (git write / rm / mv / install / kill / docker lifecycle / secret echo)
+  self="$0"
+  # Match actual mutating invocations only, then drop comments / this self-check.
+  bad=$(grep -nE '(^|[^_[:alnum:]-])(rm|mv|rmdir)[[:space:]]+["'\''/.$]|git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+(commit|add|push|reset|checkout|clean|rebase|merge|tag|branch[[:space:]]+-[dD])[[:space:]]|docker[[:space:]]+(stop|start|kill|rm|restart|compose[[:space:]]+(up|down))|kill[[:space:]]+-(9|KILL|TERM)|(pip|pip3|apt|apt-get|npm|cargo)[[:space:]]+(install|add)' "$self" \
+        | grep -vE '^\s*[0-9]+:\s*#|never|GUARANTEE|MUST NOT|self-check|deliberately runs' || true)
+  if [ -n "$bad" ]; then
+    echo "FAIL_CHECK: --assert-readonly found suspicious lines:"; echo "$bad"; exit 2
+  fi
+  echo "PASS: --assert-readonly — no mutating operation against a real target in $self"
+  exit 0
+fi
+
+case "$MODE" in
+  READ_ONLY|NORMAL_PROJECT_MUTATION|ZAOS_MAINTENANCE) ;;
+  *) echo "zaos-doctor: bad --mode $MODE" >&2; exit 3 ;;
+esac
+
+# resolve project root (read-only).
+# An explicit --project is used verbatim (fixtures, subdirs); a defaulted CWD
+# climbs to the git toplevel for convenience.
+if [ -z "$PROJECT" ]; then
+  PROJECT="$(pwd)"
+  if have git && git -C "$PROJECT" rev-parse --show-toplevel >/dev/null 2>&1; then
+    PROJECT="$(git -C "$PROJECT" rev-parse --show-toplevel)"
+  fi
+fi
+ROOT="$(cd "$PROJECT" 2>/dev/null && pwd || echo "$PROJECT")"
+
+echo "# zaos-doctor $VERSION  project=$ROOT  mode=$MODE  $(date -u +%FT%TZ)"
+
+in_group() { case ",$GRP," in *",$1,"*) return 0 ;; *) return 1 ;; esac; }
+
+# ---- GIT -----------------------------------------------------------------
+check_git() {
+  if ! have git; then skip "git — tool absent"; return; fi
+  if ! git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1; then
+    info "git — $ROOT is not a git worktree"; return
+  fi
+  local gd br head dirty
+  gd="$(git -C "$ROOT" rev-parse --absolute-git-dir 2>/dev/null)" || gd=""
+  br="$(git -C "$ROOT" branch --show-current 2>/dev/null)"
+  head="$(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null)"
+  pass "git — repo recognized; branch=${br:-DETACHED} head=${head:-?}"
+  info "git — absolute-git-dir: ${gd:-UNRESOLVED}"
+  dirty="$(git -C "$ROOT" status --porcelain 2>/dev/null)"
+  if [ -n "$dirty" ]; then
+    warn "git — worktree DIRTY ($(printf '%s\n' "$dirty" | wc -l | tr -d ' ') path(s))"
+  else
+    pass "git — worktree clean"
+  fi
+  [ -e "$gd/rebase-merge" ] || [ -e "$gd/rebase-apply" ] && warn "git — rebase in progress"
+  [ -e "$gd/MERGE_HEAD" ] && warn "git — merge in progress"
+  if [ -e "$gd/index.lock" ]; then
+    warn "git — index.lock present (age $(( $(date +%s) - $(stat -c %Y "$gd/index.lock" 2>/dev/null || date +%s) ))s) — possible concurrent writer or stale lock"
+  fi
+  # writability expectation for the requested mode (observe, do not test-write)
+  case "$MODE" in
+    NORMAL_PROJECT_MUTATION|ZAOS_MAINTENANCE)
+      if [ -w "$gd" ] && [ -w "$ROOT" ]; then
+        pass "git — worktree + git-dir writable (mode $MODE transaction-capable)"
+      else
+        warn "git — mode $MODE needs commit capability but git-dir/worktree not writable"
+      fi ;;
+    READ_ONLY)
+      info "git — READ_ONLY: commit capability not required" ;;
+  esac
+}
+
+# ---- RUNTIME -----------------------------------------------------------
+check_runtime() {
+  local rc="$ROOT/RUNTIME_CONTRACT.md"
+  if [ ! -f "$rc" ]; then info "runtime — no RUNTIME_CONTRACT.md in project (nothing to reconcile)"; return; fi
+  pass "runtime — RUNTIME_CONTRACT.md present"
+  if ! have docker; then skip "runtime — docker absent, cannot observe ACTUAL"; return; fi
+  local running
+  running="$(docker ps --format '{{.Names}}' 2>/dev/null)" || { failc "runtime — docker ps failed"; return; }
+  # Expected: compose-project tokens named in the contract's "PERSISTENT TOPOLOGY" section.
+  local expected
+  expected="$(grep -oE '`[a-z0-9_.-]+`' "$rc" | tr -d '`' | grep -E '(ragflow|compose|widget|es01|mysql|minio|redis)' | sort -u)"
+  local tok present=0 absent=0
+  for tok in $expected; do
+    if printf '%s\n' "$running" | grep -q "$tok"; then present=$((present+1)); else
+      absent=$((absent+1)); info "runtime — contract token not matched in docker ps: $tok (may be disposable/optional)"
+    fi
+  done
+  info "runtime — EXPECTED tokens=$(printf '%s ' $expected | wc -w) matched=$present unmatched=$absent (EXPECTED vs ACTUAL; drift is informational, never repaired)"
+}
+
+# ---- JOB -------------------------------------------------------------
+check_job() {
+  # bounded two-sample stale heuristic over declared job descriptors, if any
+  local jd="$ROOT/runtime/jobs"
+  if [ ! -d "$jd" ]; then info "job — no runtime/jobs descriptors; skipping stale scan"; return; fi
+  local f
+  for f in "$jd"/*.job; do
+    [ -e "$f" ] || { info "job — no *.job descriptors"; return; }
+    # descriptor: PID=<pid> LOG=<path> EXPECT_SECONDS=<n>
+    local pid log exp s1 s2
+    pid="$(grep -oE '^PID=[0-9]+' "$f" | cut -d= -f2)"
+    log="$(grep -oE '^LOG=.*' "$f" | cut -d= -f2-)"
+    exp="$(grep -oE '^EXPECT_SECONDS=[0-9]+' "$f" | cut -d= -f2)"
+    if [ -n "$pid" ] && ! kill -0 "$pid" 2>/dev/null; then
+      warn "job $(basename "$f") — PID $pid gone but descriptor/output remains (stale descriptor)"
+      continue
+    fi
+    if [ -n "$log" ] && [ -f "$log" ]; then
+      s1="$(wc -c < "$log")"; sleep 2; s2="$(wc -c < "$log")"
+      if [ "$s1" = "$s2" ]; then
+        warn "job $(basename "$f") — output unchanged over 2s bounded sample (size=$s1); STALL_SUSPECTED — verify against job clock, do not auto-kill"
+      else
+        pass "job $(basename "$f") — output progressing ($s1 -> $s2 bytes)"
+      fi
+    else
+      info "job $(basename "$f") — no readable LOG to sample"
+    fi
+  done
+}
+
+# ---- RESOURCE ------------------------------------------------------
+check_resource() {
+  if have free; then
+    local avail swap
+    avail="$(free -m | awk '/^Mem:/{print $7}')"
+    swap="$(free -m | awk '/^Swap:/{print $3}')"
+    [ "${avail:-0}" -lt 1024 ] && warn "resource — low RAM headroom: ${avail}MiB available" || pass "resource — RAM available ${avail}MiB"
+    [ "${swap:-0}" -gt 2048 ] && warn "resource — swap in heavy use: ${swap}MiB" || info "resource — swap used ${swap}MiB"
+  else skip "resource — free(1) absent"; fi
+  if have df; then
+    local pct; pct="$(df --output=pcent "$ROOT" 2>/dev/null | tail -1 | tr -dc '0-9')"
+    [ "${pct:-0}" -ge 90 ] && warn "resource — disk ${pct}% full on project root" || pass "resource — disk ${pct:-?}% used on project root"
+  fi
+  if have nvidia-smi; then
+    local vfree; vfree="$(nvidia-smi --query-gpu=memory.free --format=csv,noheader,nounits 2>/dev/null | head -1)"
+    [ -n "$vfree" ] && info "resource — GPU VRAM free ${vfree}MiB" || failc "resource — nvidia-smi present but VRAM query failed"
+  else skip "resource — nvidia-smi absent (no GPU visibility)"; fi
+  local paused
+  paused="$(find "$ROOT" -maxdepth 4 -name 'legacy_paused.txt' 2>/dev/null | head -1)"
+  [ -n "$paused" ] && info "resource — pause record present: ${paused#$ROOT/} (check nothing left paused)"
+}
+
+# ---- SECRET (leak-safe) ------------------------------------------
+scan_secret_file() {
+  # $1 = path. Emits WARN/PASS. NEVER prints file content.
+  local p="$1" name; name="$(basename "$p")"
+  if [ ! -e "$p" ]; then warn "secret $name — declared but MISSING"; return; fi
+  if [ ! -r "$p" ]; then warn "secret $name — present but NOT READABLE"; return; fi
+  if [ ! -s "$p" ]; then warn "secret $name — present but EMPTY"; return; fi
+  # control / ANSI-C escape bytes (exclude \n \t) — count only, never echo
+  local ctl; ctl="$(LC_ALL=C tr -d '\11\12\40-\176' < "$p" | wc -c | tr -d ' ')"
+  if [ "${ctl:-0}" -gt 0 ]; then
+    warn "secret $name — MALFORMED: $ctl control/non-printable byte(s) outside tab/newline (value not shown)"
+  fi
+  # KEY=value syntax on every non-blank, non-comment line — report line numbers only
+  local badlines
+  badlines="$(grep -nvE '^[[:space:]]*($|#|[A-Za-z_][A-Za-z0-9_]*=)' "$p" | cut -d: -f1 | paste -sd, -)"
+  if [ -n "$badlines" ]; then
+    warn "secret $name — non KEY=value syntax at line(s): $badlines (value not shown)"
+  fi
+  if [ "${ctl:-0}" -eq 0 ] && [ -z "$badlines" ]; then
+    pass "secret $name — present, readable, non-empty, clean KEY=value, no control bytes"
+  fi
+}
+check_secret() {
+  local exp
+  for exp in ${SECRETS_SCHEMA:+"$SECRETS_SCHEMA"} "$ROOT/.secrets/EXPECTED.md" "${ZAOS_ROOT:-/home/pc_pusaka/zandi}/.secrets/EXPECTED.md"; do
+    [ -f "$exp" ] || continue
+    pass "secret — schema found: ${exp}"
+    # lines like: - `path/to/file.env` — description   (declared expected secret files)
+    local decl base
+    base="$(dirname "$exp")"
+    decl="$(grep -oE '`[^` ]+\.(env|secret|key|token)`' "$exp" | tr -d '`' | sort -u)"
+    if [ -z "$decl" ]; then info "secret — schema declares no concrete secret file paths"; fi
+    local d full cand
+    for d in $decl; do
+      full=""
+      for cand in "$d" "$base/$d" "$base/../$d" "$ROOT/$d"; do
+        case "$d" in /*) cand="$d" ;; esac
+        [ -e "$cand" ] && { full="$cand"; break; }
+      done
+      [ -z "$full" ] && full="$base/$d"
+      scan_secret_file "$full"
+    done
+    return
+  done
+  info "secret — no .secrets/EXPECTED.md schema (project or workspace); nothing declared to validate"
+}
+
+# --secret-file: leak-safe scan of ONE explicitly named file, then exit.
+if [ -n "$SECRET_FILE" ]; then
+  echo "## SECRET (single file, leak-safe)"
+  scan_secret_file "$SECRET_FILE"
+  echo "# summary: WARN=$WARN FAIL_CHECK=$FAILCHK"
+  [ "$FAILCHK" -gt 0 ] && exit 2
+  [ "$WARN" -gt 0 ] && exit 1
+  exit 0
+fi
+
+# ---- CLOCK --------------------------------------------------------
+check_clock() {
+  if ! have docker; then skip "clock — docker absent"; return; fi
+  local host c cd skew names
+  host="$(date -u +%s)"
+  names="$(docker ps --format '{{.Names}}' 2>/dev/null | head -3)"
+  [ -z "$names" ] && { info "clock — no running containers to compare"; return; }
+  for c in $names; do
+    cd="$(docker exec "$c" date -u +%s 2>/dev/null)" || { info "clock — $c: cannot read container clock (no exec)"; continue; }
+    skew=$(( cd - host )); skew=${skew#-}
+    if [ "$skew" -gt 120 ]; then warn "clock — $c skew ${skew}s vs host (bounded-sample heuristics must use the job's own clock)"
+    else info "clock — $c skew ${skew}s vs host"; fi
+  done
+}
+
+# ---- PROMOTION (WARN-only) --------------------------------------
+# Field evidence showed a naive substring scan false-fires on docstring mentions
+# and on a project's own AST guard-test. So: for Python production sources use a
+# real AST check (flag only imports + non-docstring path-shaped string literals);
+# for other files keep a narrowed grep that skips comments and any file whose
+# path contains "test". The workbench tokens below are the ZAOS-generic
+# workbench→production convention; a project may extend the check with a
+# tools/promotion-allowlist.txt for a documented, hash-locked exception.
+check_promotion() {
+  local allow="$ROOT/tools/promotion-allowlist.txt"
+  local prod hits=0 f
+  for prod in src contracts pipeline app lib; do
+    [ -d "$ROOT/$prod" ] || continue
+    while IFS= read -r f; do
+      [ -f "$allow" ] && grep -qF "$f" "$allow" && continue
+      case "$(basename "$f")" in test_*|*_test.py|conftest.py|test.py) continue ;; esac
+      if [ "${f##*.}" = py ]; then
+        local out
+        out="$(python3 - "$f" <<'PYEOF'
+import ast, sys
+p = sys.argv[1]
+src = open(p, encoding="utf-8").read()
+bad_tokens = ("00_workbench", "workbench/", "Chatbot_Project")
+try:
+    tree = ast.parse(src, filename=p)
+except SyntaxError:
+    # a production file that will not even parse is itself a problem — fall back
+    # to a comment-stripped line scan so a real reference is still caught.
+    for i, ln in enumerate(src.splitlines(), 1):
+        s = ln.lstrip()
+        if s.startswith("#"):
+            continue
+        if any(t in ln for t in bad_tokens):
+            print(f"{p}:{i}: unparseable file references workbench")
+    sys.exit(0)
+except Exception:
+    sys.exit(0)
+doc = set()
+for n in ast.walk(tree):
+    if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+        b = getattr(n, "body", [])
+        if b and isinstance(b[0], ast.Expr) and isinstance(b[0].value, ast.Constant):
+            doc.add(id(b[0].value))
+bad = ("00_workbench", "workbench/", "Chatbot_Project")
+for n in ast.walk(tree):
+    mods = []
+    if isinstance(n, ast.Import):
+        mods = [a.name for a in n.names]
+    elif isinstance(n, ast.ImportFrom):
+        mods = [n.module or ""]
+    for m in mods:
+        if any(x.lower() in m.lower() for x in ("workbench", "chatbot_project")):
+            print(f"{p}:{n.lineno}: import {m}")
+    if isinstance(n, ast.Constant) and isinstance(n.value, str) and id(n) not in doc:
+        if any(x in n.value for x in bad) and ("/" in n.value or n.value.startswith(bad)):
+            print(f"{p}:{n.lineno}: path literal")
+PYEOF
+)"
+        if [ -n "$out" ]; then
+          while IFS= read -r l; do warn "promotion — production Python depends on workbench: $l"; hits=$((hits+1)); done <<<"$out"
+        fi
+      else
+        while IFS= read -r line; do
+          [ -z "$line" ] && continue
+          local body; body="${line#*:*:}"
+          case "$(printf '%s' "$body" | sed 's/^[[:space:]]*//')" in '#'*|'//'*|'*'*) continue ;; esac
+          warn "promotion — production path references workbench: ${line%%:[0-9]*}"; hits=$((hits+1))
+        done < <(grep -nE '00_workbench/|(^|[^a-z])workbench/' "$f" 2>/dev/null)
+      fi
+    done < <(find "$ROOT/$prod" -type f 2>/dev/null)
+  done
+  [ "$hits" = 0 ] && pass "promotion — no production dependency on 00_workbench detected (AST for .py; WARN-only)"
+}
+
+# ---- CAPABILITY (bounded discovery hint) -----------------------
+check_capability() {
+  [ -z "$CAP" ] && { info "capability — pass --capability <name> for a bounded reuse hint"; return; }
+  local found=0
+  if have "$CAP"; then info "capability $CAP — on PATH: $(command -v "$CAP")"; found=1; fi
+  local v
+  for v in /home/pc_pusaka/*/.venv "${ZAOS_ROOT:-/home/pc_pusaka/zandi}"/.runtime/*/*/.venv; do
+    [ -x "$v/bin/$CAP" ] && { info "capability $CAP — in venv: $v/bin/$CAP"; found=1; }
+  done
+  if have docker && docker images --format '{{.Repository}}' 2>/dev/null | grep -qi "$CAP"; then
+    info "capability $CAP — matching docker image present"; found=1
+  fi
+  if have docker && docker ps --format '{{.Names}}' 2>/dev/null | grep -qi "$CAP"; then
+    info "capability $CAP — matching running service"; found=1
+  fi
+  if [ "$found" = 1 ]; then
+    pass "capability $CAP — EXISTING_CAPABILITY_FOUND — verify read-only reuse before any install"
+  else
+    info "capability $CAP — no local prior art found in bounded scan (PATH, known venvs, docker images/services)"
+  fi
+}
+
+# ---- run ---------------------------------------------------------
+# No ERR trap: this script deliberately runs many commands that return non-zero
+# (test expressions, grep -q misses). A real syntax/crash still exits non-zero.
+in_group git       && { echo "## GIT";        check_git; }
+in_group runtime   && { echo "## RUNTIME";    check_runtime; }
+in_group job       && { echo "## JOB";        check_job; }
+in_group resource  && { echo "## RESOURCE";   check_resource; }
+in_group secret    && { echo "## SECRET";     check_secret; }
+in_group clock     && { echo "## CLOCK";      check_clock; }
+in_group promotion && { echo "## PROMOTION";  check_promotion; }
+in_group capability && { echo "## CAPABILITY"; check_capability; }
+
+echo "# summary: WARN=$WARN FAIL_CHECK=$FAILCHK  (exit code is information, never a block)"
+if [ "$FAILCHK" -gt 0 ]; then exit 2; fi
+if [ "$WARN" -gt 0 ]; then exit 1; fi
+exit 0
