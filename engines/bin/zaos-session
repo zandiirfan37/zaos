@@ -7,8 +7,36 @@ ZAOS_ROOT=/home/pc_pusaka/zandi
 RUNTIME_ROOT="$ZAOS_ROOT/.runtime/engines"
 
 usage() {
-  printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
+  printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV|ZAOS_MAINTENANCE} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
   exit 64
+}
+
+# FULL_LOCAL_DEV capability preflight (task-class-scoped, engine-neutral).
+# Fails fast with CAPABILITY_BLOCKED rather than letting an agent discover a
+# missing capability after minutes of work. Required loopback endpoints are
+# the Zandi local dev stack (Postgres, RAGFlow, UAT gateway); override with
+# ZAOS_FULL_LOCAL_DEV_PORTS="host:port,..." if a project needs a different set.
+full_local_dev_preflight() {
+  local root="$1" gd="$2" probe_ports port host testfile hp
+  testfile="$root/.zaos-preflight-$$"
+  if ! ( : > "$testfile" ) 2>/dev/null; then
+    printf 'CAPABILITY_BLOCKED: filesystem write — %s is not writable\n' "$root" >&2
+    exit 75
+  fi
+  rm -f "$testfile"
+  if [ ! -w "$gd" ]; then
+    printf 'CAPABILITY_BLOCKED: git index write — %s is not writable\n' "$gd" >&2
+    exit 75
+  fi
+  probe_ports="${ZAOS_FULL_LOCAL_DEV_PORTS:-127.0.0.1:5442,127.0.0.1:19381,127.0.0.1:8090}"
+  local IFS=,
+  for hp in $probe_ports; do
+    host="${hp%%:*}"; port="${hp##*:}"
+    if ! timeout 3 bash -c "cat < /dev/null > /dev/tcp/$host/$port" 2>/dev/null; then
+      printf 'CAPABILITY_BLOCKED: loopback service unreachable — %s\n' "$hp" >&2
+      exit 75
+    fi
+  done
 }
 
 [ "$#" -ge 3 ] || usage
@@ -29,13 +57,14 @@ git_dir=$(realpath -e "$git_dir")
 case "$mode" in
   READ_ONLY)
     ;;
-  NORMAL_MUTATIVE_PROJECT)
+  NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV)
     case "$project_root/" in
       "$ZAOS_ROOT/.agents/"*)
         printf '%s\n' "zaos-session: use ZAOS_MAINTENANCE for .agents repositories" >&2
         exit 65
         ;;
     esac
+    [ "$mode" = "FULL_LOCAL_DEV" ] && full_local_dev_preflight "$project_root" "$git_dir"
     ;;
   ZAOS_MAINTENANCE)
     case "$project_root/" in
@@ -61,6 +90,16 @@ case "$engine" in
         # worktree or gitdir-indirection target.
         exec env CODEX_HOME="$RUNTIME_ROOT/codex" codex --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" "$@"
         ;;
+      FULL_LOCAL_DEV)
+        # Same filesystem/git scope as NORMAL_MUTATIVE_PROJECT. Codex's
+        # workspace-write sandbox additionally denies ALL network syscalls
+        # (loopback included) unless network_access is explicitly set; this
+        # is the one extra grant FULL_LOCAL_DEV needs over the normal
+        # project route. Filesystem containment (writable_roots) is
+        # unaffected by this key — verified: writes outside the workdir
+        # still fail read-only under this override.
+        exec env CODEX_HOME="$RUNTIME_ROOT/codex" codex --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
+        ;;
     esac
     ;;
   claude)
@@ -69,9 +108,11 @@ case "$engine" in
       READ_ONLY)
         exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode plan --permission-prompts none "$@"
         ;;
-      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE)
+      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE|FULL_LOCAL_DEV)
         # Claude's supported path scopes the session to its cwd plus this
-        # resolved Git directory; do not use bypassPermissions.
+        # resolved Git directory; do not use bypassPermissions. Claude's
+        # sandbox does not restrict network syscalls in any mode, so no
+        # extra grant is needed here for loopback access.
         exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode auto --permission-prompts none --add-dir "$git_dir" "$@"
         ;;
     esac
