@@ -194,6 +194,19 @@ Read `CURRENT_STATE.md` only when workspace-level state matters. Do not load eve
 
 ## Verification and escalation
 
+### Remote Git capability
+
+Remote Git and GitHub tasks (`fetch`, `pull`, `push`, remote branch inspection,
+PR operations, and repository sync) require `ZAOS_REMOTE_GIT` or
+`ZAOS_EXTERNAL_PUBLISH`. In a normal session, do not spend meaningful time
+attempting them: stop early with `CAPABILITY_BLOCKED: ZAOS_REMOTE_GIT` and give
+the exact relaunch command, for example `zaos codex <project> --remote-git` or
+`zaos claude <project> --remote-git`. Network/capability blocking is distinct
+from authentication: report `AUTH_FAILED` only when a remote-capable session
+actually reaches an authentication failure. Public repository creation,
+visibility changes, releases, and other external publication remain
+`ZAOS_EXTERNAL_PUBLISH`, not remote-Git work.
+
 Verification is proportional: a small text edit needs focused inspection; a behavioral change needs relevant tests; high-risk work needs stronger evidence. Never call a result successful solely because a command exited zero—inspect the meaningful result.
 
 Escalate before destructive actions, remote writes, deployments, credentials or secrets changes, irreversible migrations, material scope expansion, or a product/scientific decision. Escalate also when required evidence is missing, constraints conflict, or progress depends on a Human Lead choice. Do not escalate merely because work is difficult when safe, bounded investigation can resolve it.

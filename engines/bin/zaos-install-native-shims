@@ -88,8 +88,19 @@ EOF
   chmod +x "$path"
 }
 
+install_admin_entrypoint() {
+  local path="$BIN_DIR/zaos" source="$AGENTS_ROOT/engines/bin/zaos"
+  if [ ! -e "$path" ] || [ "$(readlink -f "$path" 2>/dev/null || true)" = "$source" ]; then
+    ln -sfn "$source" "$path"
+    printf 'installed admin entrypoint: %s\n' "$path"
+  else
+    printf 'zaos-install-native-shims: existing %s was not changed\n' "$path" >&2
+  fi
+}
+
 do_install() {
   mkdir -p "$BIN_DIR" "$REAL_BIN_DIR" "$CONFIG_DIR"
+  install_admin_entrypoint
 
   for name in codex claude; do
     local_path="$BIN_DIR/$name"
@@ -131,6 +142,10 @@ EOF
 }
 
 do_uninstall() {
+  if [ "$(readlink -f "$BIN_DIR/zaos" 2>/dev/null || true)" = "$AGENTS_ROOT/engines/bin/zaos" ]; then
+    rm -f "$BIN_DIR/zaos"
+    printf 'removed admin entrypoint: %s\n' "$BIN_DIR/zaos"
+  fi
   for name in codex claude; do
     local_path="$BIN_DIR/$name"
     if ! is_shim "$local_path"; then

@@ -17,13 +17,6 @@ ZAOS_WORKSPACE_ROOT="$workspace"
 ZAOS_FRAMEWORK_VERSION="$(tr -d '[:space:]' < "$ROOT/VERSION")"
 ZAOS_REAL_BIN_DIR="${ZAOS_REAL_BIN_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/zaos/real-bin}"
 EOF
-bin_dir="${ZAOS_SHIM_BIN_DIR:-$HOME/.local/bin}"
-mkdir -p "$bin_dir"
-if [ ! -e "$bin_dir/zaos" ] || [ "$(readlink -f "$bin_dir/zaos" 2>/dev/null || true)" = "$ROOT/engines/bin/zaos" ]; then
-  ln -sfn "$ROOT/engines/bin/zaos" "$bin_dir/zaos"
-else
-  echo "WARN: existing $bin_dir/zaos was not changed; use $ROOT/engines/bin/zaos directly." >&2
-fi
 "$ROOT/engines/bin/zaos-install-native-shims" install
 "$ROOT/engines/bin/zaos-engines" status
 set +e

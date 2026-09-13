@@ -29,8 +29,13 @@ plan=$("$LAUNCHER" terra "$P" --local-dev --print-plan)
 expect "$plan" "ZAOS_CAPABILITY=FULL_LOCAL_DEV"
 plan=$("$LAUNCHER" codex "$P" --external-publish --print-plan)
 expect "$plan" "ZAOS_CAPABILITY=ZAOS_EXTERNAL_PUBLISH"
+plan=$("$LAUNCHER" codex "$P" --remote-git --print-plan)
+expect "$plan" "ZAOS_CAPABILITY=ZAOS_REMOTE_GIT"
 if "$LAUNCHER" codex "$P" --local-dev --external-publish --print-plan >/dev/null 2>&1; then
   fail "mutually exclusive elevated capabilities were accepted"
+fi
+if "$LAUNCHER" codex "$P" --remote-git --external-publish --print-plan >/dev/null 2>&1; then
+  fail "remote Git and publication capabilities were accepted together"
 fi
 
 # Project/task capability declaration: a project can ask for FULL_LOCAL_DEV
@@ -50,17 +55,23 @@ BIN="$TMP/bin"; mkdir "$BIN"
 for name in codex claude; do
   cat > "$BIN/$name" <<'EOF'
 #!/usr/bin/env bash
-printf '%s\n' "$0 $*" > "$ZAOS_CAPTURE"
+printf '%s\n' "$0 $* capability=$ZAOS_CAPABILITY" > "$ZAOS_CAPTURE"
 EOF
   chmod +x "$BIN/$name"
 done
 capture="$TMP/capture"
 PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" terra "$P" -- smoke
 got=$(<"$capture"); expect "$got" "codex --sandbox workspace-write -C $P"; expect "$got" "--add-dir $P/.git smoke"
+expect "$got" "capability=NORMAL_MUTATIVE_PROJECT"
 PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" claude "$P" -- smoke
 got=$(<"$capture"); expect "$got" "claude --permission-mode auto"; expect "$got" "--add-dir $P/.git smoke"
+expect "$got" "capability=NORMAL_MUTATIVE_PROJECT"
+PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" claude "$P" --remote-git -- smoke
+got=$(<"$capture"); expect "$got" "claude --permission-mode auto"; expect "$got" "--add-dir $P/.git smoke"; expect "$got" "capability=ZAOS_REMOTE_GIT"
+PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" codex "$P" --remote-git -- smoke
+got=$(<"$capture"); expect "$got" "codex --sandbox workspace-write -C $P"; expect "$got" "sandbox_workspace_write.network_access=true"; expect "$got" "capability=ZAOS_REMOTE_GIT"
 PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" codex "$P" --external-publish -- smoke
-got=$(<"$capture"); expect "$got" "sandbox_workspace_write.network_access=true"
+got=$(<"$capture"); expect "$got" "sandbox_workspace_write.network_access=true"; expect "$got" "capability=ZAOS_EXTERNAL_PUBLISH"
 
 # This execution environment forbids socket syscalls, so it cannot host the
 # loopback service needed to pass the real preflight. Verify public selection
@@ -74,7 +85,7 @@ EOF
 chmod +x "$fake_session"
 ZAOS_SESSION_BIN="$fake_session" ZAOS_CAPTURE="$capture" "$LAUNCHER" terra "$P" --local-dev -- smoke
 got=$(<"$capture"); expect "$got" "FULL_LOCAL_DEV codex $P -- smoke"
-if PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" terra "$P" --local-dev -- smoke 2>"$TMP/full-local-dev.err"; then
+if PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" ZAOS_FULL_LOCAL_DEV_PORTS=127.0.0.1:1 "$LAUNCHER" terra "$P" --local-dev -- smoke 2>"$TMP/full-local-dev.err"; then
   fail "FULL_LOCAL_DEV unexpectedly bypassed loopback preflight"
 fi
 expect "$(<"$TMP/full-local-dev.err")" "CAPABILITY_BLOCKED: loopback service unreachable"
@@ -83,4 +94,5 @@ expect "$(<"$TMP/full-local-dev.err")" "CAPABILITY_BLOCKED: loopback service unr
 PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$SESSION" ZAOS_MAINTENANCE codex "$ROOT" -- smoke
 got=$(<"$capture"); expect "$got" "codex --sandbox workspace-write -C $ROOT"
 [[ "$got" != *"network_access=true"* ]] || fail "ordinary maintenance unexpectedly has network egress"
+expect "$got" "capability=ZAOS_MAINTENANCE"
 printf 'PASS: zaos public launcher discovery, profiles, engine routes, and internal session compatibility\n'

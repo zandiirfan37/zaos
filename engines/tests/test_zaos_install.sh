@@ -18,6 +18,8 @@ export PATH="$BIN:$PATH"
 "$ROOT/install.sh" --workspace "$TMP/workspace" >/dev/null
 "$ROOT/install.sh" --workspace "$TMP/workspace" >/dev/null
 [ -x "$BIN/zaos" ] || { echo 'FAIL: zaos command absent'; exit 1; }
+[ "$(readlink -f "$BIN/zaos")" = "$ROOT/engines/bin/zaos" ] || { echo 'FAIL: zaos admin entrypoint is incorrect'; exit 1; }
+env -i HOME="$HOME" PATH="$BIN:/usr/bin:/bin" "$BIN/zaos" --help >/dev/null 2>&1 || { echo 'FAIL: zaos absent from fresh host PATH'; exit 1; }
 [ -x "$HOME/.local/share/zaos/real-bin/codex" ] || { echo 'FAIL: raw codex absent'; exit 1; }
 grep -qF "ZAOS_WORKSPACE_ROOT=\"$TMP/workspace\"" "$HOME/.config/zaos-native/config.sh" || { echo 'FAIL: workspace config absent'; exit 1; }
 plan=$(cd "$TMP/workspace/project" && "$BIN/zaos" codex --print-plan)

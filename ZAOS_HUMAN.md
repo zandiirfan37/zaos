@@ -10,6 +10,10 @@ Install once from the framework checkout:
 
 Then enter a Git project inside that workspace and run `codex` or `claude`. ZAOS handles project discovery and engine-specific sandbox details. A normal project gets normal mutative capability; a project declares `FULL_LOCAL_DEV` in `.zaos-capability` only when its task needs local services.
 
+For remote Git/GitHub work, use `zaos codex <project> --remote-git` or
+`zaos claude <project> --remote-git`. Public releases, repository creation, and
+visibility changes remain the separate `--external-publish` capability.
+
 ## Your role
 
 You decide correctness, usefulness, product feel, and `HUMAN_PASS`. An agent can report `ENGINEERING_PASS`, `PARTIAL`, or `BLOCKED`; it cannot replace your product audit. Audit early: report the input, what happened, what you expected, and acceptance constraints. The agent traces the first divergence and makes the smallest general repair.

@@ -36,7 +36,7 @@ resolve_engine_bin() {
 }
 
 usage() {
-  printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV|ZAOS_MAINTENANCE|ZAOS_EXTERNAL_PUBLISH} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
+  printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV|ZAOS_REMOTE_GIT|ZAOS_MAINTENANCE|ZAOS_EXTERNAL_PUBLISH} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
   exit 64
 }
 
@@ -102,14 +102,18 @@ git_dir=$(realpath -e "$git_dir")
 case "$mode" in
   READ_ONLY)
     ;;
-  NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV)
+  NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV|ZAOS_REMOTE_GIT)
     case "$project_root/" in
       "$ZAOS_ROOT/"*)
         printf '%s\n' "zaos-session: use ZAOS_MAINTENANCE for .agents repositories" >&2
         exit 65
         ;;
     esac
-    [ "$mode" = "FULL_LOCAL_DEV" ] && full_local_dev_preflight "$project_root" "$git_dir"
+    if [ "$mode" = "FULL_LOCAL_DEV" ]; then
+      full_local_dev_preflight "$project_root" "$git_dir"
+    elif [ "$mode" = "ZAOS_REMOTE_GIT" ]; then
+      external_publish_preflight "$project_root" "$git_dir"
+    fi
     ;;
   ZAOS_MAINTENANCE)
     case "$project_root/" in
@@ -131,13 +135,13 @@ case "$engine" in
     codex_bin=$(resolve_engine_bin codex)
     case "$mode" in
       READ_ONLY)
-        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox read-only -C "$project_root" "$@"
+        exec env ZAOS_CAPABILITY="$mode" CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox read-only -C "$project_root" "$@"
         ;;
       NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE)
         # Codex excludes Git metadata from workspace-write.  The CLI-supported
         # add-dir grants only the resolved metadata directory, including a
         # worktree or gitdir-indirection target.
-        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" "$@"
+        exec env ZAOS_CAPABILITY="$mode" CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" "$@"
         ;;
       FULL_LOCAL_DEV)
         # Same filesystem/git scope as NORMAL_MUTATIVE_PROJECT. Codex's
@@ -147,12 +151,17 @@ case "$engine" in
         # project route. Filesystem containment (writable_roots) is
         # unaffected by this key — verified: writes outside the workdir
         # still fail read-only under this override.
-        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
+        exec env ZAOS_CAPABILITY="$mode" CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
+        ;;
+      ZAOS_REMOTE_GIT)
+        # Explicit remote-Git egress; retain the normal project and resolved
+        # Git-metadata containment. This is not a publication grant.
+        exec env ZAOS_CAPABILITY="$mode" CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
         ;;
       ZAOS_EXTERNAL_PUBLISH)
         # Explicit release/publication egress; filesystem scope remains the
         # project plus its Git metadata exactly as maintenance does.
-        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
+        exec env ZAOS_CAPABILITY="$mode" CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
         ;;
     esac
     ;;
@@ -161,14 +170,14 @@ case "$engine" in
     cd "$project_root"
     case "$mode" in
       READ_ONLY)
-        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" "$claude_bin" --permission-mode plan --permission-prompts none "$@"
+        exec env ZAOS_CAPABILITY="$mode" CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" "$claude_bin" --permission-mode plan --permission-prompts none "$@"
         ;;
-      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE|FULL_LOCAL_DEV|ZAOS_EXTERNAL_PUBLISH)
+      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE|FULL_LOCAL_DEV|ZAOS_REMOTE_GIT|ZAOS_EXTERNAL_PUBLISH)
         # Claude's supported path scopes the session to its cwd plus this
         # resolved Git directory; do not use bypassPermissions. Claude's
         # sandbox does not restrict network syscalls in any mode, so no
         # extra grant is needed here for loopback access.
-        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" "$claude_bin" --permission-mode auto --permission-prompts none --add-dir "$git_dir" "$@"
+        exec env ZAOS_CAPABILITY="$mode" CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" "$claude_bin" --permission-mode auto --permission-prompts none --add-dir "$git_dir" "$@"
         ;;
     esac
     ;;

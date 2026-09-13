@@ -6,7 +6,7 @@ class, capability, and public engine name before delegating to
 both the Git worktree and its actual metadata directory with Git; it never
 assumes `.git` is a directory.
 
-Admin/debug usage is `zaos [codex|claude] [PROJECT_PATH] [--local-dev] [-- ARGS]`.
+Admin/debug usage is `zaos [codex|claude] [PROJECT_PATH] [--local-dev|--remote-git|--external-publish] [-- ARGS]`.
 The current worktree is used by default; the deliberately non-Git workspace
 root routes to `.agents` with `ZAOS_MAINTENANCE`. Framework work always uses
 `ZAOS_MAINTENANCE`. Public `codex` maps to the internal Codex adapter, without
@@ -83,7 +83,9 @@ capability file.
 | `READ_ONLY` | `zaos-session READ_ONLY <engine> <repo>` | No project mutation. |
 | `NORMAL_MUTATIVE_PROJECT` | `zaos-session NORMAL_MUTATIVE_PROJECT <engine> <project-repo>` | Project worktree and its resolved Git metadata only. `.agents` is rejected. No loopback network. |
 | `FULL_LOCAL_DEV` | `zaos-session FULL_LOCAL_DEV <engine> <project-repo>` | Same scope as `NORMAL_MUTATIVE_PROJECT`, plus loopback network access, for the task class that needs live local-service verification (DB/RAGFlow/UAT). Runs a capability preflight before launch and fails fast with `CAPABILITY_BLOCKED` rather than letting an agent discover a missing capability after minutes of work. `.agents` is rejected. |
+| `ZAOS_REMOTE_GIT` | `zaos-session ZAOS_REMOTE_GIT <engine> <project-repo>` | Normal project worktree and resolved Git metadata only, with outbound network for remote Git/GitHub sync, inspection, and PR operations. It does not authorize public/external publication. |
 | `ZAOS_MAINTENANCE` | `zaos-session ZAOS_MAINTENANCE <engine> <.agents-repo>` | The explicitly selected `.agents` repository and its resolved Git metadata only. |
+| `ZAOS_EXTERNAL_PUBLISH` | `zaos-session ZAOS_EXTERNAL_PUBLISH <engine> <project-repo>` | Explicit publication/release work with the same contained project and Git metadata scope plus outbound network. |
 
 ## FULL_LOCAL_DEV: the network-parity gap
 

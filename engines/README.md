@@ -64,7 +64,9 @@ Capability selection is task-class-driven, not flag-driven: `.agents` always
 gets `ZAOS_MAINTENANCE`; a project opts into `FULL_LOCAL_DEV` by declaring it
 in its own `.zaos-capability` file (no project-name hardcoding); everything
 else gets the normal mutative profile. `zaos ... --local-dev` remains an
-explicit manual override for the admin path.
+explicit manual override for the admin path. Remote Git/GitHub operations use
+the separate explicit `zaos ... --remote-git` profile; public/external release
+work uses `zaos ... --external-publish`.
 
 ## Resource policy
 

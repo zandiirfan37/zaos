@@ -20,6 +20,9 @@ standalone history was merged in commit `a870c4e`.
 - `ZAOS_EXTERNAL_PUBLISH` is an explicit admin capability for authorized
   publication tasks only; it adds outbound network access without making
   ordinary maintenance network-enabled.
+- `ZAOS_REMOTE_GIT` is the distinct explicit admin capability for remote
+  Git/GitHub synchronization and PR operations; it retains normal project and
+  Git metadata containment without granting external publication.
 
 ## Authority
 

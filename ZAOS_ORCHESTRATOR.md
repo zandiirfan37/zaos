@@ -4,11 +4,20 @@
 
 Primary human commands are `codex` and `claude`. Scoped shims route only in the configured ZAOS workspace and framework checkout; outside, they execute the preserved vendor command. Flow: native command → workspace/project discovery → task capability → engine adapter → real vendor binary. Raw engines remain reachable. Capability is task/project declared, never implied by launch. Engine differences stay in adapters.
 
-Ordinary maintenance has no outbound-network grant. An explicitly authorized
-publication task may use the admin route `zaos codex --external-publish`; it
-adds outbound access while retaining the same workspace/Git filesystem scope.
-It is not a default native-command capability and is never selected by project
-name.
+Ordinary maintenance has no outbound-network grant. Remote Git/GitHub work
+(`fetch`, `pull`, `push`, remote inspection, sync, and PR operations) requires
+the explicit admin route `zaos codex <project> --remote-git` (or `claude`). It
+adds outbound access while retaining only the project and resolved Git metadata
+scope. Public/external publication is separate and requires
+`zaos codex <project> --external-publish`; it is never selected by project name.
+
+When a task needs remote Git/GitHub and `ZAOS_CAPABILITY` is not
+`ZAOS_REMOTE_GIT` or `ZAOS_EXTERNAL_PUBLISH`, stop before attempting a remote
+operation. Return `CAPABILITY_BLOCKED: ZAOS_REMOTE_GIT`, state that remote
+Git/network access is required, and give the exact relaunch command for the
+active engine and project. Do not diagnose authentication from a
+network/capability-blocked session; report `AUTH_FAILED` only after a
+remote-capable session reaches an authentication failure.
 
 ## Operating doctrine
 
