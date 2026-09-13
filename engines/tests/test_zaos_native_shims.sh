@@ -58,6 +58,11 @@ cp "$INSTALLER" "$FAKE_AGENTS/engines/bin/zaos-install-native-shims"
 chmod +x "$FAKE_AGENTS/engines/bin/zaos-install-native-shims"
 "$FAKE_AGENTS/engines/bin/zaos-install-native-shims" install
 
+# A public clone can live separately from the managed workspace.  The shim
+# must honor the installer-configured workspace instead of assuming the
+# checkout parent is the workspace.
+sed -i "s|^ZAOS_WORKSPACE_ROOT=.*|ZAOS_WORKSPACE_ROOT=\"$FAKE_WORKSPACE\"|" "$CONFIG_DIR/config.sh"
+
 [ -x "$BIN_DIR/codex" ] || fail "codex shim missing after install"
 [ -x "$BIN_DIR/claude" ] || fail "claude shim missing after install"
 [ -x "$REAL_BIN_DIR/codex" ] || fail "real codex binary not preserved"

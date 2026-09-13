@@ -71,7 +71,17 @@ if [ -z "\$agents_root" ] || [ ! -x "\$agents_root/engines/bin/zaos" ] || [ ! -x
   exec "\$real_bin" "\$@"
 fi
 
-workspace_root=\$(cd "\$agents_root/.." 2>/dev/null && pwd -P) || exec "\$real_bin" "\$@"
+# install.sh records the user's managed workspace independently from the
+# framework checkout.  A cloned framework may live anywhere, so deriving the
+# workspace from agents_root's parent would route the wrong tree.
+workspace_root="\${ZAOS_WORKSPACE_ROOT:-}"
+if [ -n "\$workspace_root" ] && [ -d "\$workspace_root" ]; then
+  workspace_root=\$(cd "\$workspace_root" && pwd -P) || exec "\$real_bin" "\$@"
+else
+  # Backward-compatible layout for pre-v2 configurations that had only the
+  # conventional <workspace>/.agents checkout and no workspace setting.
+  workspace_root=\$(cd "\$agents_root/.." 2>/dev/null && pwd -P) || exec "\$real_bin" "\$@"
+fi
 cwd=\$(pwd -P) || exec "\$real_bin" "\$@"
 
 case "\$cwd/" in
