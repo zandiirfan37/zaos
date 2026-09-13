@@ -29,11 +29,19 @@ Claude's normal launches use canonical-path, task-matched lazy routing; do not
 copy or symlink skills into either engine tree. `--plugin-dir` is an optional
 future per-session capability, not the default architecture.
 
-## Session capability
+## Human launcher and session capability
 
-Use [`bin/zaos-session`](bin/zaos-session) to select capability before a new
-engine session. Its three small modes and the exact Codex/Claude invocation
-routes are documented in [`SESSION_PROVISIONING.md`](SESSION_PROVISIONING.md).
+`bin/zaos` is the one human-facing launcher. It discovers the current Git
+worktree (or accepts `zaos terra <project-path>`), chooses a task-class
+capability, and maps public engine names `terra` / `claude` to the internal
+adapter. At the non-Git workspace root it intentionally enters `.agents`
+framework maintenance rather than exposing a Git error. `--local-dev` selects
+the bounded local-service capability; the default project route has no added
+network grant.
+
+`bin/zaos-session` remains internal infrastructure: it enforces the selected
+capability and performs the exact Codex/Claude invocation. Its capability
+details are documented in [`SESSION_PROVISIONING.md`](SESSION_PROVISIONING.md).
 
 ## Resource policy
 

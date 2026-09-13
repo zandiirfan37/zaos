@@ -3,7 +3,11 @@
 # not a second permission framework.
 set -euo pipefail
 
-ZAOS_ROOT=/home/pc_pusaka/zandi
+# Resolve from this tracked script so a relocated/copied ZAOS workspace keeps
+# working.  The public launcher uses the same discovery; this internal router
+# deliberately retains no machine-specific workspace path.
+SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)
+ZAOS_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd -P)
 RUNTIME_ROOT="$ZAOS_ROOT/.runtime/engines"
 
 usage() {

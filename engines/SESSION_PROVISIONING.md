@@ -1,8 +1,18 @@
 # Session provisioning
 
-`bin/zaos-session` is the canonical local launcher for bounded ZAOS sessions.
-It resolves both the Git worktree and its actual metadata directory with Git;
-it never assumes `.git` is a directory.
+`bin/zaos` is the canonical human-facing local launcher. It resolves project
+context, task class, capability, and public engine name before delegating to
+`bin/zaos-session`. `zaos-session` is internal infrastructure: it resolves
+both the Git worktree and its actual metadata directory with Git; it never
+assumes `.git` is a directory.
+
+Public usage is `zaos [terra|claude] [PROJECT_PATH] [--local-dev] [-- ARGS]`.
+The current worktree is used by default; the deliberately non-Git workspace
+root routes to `.agents` with `ZAOS_MAINTENANCE`. `--local-dev` is the human
+task-class request for `FULL_LOCAL_DEV`; ordinary project work uses
+`NORMAL_MUTATIVE_PROJECT`. Framework work always uses `ZAOS_MAINTENANCE`.
+Public `terra` maps to the internal Codex adapter, without exposing that
+mapping in normal UX.
 
 | Capability | Command shape | Writable scope |
 | --- | --- | --- |

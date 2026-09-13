@@ -19,3 +19,15 @@ Runtime engine state belongs in `.runtime/engines/`. Projects belong in
 **Principles:** one owner per concept; minimum sufficient context; lazy
 capability loading; no blind clones; no empty structure without a concept that
 already owns it; complexity must pay rent.
+
+## Human launcher
+
+Install the tracked human-facing launcher into the user-local PATH with:
+
+```bash
+ln -sfn /path/to/zandi/.agents/engines/bin/zaos ~/.local/bin/zaos
+```
+
+Then use `zaos`, `zaos terra`, or `zaos claude` from a project worktree. See
+[`engines/SESSION_PROVISIONING.md`](engines/SESSION_PROVISIONING.md) for the
+small public syntax and capability behavior.
