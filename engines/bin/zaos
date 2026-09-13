@@ -78,10 +78,30 @@ else
   exit 65
 fi
 
+# Canonical, opt-in per-project capability declaration: a project that needs
+# FULL_LOCAL_DEV (DB/RAGFlow/UAT-class local services) says so itself in
+# <project-root>/.zaos-capability (first non-blank, non-comment line, case
+# insensitive). This lets FULL_LOCAL_DEV be requested from project/task
+# metadata instead of a human-remembered flag, without hardcoding any project
+# name here. Absence means no elevated capability.
+declared_capability() {
+  local root=$1 f="$1/.zaos-capability" line
+  [ -f "$f" ] || return 0
+  while IFS= read -r line || [ -n "$line" ]; do
+    line=${line%%#*}
+    line=$(printf '%s' "$line" | tr -d '[:space:]')
+    [ -n "$line" ] || continue
+    printf '%s' "$line" | tr '[:lower:]' '[:upper:]'
+    return 0
+  done < "$f"
+}
+
 agents_repo=$(git -C "$AGENTS_ROOT" rev-parse --show-toplevel 2>/dev/null || true)
 if [ "$project_root" = "$agents_repo" ]; then
   mode=ZAOS_MAINTENANCE
 elif [ "$local_dev" = 1 ]; then
+  mode=FULL_LOCAL_DEV
+elif [ "$(declared_capability "$project_root")" = "FULL_LOCAL_DEV" ]; then
   mode=FULL_LOCAL_DEV
 else
   mode=NORMAL_MUTATIVE_PROJECT

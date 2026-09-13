@@ -1,18 +1,82 @@
 # Session provisioning
 
-`bin/zaos` is the canonical human-facing local launcher. It resolves project
-context, task class, capability, and public engine name before delegating to
+`bin/zaos` is the canonical local launcher. It resolves project context, task
+class, capability, and public engine name before delegating to
 `bin/zaos-session`. `zaos-session` is internal infrastructure: it resolves
 both the Git worktree and its actual metadata directory with Git; it never
 assumes `.git` is a directory.
 
 Public usage is `zaos [terra|claude] [PROJECT_PATH] [--local-dev] [-- ARGS]`.
 The current worktree is used by default; the deliberately non-Git workspace
-root routes to `.agents` with `ZAOS_MAINTENANCE`. `--local-dev` is the human
-task-class request for `FULL_LOCAL_DEV`; ordinary project work uses
-`NORMAL_MUTATIVE_PROJECT`. Framework work always uses `ZAOS_MAINTENANCE`.
-Public `terra` maps to the internal Codex adapter, without exposing that
-mapping in normal UX.
+root routes to `.agents` with `ZAOS_MAINTENANCE`. Framework work always uses
+`ZAOS_MAINTENANCE`. Public `terra` maps to the internal Codex adapter, without
+exposing that mapping in normal UX. This remains the explicit admin/debug
+interface; see `zaos-install-native-shims` below for the primary human UX.
+
+## Native-command transparency (`zaos-install-native-shims`)
+
+Human Lead decision, 2026-09-13 (supersedes the same day's earlier "public
+routes are `terra`/`claude` verbs" decision): the primary human UX is the
+native commands `codex` and `claude` themselves, scoped so ZAOS is invisible
+inside its own workspace and completely absent outside it.
+
+`bin/zaos-install-native-shims install` moves the vendor `codex`/`claude`
+entries found on `PATH` (normally `~/.local/bin/{codex,claude}`, plain
+symlinks from each vendor's own installer) to a stable, non-PATH location —
+`~/.local/lib/zaos-real-bin/{codex,claude}` — and writes a small shim script
+back at the original names. It records the discovered `.agents` root (this
+tree's own location, not a hardcoded absolute string) in
+`~/.config/zaos-native/config.sh`, so the workspace boundary is configurable
+and survives a relocated checkout without an install-time constant baked into
+every shim copy.
+
+At invocation, each shim:
+
+1. If `ZAOS_INTERNAL_EXEC` is set, `exec`s the preserved real binary
+   immediately — no routing, no `.agents`/`zaos` lookup at all.
+2. Otherwise resolves the workspace root as the parent of the configured
+   `.agents` root. If configuration is missing, unreadable, or `zaos` isn't
+   executable there, it fails open to the real binary — a broken or absent
+   ZAOS install can never block the native command.
+3. If the current directory is not inside that workspace root, `exec`s the
+   real binary directly — outside the workspace the command is
+   byte-for-byte the vendor binary.
+4. Otherwise `exec`s `env ZAOS_INTERNAL_EXEC=1 zaos <verb> -- "$@"`, i.e. the
+   existing `bin/zaos` front door, with the same project discovery and
+   capability selection it has always done.
+
+**Recursion guard.** Once shims are installed, `codex`/`claude` on `PATH`
+resolve to the shim, not the vendor binary — so `zaos-session`'s own
+`exec ... codex ...` / `exec ... claude ...` can no longer rely on a bare
+name via `PATH` without looping back into the shim. `zaos-session` instead
+resolves `${ZAOS_REAL_BIN_DIR:-$HOME/.local/lib/zaos-real-bin}/<engine>` and
+execs that absolute path when it exists, falling back to the bare name only
+when no such copy exists (unshimmed hosts, tests). This makes the loop
+structurally impossible rather than relying solely on the `ZAOS_INTERNAL_EXEC`
+marker, which remains as an independent, redundant guard and as an explicit
+escape hatch for scripts that already invoke `codex`/`claude` by name and want
+to skip routing on purpose.
+
+**Escape hatches.** The preserved real binaries are always directly reachable
+at `~/.local/lib/zaos-real-bin/{codex,claude}`, regardless of whether the ZAOS
+routing layer is healthy. `zaos-install-native-shims uninstall` restores the
+original `~/.local/bin` entries and removes the shims; `status` reports the
+current state. Nothing here touches vendor install locations
+(`~/.codex/...`, `~/.local/share/claude/...`) or requires privileged access.
+
+## Capability selection: `.local-dev` and `.zaos-capability`
+
+`--local-dev` on `zaos` remains an explicit manual request for
+`FULL_LOCAL_DEV`, kept for the admin/debug path. The native-command UX does
+not expose it: a project instead declares the capability itself, in its own
+`<project-root>/.zaos-capability` (first non-blank, non-comment line, case
+insensitive — currently the only recognized value is `FULL_LOCAL_DEV`).
+Absence means the normal mutative profile. This is deliberately not
+project-name-keyed logic in the launcher; a project earns `FULL_LOCAL_DEV` by
+declaring its own local-runtime requirement, the same way whether reached via
+`codex`/`claude` or an explicit `zaos ... --local-dev`. `.agents` itself is
+unaffected — it always resolves to `ZAOS_MAINTENANCE` regardless of any
+capability file.
 
 | Capability | Command shape | Writable scope |
 | --- | --- | --- |

@@ -10,6 +10,21 @@ SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)
 ZAOS_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd -P)
 RUNTIME_ROOT="$ZAOS_ROOT/.runtime/engines"
 
+# Recursion guard: when the native-command shims are installed (see
+# bin/zaos-install-native-shims), the plain names "codex"/"claude" on PATH
+# resolve back to the shim, not the vendor binary. Prefer the shim's stable
+# copy of the real binary so this router can never call itself. Falls back to
+# PATH resolution (unshimmed environments, tests) when that copy is absent.
+real_bin_dir="${ZAOS_REAL_BIN_DIR:-$HOME/.local/lib/zaos-real-bin}"
+resolve_engine_bin() {
+  local name=$1
+  if [ -x "$real_bin_dir/$name" ]; then
+    printf '%s' "$real_bin_dir/$name"
+  else
+    printf '%s' "$name"
+  fi
+}
+
 usage() {
   printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV|ZAOS_MAINTENANCE} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
   exit 64
@@ -84,15 +99,16 @@ esac
 
 case "$engine" in
   codex)
+    codex_bin=$(resolve_engine_bin codex)
     case "$mode" in
       READ_ONLY)
-        exec env CODEX_HOME="$RUNTIME_ROOT/codex" codex --sandbox read-only -C "$project_root" "$@"
+        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox read-only -C "$project_root" "$@"
         ;;
       NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE)
         # Codex excludes Git metadata from workspace-write.  The CLI-supported
         # add-dir grants only the resolved metadata directory, including a
         # worktree or gitdir-indirection target.
-        exec env CODEX_HOME="$RUNTIME_ROOT/codex" codex --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" "$@"
+        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" "$@"
         ;;
       FULL_LOCAL_DEV)
         # Same filesystem/git scope as NORMAL_MUTATIVE_PROJECT. Codex's
@@ -102,22 +118,23 @@ case "$engine" in
         # project route. Filesystem containment (writable_roots) is
         # unaffected by this key — verified: writes outside the workdir
         # still fail read-only under this override.
-        exec env CODEX_HOME="$RUNTIME_ROOT/codex" codex --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
+        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
         ;;
     esac
     ;;
   claude)
+    claude_bin=$(resolve_engine_bin claude)
     cd "$project_root"
     case "$mode" in
       READ_ONLY)
-        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode plan --permission-prompts none "$@"
+        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" "$claude_bin" --permission-mode plan --permission-prompts none "$@"
         ;;
       NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE|FULL_LOCAL_DEV)
         # Claude's supported path scopes the session to its cwd plus this
         # resolved Git directory; do not use bypassPermissions. Claude's
         # sandbox does not restrict network syscalls in any mode, so no
         # extra grant is needed here for loopback access.
-        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" claude --permission-mode auto --permission-prompts none --add-dir "$git_dir" "$@"
+        exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" "$claude_bin" --permission-mode auto --permission-prompts none --add-dir "$git_dir" "$@"
         ;;
     esac
     ;;

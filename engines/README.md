@@ -31,17 +31,39 @@ future per-session capability, not the default architecture.
 
 ## Human launcher and session capability
 
-`bin/zaos` is the one human-facing launcher. It discovers the current Git
-worktree (or accepts `zaos terra <project-path>`), chooses a task-class
-capability, and maps public engine names `terra` / `claude` to the internal
-adapter. At the non-Git workspace root it intentionally enters `.agents`
-framework maintenance rather than exposing a Git error. `--local-dev` selects
-the bounded local-service capability; the default project route has no added
-network grant.
+Primary human usage is the native commands themselves:
 
-`bin/zaos-session` remains internal infrastructure: it enforces the selected
-capability and performs the exact Codex/Claude invocation. Its capability
-details are documented in [`SESSION_PROVISIONING.md`](SESSION_PROVISIONING.md).
+```
+cd <project-or-workspace>
+codex
+claude
+```
+
+Run `bin/zaos-install-native-shims install` once (user-local, reversible) to
+put scoped shims for `codex`/`claude` on `PATH` ahead of the vendor binaries.
+Inside this ZAOS-managed workspace (the parent of `.agents`), the shims
+transparently route through `bin/zaos`: project discovery, task-class
+capability selection, and the internal engine adapter, exactly as before.
+Outside the workspace, a shimmed `codex`/`claude` is byte-for-byte the vendor
+binary — no ZAOS involvement, no behavior change. The real binaries are
+preserved at `~/.local/lib/zaos-real-bin/` and stay directly reachable at all
+times as an escape hatch (also: `ZAOS_INTERNAL_EXEC=1 codex ...` bypasses
+routing without touching PATH). `bin/zaos-install-native-shims uninstall`
+restores the original entries. See
+[`SESSION_PROVISIONING.md`](SESSION_PROVISIONING.md) for the recursion-guard
+and capability-declaration mechanics.
+
+`bin/zaos` (with public engine names `terra` / `claude`) and `bin/zaos-session`
+remain the explicit admin/debug interfaces — use them directly for
+`--print-plan`, an explicit project path, or when diagnosing a broken shim.
+At the non-Git workspace root, routing intentionally enters `.agents`
+framework maintenance rather than exposing a Git error.
+
+Capability selection is task-class-driven, not flag-driven: `.agents` always
+gets `ZAOS_MAINTENANCE`; a project opts into `FULL_LOCAL_DEV` by declaring it
+in its own `.zaos-capability` file (no project-name hardcoding); everything
+else gets the normal mutative profile. `zaos ... --local-dev` remains an
+explicit manual override for the admin path.
 
 ## Resource policy
 

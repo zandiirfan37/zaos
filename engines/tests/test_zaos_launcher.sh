@@ -7,6 +7,11 @@ SESSION="$ROOT/engines/bin/zaos-session"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
+# Force the session router's recursion-guard binary resolution to fall back to
+# PATH (this test's harmless stand-in CLIs) instead of a real host install of
+# the native-command shims under ~/.local/lib/zaos-real-bin.
+export ZAOS_REAL_BIN_DIR="$TMP/no-real-bin-on-this-host"
+
 fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 expect() { [[ "$1" == *"$2"* ]] || fail "expected [$2] in [$1]"; }
 
@@ -22,6 +27,16 @@ root_out=$(cd "$ROOT/.." && "$LAUNCHER" --print-plan 2>&1)
 [[ "$root_out" != *"not a git repository"* ]] || fail "workspace root leaked raw Git error"
 plan=$("$LAUNCHER" terra "$P" --local-dev --print-plan)
 expect "$plan" "ZAOS_CAPABILITY=FULL_LOCAL_DEV"
+
+# Project/task capability declaration: a project can ask for FULL_LOCAL_DEV
+# itself via .zaos-capability, with no --local-dev flag and no project-name
+# hardcoding in the launcher.
+plan=$(cd "$P" && "$LAUNCHER" terra --print-plan)
+expect "$plan" "ZAOS_CAPABILITY=NORMAL_MUTATIVE_PROJECT"
+printf '# local services required\nFULL_LOCAL_DEV\n' > "$P/.zaos-capability"
+plan=$(cd "$P" && "$LAUNCHER" terra --print-plan)
+expect "$plan" "ZAOS_CAPABILITY=FULL_LOCAL_DEV"
+rm -f "$P/.zaos-capability"
 
 # Exercise the real public → internal router path using harmless stand-in
 # CLIs.  This proves the engine mapping and session profile without starting
