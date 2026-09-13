@@ -27,8 +27,12 @@ import os
 import sys
 from pathlib import Path
 
-ZANDI = Path(__file__).resolve().parents[4]  # /home/pc_pusaka/zandi
-os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", str(ZANDI / ".runtime" / "browsers" / "playwright"))
+ZAOS_ROOT = Path(__file__).resolve().parents[3]
+legacy_browsers = ZAOS_ROOT.parent / ".runtime" / "browsers" / "playwright"
+default_browsers = legacy_browsers if legacy_browsers.exists() else Path(
+    os.environ.get("XDG_STATE_HOME", Path.home() / ".local" / "state")
+) / "zaos" / "browsers" / "playwright"
+os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", os.environ.get("ZAOS_PLAYWRIGHT_BROWSERS", str(default_browsers)))
 
 from playwright.sync_api import sync_playwright  # noqa: E402
 
