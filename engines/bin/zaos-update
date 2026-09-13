@@ -16,7 +16,7 @@ if git -C "$ROOT" merge --ff-only "$upstream"; then
   for migration in "$ROOT"/migrations/[0-9][0-9][0-9]-*.sh; do [ -x "$migration" ] && "$migration" "$ROOT"; done
   "$ROOT/engines/bin/zaos-install-native-shims" install
   "$ROOT/engines/bin/zaos-engines" status
-  "$ROOT/engines/tools/zaos-doctor" --groups git >/dev/null
+  "$ROOT/engines/tools/zaos-doctor" --groups git --project "$ROOT" >/dev/null
   echo "PASS: ZAOS updated $(git -C "$ROOT" rev-parse --short "$old") → $(git -C "$ROOT" rev-parse --short HEAD)"
 else
   git -C "$ROOT" reset --hard "$old" >/dev/null
