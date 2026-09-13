@@ -17,6 +17,9 @@ standalone history was merged in commit `a870c4e`.
   projects, secrets, and generated runtime state have separate ownership.
 - `zaos doctor`, `zaos engines status`, `zaos engines refresh`, and `zaos
   update` provide diagnostics, vendor-pointer maintenance, and guarded update.
+- `ZAOS_EXTERNAL_PUBLISH` is an explicit admin capability for authorized
+  publication tasks only; it adds outbound network access without making
+  ordinary maintenance network-enabled.
 
 ## Authority
 

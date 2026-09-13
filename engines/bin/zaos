@@ -12,7 +12,7 @@ SESSION_BIN=${ZAOS_SESSION_BIN:-"$SCRIPT_DIR/zaos-session"}
 
 usage() {
   cat >&2 <<'EOF'
-usage: zaos [codex|claude] [PROJECT_PATH] [--local-dev] [-- ENGINE_ARGS...]
+usage: zaos [codex|claude] [PROJECT_PATH] [--local-dev|--external-publish] [-- ENGINE_ARGS...]
        zaos {doctor|engines|update}
 
 Start a ZAOS session for the current Git project.  At the ZAOS workspace root,
@@ -24,6 +24,7 @@ Examples:
   zaos codex
   zaos claude
   zaos codex /path/to/project --local-dev
+  zaos codex --external-publish
 EOF
 }
 
@@ -36,6 +37,7 @@ engine=codex
 engine_set=0
 project_arg=""
 local_dev=0
+external_publish=0
 print_plan=0
 engine_args=()
 while [ "$#" -gt 0 ]; do
@@ -46,6 +48,7 @@ while [ "$#" -gt 0 ]; do
       fi
       engine=$1; engine_set=1; shift ;;
     --local-dev) local_dev=1; shift ;;
+    --external-publish) external_publish=1; shift ;;
     --print-plan) print_plan=1; shift ;;
     -h|--help) usage; exit 0 ;;
     --) shift; engine_args=("$@"); break ;;
@@ -58,6 +61,11 @@ while [ "$#" -gt 0 ]; do
       project_arg=$1; shift ;;
   esac
 done
+
+if [ "$local_dev" = 1 ] && [ "$external_publish" = 1 ]; then
+  printf 'zaos: --local-dev and --external-publish are mutually exclusive\n' >&2
+  exit 64
+fi
 
 resolve_git_project() {
   local candidate=$1 resolved
@@ -105,7 +113,11 @@ declared_capability() {
 }
 
 agents_repo=$(git -C "$AGENTS_ROOT" rev-parse --show-toplevel 2>/dev/null || true)
-if [ "$project_root" = "$agents_repo" ]; then
+if [ "$external_publish" = 1 ]; then
+  # Explicit, task-scoped egress for publication/release work. This is never
+  # selected by project name or by simply starting a maintenance session.
+  mode=ZAOS_EXTERNAL_PUBLISH
+elif [ "$project_root" = "$agents_repo" ]; then
   mode=ZAOS_MAINTENANCE
 elif [ "$local_dev" = 1 ]; then
   mode=FULL_LOCAL_DEV

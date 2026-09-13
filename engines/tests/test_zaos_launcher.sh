@@ -27,6 +27,11 @@ root_out=$(cd "$ROOT/.." && "$LAUNCHER" --print-plan 2>&1)
 [[ "$root_out" != *"not a git repository"* ]] || fail "workspace root leaked raw Git error"
 plan=$("$LAUNCHER" terra "$P" --local-dev --print-plan)
 expect "$plan" "ZAOS_CAPABILITY=FULL_LOCAL_DEV"
+plan=$("$LAUNCHER" codex "$P" --external-publish --print-plan)
+expect "$plan" "ZAOS_CAPABILITY=ZAOS_EXTERNAL_PUBLISH"
+if "$LAUNCHER" codex "$P" --local-dev --external-publish --print-plan >/dev/null 2>&1; then
+  fail "mutually exclusive elevated capabilities were accepted"
+fi
 
 # Project/task capability declaration: a project can ask for FULL_LOCAL_DEV
 # itself via .zaos-capability, with no --local-dev flag and no project-name
@@ -54,6 +59,8 @@ PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" terra "$P" -- smoke
 got=$(<"$capture"); expect "$got" "codex --sandbox workspace-write -C $P"; expect "$got" "--add-dir $P/.git smoke"
 PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" claude "$P" -- smoke
 got=$(<"$capture"); expect "$got" "claude --permission-mode auto"; expect "$got" "--add-dir $P/.git smoke"
+PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$LAUNCHER" codex "$P" --external-publish -- smoke
+got=$(<"$capture"); expect "$got" "sandbox_workspace_write.network_access=true"
 
 # This execution environment forbids socket syscalls, so it cannot host the
 # loopback service needed to pass the real preflight. Verify public selection
@@ -75,4 +82,5 @@ expect "$(<"$TMP/full-local-dev.err")" "CAPABILITY_BLOCKED: loopback service unr
 # The internal command remains callable independently.
 PATH="$BIN:$PATH" ZAOS_CAPTURE="$capture" "$SESSION" ZAOS_MAINTENANCE codex "$ROOT" -- smoke
 got=$(<"$capture"); expect "$got" "codex --sandbox workspace-write -C $ROOT"
+[[ "$got" != *"network_access=true"* ]] || fail "ordinary maintenance unexpectedly has network egress"
 printf 'PASS: zaos public launcher discovery, profiles, engine routes, and internal session compatibility\n'

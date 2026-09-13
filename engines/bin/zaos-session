@@ -36,7 +36,7 @@ resolve_engine_bin() {
 }
 
 usage() {
-  printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV|ZAOS_MAINTENANCE} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
+  printf '%s\n' "usage: zaos-session {READ_ONLY|NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV|ZAOS_MAINTENANCE|ZAOS_EXTERNAL_PUBLISH} {codex|claude} PROJECT_ROOT [-- ENGINE_ARGS...]" >&2
   exit 64
 }
 
@@ -66,6 +66,22 @@ full_local_dev_preflight() {
       exit 75
     fi
   done
+}
+
+external_publish_preflight() {
+  # Publication needs the same local transaction capability as maintenance;
+  # actual DNS/auth is deliberately left to the vendor/git command so this
+  # profile does not treat a network probe as proof of authorization.
+  local root="$1" gd="$2" testfile="$1/.zaos-publish-preflight-$$"
+  if ! ( : > "$testfile" ) 2>/dev/null; then
+    printf 'CAPABILITY_BLOCKED: filesystem write — %s is not writable\n' "$root" >&2
+    exit 75
+  fi
+  rm -f "$testfile"
+  if [ ! -w "$gd" ]; then
+    printf 'CAPABILITY_BLOCKED: git index write — %s is not writable\n' "$gd" >&2
+    exit 75
+  fi
 }
 
 [ "$#" -ge 3 ] || usage
@@ -104,6 +120,9 @@ case "$mode" in
         ;;
     esac
     ;;
+  ZAOS_EXTERNAL_PUBLISH)
+    external_publish_preflight "$project_root" "$git_dir"
+    ;;
   *) usage ;;
 esac
 
@@ -130,6 +149,11 @@ case "$engine" in
         # still fail read-only under this override.
         exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
         ;;
+      ZAOS_EXTERNAL_PUBLISH)
+        # Explicit release/publication egress; filesystem scope remains the
+        # project plus its Git metadata exactly as maintenance does.
+        exec env CODEX_HOME="$RUNTIME_ROOT/codex" "$codex_bin" --sandbox workspace-write -C "$project_root" --add-dir "$git_dir" -c 'sandbox_workspace_write.network_access=true' "$@"
+        ;;
     esac
     ;;
   claude)
@@ -139,7 +163,7 @@ case "$engine" in
       READ_ONLY)
         exec env CLAUDE_CONFIG_DIR="$RUNTIME_ROOT/claude" "$claude_bin" --permission-mode plan --permission-prompts none "$@"
         ;;
-      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE|FULL_LOCAL_DEV)
+      NORMAL_MUTATIVE_PROJECT|ZAOS_MAINTENANCE|FULL_LOCAL_DEV|ZAOS_EXTERNAL_PUBLISH)
         # Claude's supported path scopes the session to its cwd plus this
         # resolved Git directory; do not use bypassPermissions. Claude's
         # sandbox does not restrict network syscalls in any mode, so no

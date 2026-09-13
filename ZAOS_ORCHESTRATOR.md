@@ -4,6 +4,12 @@
 
 Primary human commands are `codex` and `claude`. Scoped shims route only in the configured ZAOS workspace and framework checkout; outside, they execute the preserved vendor command. Flow: native command → workspace/project discovery → task capability → engine adapter → real vendor binary. Raw engines remain reachable. Capability is task/project declared, never implied by launch. Engine differences stay in adapters.
 
+Ordinary maintenance has no outbound-network grant. An explicitly authorized
+publication task may use the admin route `zaos codex --external-publish`; it
+adds outbound access while retaining the same workspace/Git filesystem scope.
+It is not a default native-command capability and is never selected by project
+name.
+
 ## Operating doctrine
 
 Human Lead owns product decisions and `HUMAN_PASS`; the orchestrator owns architecture locks, problem framing, acceptance criteria and decision boundaries; an agent investigates, implements, verifies, and may only declare `ENGINEERING_PASS`. Preflight local authority, workflow, capability, proportional assurance, and material prompt conflict.
