@@ -10,7 +10,11 @@ SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)
 ZAOS_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd -P)
 CONFIG_FILE="${ZAOS_SHIM_CONFIG_FILE:-${XDG_CONFIG_HOME:-$HOME/.config}/zaos-native/config.sh}"
 [ -r "$CONFIG_FILE" ] && source "$CONFIG_FILE"
-RUNTIME_ROOT="${ZAOS_RUNTIME_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/zaos/engines}"
+default_runtime_root="${XDG_STATE_HOME:-$HOME/.local/state}/zaos/engines"
+# Existing ZAOS workspaces kept disposable engine state beside `.agents`.
+# Prefer it when present; new portable installs use the XDG-style default.
+[ -d "$ZAOS_ROOT/../.runtime/engines" ] && default_runtime_root="$ZAOS_ROOT/../.runtime/engines"
+RUNTIME_ROOT="${ZAOS_RUNTIME_ROOT:-$default_runtime_root}"
 
 # Recursion guard: when the native-command shims are installed (see
 # bin/zaos-install-native-shims), the plain names "codex"/"claude" on PATH
