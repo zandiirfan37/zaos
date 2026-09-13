@@ -25,19 +25,50 @@ relevant contracts remain local authority.
 `CODEX_HOME=/home/pc_pusaka/zandi/.runtime/engines/codex`.
 `CLAUDE_CONFIG_DIR=/home/pc_pusaka/zandi/.runtime/engines/claude`.
 
-### Human launcher decision — 2026-09-13
+### Human launcher decision — 2026-09-13 (superseded same day, see below)
 
 The prior architecture lock that deferred launcher enforcement / required zero
-launcher change is **superseded** by an explicit Human Lead decision for ZAOS
-vNext. `zaos` is now the sole simple human-facing launcher; `zaos-session`
-remains internal capability infrastructure. The public routes are `terra` and
-`claude`; `terra`'s Codex-CLI mapping, Git metadata handling, sandbox flags,
-and capability names remain internal. The launcher discovers a current Git
-worktree or accepts an explicit project path. At the intentionally non-Git
-workspace root it routes to `.agents` framework maintenance without emitting a
-raw Git error. Ordinary project work receives the normal mutative profile;
-`--local-dev` selects `FULL_LOCAL_DEV` only for tasks requiring local services;
-the `.agents` repository automatically receives `ZAOS_MAINTENANCE`.
+launcher change was **superseded** by an explicit Human Lead decision for ZAOS
+vNext: `zaos` as the sole simple human-facing launcher, with public routes
+`terra`/`claude` as explicit verbs. This in turn is **superseded** by the
+scoped native-command decision immediately below, made later the same day.
+
+### Scoped native-command transparency — 2026-09-13 (current)
+
+Human Lead decision: the primary human UX is the native commands `codex` and
+`claude` themselves, not `zaos terra`/`zaos claude`. `bin/zaos-install-native-shims
+install` (user-local, reversible) puts scoped shims for `codex`/`claude` at
+the front of `PATH`. Inside this ZAOS-managed workspace (the parent directory
+of `.agents`, resolved from `.agents`'s own location and recorded in
+`~/.config/zaos-native/config.sh` — not a hardcoded absolute string), the
+shim transparently routes through the existing `zaos` → `zaos-session` →
+engine-adapter pipeline: project discovery, task-class capability selection,
+sandbox flags, Git metadata handling, all unchanged. Outside the workspace, a
+shimmed `codex`/`claude` is byte-for-byte the vendor binary — no ZAOS
+involvement. `zaos`/`zaos-session` remain the explicit admin/debug/escape
+interfaces (`--print-plan`, an explicit project path, diagnosing a broken
+shim); they are not the primary human-facing path anymore.
+
+Capability is never auto-granted merely because a native command was
+launched: `.agents` always resolves to `ZAOS_MAINTENANCE`; a project opts
+into `FULL_LOCAL_DEV` by declaring it in its own `<project-root>/.zaos-capability`
+file (first non-blank/non-comment line, e.g. `FULL_LOCAL_DEV`) — no
+project-name hardcoding in the launcher; everything else gets
+`NORMAL_MUTATIVE_PROJECT`. `zaos ... --local-dev` remains an explicit manual
+override on the admin path.
+
+Recursion is prevented structurally, not just by convention: the vendor
+`codex`/`claude` entries are relocated to `~/.local/lib/zaos-real-bin/` at
+install time (the shim occupies the original `~/.local/bin` name), and
+`zaos-session` resolves that absolute path directly instead of relying on a
+bare `codex`/`claude` name via `PATH` — so its own `exec` can never land back
+on the shim. A `ZAOS_INTERNAL_EXEC` marker is an independent, redundant guard
+and an explicit escape hatch for callers that want to bypass routing on
+purpose. The preserved real binaries stay directly reachable at
+`~/.local/lib/zaos-real-bin/{codex,claude}` regardless of ZAOS health; the
+shim itself fails open to the real binary whenever configuration is missing,
+unreadable, or `zaos` isn't executable. `zaos-install-native-shims uninstall`
+restores the original entries. Full mechanics: `engines/SESSION_PROVISIONING.md`.
 
 Responsive Preflight is prior-art-first for nontrivial new builds, major
 rebuilds, and re-foundations: when external references or data could change the
@@ -49,7 +80,7 @@ material greenfield implementation. This is proportional, not a universal gate.
 | Area | Status | Owner / notes |
 | --- | --- | --- |
 | `.agents/instructions/` | LIVE | Canonical doctrine. `README` + `BIG_SOP` + `ENGINEERING_DOCTRINE` + `PROJECT_INTELLIGENCE_SOP` + `MAINTENANCE_AND_MIGRATION` + this file, plus `archive/` (historical evidence, not authority) and `templates/`. Own Git repo (see "Repository layout"). |
-| `.agents/engines/` | LIVE | Thin Claude + Codex adapters (route only) + `bin/zaos-session` launcher + `tools/`. |
+| `.agents/engines/` | LIVE | Thin Claude + Codex adapters (route only) + `bin/zaos`/`bin/zaos-session` launcher + `bin/zaos-install-native-shims` (scoped `codex`/`claude` native-command shim installer) + `tools/`. |
 | `.agents/engines/tools/zaos-doctor` | LIVE | Read-only, advisory control-plane diagnostic (git / runtime-contract reconcile / stale-job / resource / leak-safe secret / clock skew / workbench→production promotion guard / capability hint). Engine-neutral, invoked by path. **Advisory only** — not a lifecycle authority, not a gate, not permission to mutate, not canonical project truth; exit code is information, never a block; defines no new hard-block class. Promoted from `projects/06_zaos_control_plane/tools/` 2026-09-10 after Pilots #1–#4. Self-contained regression suite: `tools/tests/run_tests.sh`. Rollback anchor: tag `zaos-pre-doctor-promotion-20260910`. Known gap: JOB stall/orphan heuristic has fixture coverage only — real long-running-job field exercise still owed. `zaos-handoff` and `ORCHESTRATOR_PRIMER` were **not** promoted (remain project-06 prototypes). |
 | `.agents/skills/` | LIVE | Sole shared-skill root. On-demand, lazy, task-matched. Add a skill as `.agents/skills/<skill>/SKILL.md` (+ `references/`); no runtime-framework change and no standing-context growth. TESTED: `ui-ux-pro-max`, `ask-the-council`, `ml-research`, `browser-qa`, plus engineering/project and general intellectual/creative fast-intake skills. PATCH: `lit-review`. DRAFT: `project-refoundation`, `project-architecture`, `medical-imaging-research`. |
 | `.agents/eval/` | LIVE | ZAOS-native evaluation harness (`zaos_eval.py`, stdlib). On-demand only; drives the `claude`/`codex` CLIs. Evidence → `.runtime/eval/` (disposable). |
