@@ -25,6 +25,20 @@ relevant contracts remain local authority.
 `CODEX_HOME=/home/pc_pusaka/zandi/.runtime/engines/codex`.
 `CLAUDE_CONFIG_DIR=/home/pc_pusaka/zandi/.runtime/engines/claude`.
 
+### Human launcher decision — 2026-09-13
+
+The prior architecture lock that deferred launcher enforcement / required zero
+launcher change is **superseded** by an explicit Human Lead decision for ZAOS
+vNext. `zaos` is now the sole simple human-facing launcher; `zaos-session`
+remains internal capability infrastructure. The public routes are `terra` and
+`claude`; `terra`'s Codex-CLI mapping, Git metadata handling, sandbox flags,
+and capability names remain internal. The launcher discovers a current Git
+worktree or accepts an explicit project path. At the intentionally non-Git
+workspace root it routes to `.agents` framework maintenance without emitting a
+raw Git error. Ordinary project work receives the normal mutative profile;
+`--local-dev` selects `FULL_LOCAL_DEV` only for tasks requiring local services;
+the `.agents` repository automatically receives `ZAOS_MAINTENANCE`.
+
 Responsive Preflight is prior-art-first for nontrivial new builds, major
 rebuilds, and re-foundations: when external references or data could change the
 direction, route through Project Intelligence / project-refoundation before
