@@ -363,7 +363,7 @@ the library is reference memory—not mandatory prompt payload.
 never auto-loaded; a skill may cite one card as an idea, never as authority.
 
 Retired frameworks and vendored external checkouts (ECC-Zandi profile, ZAINE, the
-pinned ECC upstream) live inert under `/home/pc_pusaka/zandi/.archive/`. Nothing
+pinned ECC upstream) live inert under the workspace `.archive/`. Nothing
 in the active workspace loads them. `MAINTENANCE_AND_MIGRATION.md` records the
 archive taxonomy and the retrieval notes for any still-useful dormant mechanism;
 `CURRENT_STATE.md` records current component status.

@@ -26,12 +26,12 @@ import tomllib
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]              # /home/pc_pusaka/zandi
-SKILLS = ROOT / ".agents" / "skills"
-EVIDENCE_ROOT = ROOT / ".runtime" / "eval"
+ROOT = Path(__file__).resolve().parents[1]              # ZAOS framework root
+SKILLS = ROOT / "skills"
+EVIDENCE_ROOT = Path(os.environ.get("ZAOS_EVAL_ROOT", Path.home() / ".local" / "state" / "zaos" / "eval"))
 CACHE_DIR = EVIDENCE_ROOT / ".cache"
-CLAUDE_CONFIG = ROOT / ".runtime" / "engines" / "claude"
-CODEX_HOME = ROOT / ".runtime" / "engines" / "codex"
+CLAUDE_CONFIG = Path(os.environ.get("ZAOS_RUNTIME_ROOT", Path.home() / ".local" / "state" / "zaos" / "engines")) / "claude"
+CODEX_HOME = Path(os.environ.get("ZAOS_RUNTIME_ROOT", Path.home() / ".local" / "state" / "zaos" / "engines")) / "codex"
 
 SCHEMA_VERSIONS = {"1"}
 KINDS = {"behavioural", "behavioral", "static", "activation"}

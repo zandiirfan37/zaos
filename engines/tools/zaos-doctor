@@ -26,6 +26,7 @@
 set -u
 
 VERSION="1.0.0"
+FRAMEWORK_ROOT=$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd -P)
 PROJECT=""
 MODE="READ_ONLY"
 GRP="git,runtime,job,resource,secret,clock,promotion"
@@ -235,7 +236,7 @@ scan_secret_file() {
 }
 check_secret() {
   local exp
-  for exp in ${SECRETS_SCHEMA:+"$SECRETS_SCHEMA"} "$ROOT/.secrets/EXPECTED.md" "${ZAOS_ROOT:-/home/pc_pusaka/zandi}/.secrets/EXPECTED.md"; do
+  for exp in ${SECRETS_SCHEMA:+"$SECRETS_SCHEMA"} "$ROOT/.secrets/EXPECTED.md" "${ZAOS_WORKSPACE_ROOT:-}/.secrets/EXPECTED.md"; do
     [ -f "$exp" ] || continue
     pass "secret — schema found: ${exp}"
     # lines like: - `path/to/file.env` — description   (declared expected secret files)
@@ -363,7 +364,7 @@ check_capability() {
   local found=0
   if have "$CAP"; then info "capability $CAP — on PATH: $(command -v "$CAP")"; found=1; fi
   local v
-  for v in /home/pc_pusaka/*/.venv "${ZAOS_ROOT:-/home/pc_pusaka/zandi}"/.runtime/*/*/.venv; do
+  for v in "$HOME"/*/.venv "$FRAMEWORK_ROOT"/.runtime/*/*/.venv; do
     [ -x "$v/bin/$CAP" ] && { info "capability $CAP — in venv: $v/bin/$CAP"; found=1; }
   done
   if have docker && docker images --format '{{.Repository}}' 2>/dev/null | grep -qi "$CAP"; then

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Engine integration maintenance.  ZAOS never upgrades a vendor CLI.
+set -euo pipefail
+SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)
+ZAOS_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd -P)
+CONFIG_FILE="${ZAOS_SHIM_CONFIG_FILE:-${XDG_CONFIG_HOME:-$HOME/.config}/zaos-native/config.sh}"
+DEFAULT_REAL_BIN_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zaos/real-bin"
+[ -d "$HOME/.local/lib/zaos-real-bin" ] && DEFAULT_REAL_BIN_DIR="$HOME/.local/lib/zaos-real-bin"
+REAL_BIN_DIR="${ZAOS_REAL_BIN_DIR:-$DEFAULT_REAL_BIN_DIR}"
+[ -r "$CONFIG_FILE" ] && source "$CONFIG_FILE"
+REAL_BIN_DIR="${ZAOS_REAL_BIN_DIR:-$REAL_BIN_DIR}"
+
+usage() { echo 'usage: zaos engines {status|refresh}' >&2; }
+status() {
+  local n p
+  for n in codex claude; do
+    p="$REAL_BIN_DIR/$n"
+    if [ -x "$p" ]; then
+      printf 'PASS: %s raw engine: %s\n' "$n" "$(readlink -f "$p" 2>/dev/null || printf '%s' "$p")"
+      "$p" --version 2>/dev/null | head -1 | sed "s/^/INFO: $n version: /" || printf 'WARN: %s version probe failed\n' "$n"
+    else
+      printf 'INFO: %s not integrated (vendor CLI may be absent)\n' "$n"
+    fi
+  done
+}
+refresh() {
+  # A symlinked vendor target normally follows in-place vendor upgrades.  For
+  # moved/replaced launchers, accept explicit, auditable hints rather than
+  # guessing across PATH and risking a shim recursion.
+  local n hint_var hint target
+  for n in codex claude; do
+    hint_var="ZAOS_VENDOR_${n^^}_PATH"
+    hint="${!hint_var:-}"
+    target="$REAL_BIN_DIR/$n"
+    if [ -n "$hint" ]; then
+      [ -x "$hint" ] || { printf 'CAPABILITY_BLOCKED: %s vendor hint is not executable\n' "$n" >&2; return 75; }
+      ln -sfn "$hint" "$target"
+      printf 'PASS: refreshed %s raw-engine pointer → %s\n' "$n" "$hint"
+    elif [ -x "$target" ]; then
+      printf 'PASS: %s raw-engine pointer remains executable; no replacement hint supplied\n' "$n"
+    else
+      printf 'WARN: %s has no usable raw-engine pointer; reinstall/refresh with ZAOS_VENDOR_%s_PATH\n' "$n" "${n^^}"
+    fi
+  done
+}
+case "${1:-status}" in status) status ;; refresh) refresh ;; *) usage; exit 64;; esac

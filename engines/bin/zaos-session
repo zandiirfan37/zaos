@@ -7,15 +7,21 @@ set -euo pipefail
 # working.  The public launcher uses the same discovery; this internal router
 # deliberately retains no machine-specific workspace path.
 SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)
-ZAOS_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd -P)
-RUNTIME_ROOT="$ZAOS_ROOT/.runtime/engines"
+ZAOS_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd -P)
+CONFIG_FILE="${ZAOS_SHIM_CONFIG_FILE:-${XDG_CONFIG_HOME:-$HOME/.config}/zaos-native/config.sh}"
+[ -r "$CONFIG_FILE" ] && source "$CONFIG_FILE"
+RUNTIME_ROOT="${ZAOS_RUNTIME_ROOT:-${XDG_STATE_HOME:-$HOME/.local/state}/zaos/engines}"
 
 # Recursion guard: when the native-command shims are installed (see
 # bin/zaos-install-native-shims), the plain names "codex"/"claude" on PATH
 # resolve back to the shim, not the vendor binary. Prefer the shim's stable
 # copy of the real binary so this router can never call itself. Falls back to
 # PATH resolution (unshimmed environments, tests) when that copy is absent.
-real_bin_dir="${ZAOS_REAL_BIN_DIR:-$HOME/.local/lib/zaos-real-bin}"
+default_real_bin_dir="${XDG_DATA_HOME:-$HOME/.local/share}/zaos/real-bin"
+# v1 used this location. Keep existing working machines operational while new
+# installs use the XDG-style location above.
+[ -d "$HOME/.local/lib/zaos-real-bin" ] && default_real_bin_dir="$HOME/.local/lib/zaos-real-bin"
+real_bin_dir="${ZAOS_REAL_BIN_DIR:-$default_real_bin_dir}"
 resolve_engine_bin() {
   local name=$1
   if [ -x "$real_bin_dir/$name" ]; then
@@ -78,7 +84,7 @@ case "$mode" in
     ;;
   NORMAL_MUTATIVE_PROJECT|FULL_LOCAL_DEV)
     case "$project_root/" in
-      "$ZAOS_ROOT/.agents/"*)
+      "$ZAOS_ROOT/"*)
         printf '%s\n' "zaos-session: use ZAOS_MAINTENANCE for .agents repositories" >&2
         exit 65
         ;;
@@ -87,7 +93,7 @@ case "$mode" in
     ;;
   ZAOS_MAINTENANCE)
     case "$project_root/" in
-      "$ZAOS_ROOT/.agents/"*) ;;
+      "$ZAOS_ROOT/"*) ;;
       *)
         printf '%s\n' "zaos-session: ZAOS_MAINTENANCE is limited to .agents repositories" >&2
         exit 65

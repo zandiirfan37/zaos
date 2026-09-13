@@ -1,7 +1,8 @@
-# Zandi Claude adapter
+# ZAOS Claude adapter
 
-For substantive work under `/home/pc_pusaka/zandi`, read the canonical
-doctrine at `/home/pc_pusaka/zandi/.agents/instructions/BIG_SOP.md`.
+For substantive work in a ZAOS-managed workspace, read the canonical doctrine
+at `<ZAOS_ROOT>/instructions/BIG_SOP.md` (the framework root is the checkout
+containing this adapter).
 Read `CURRENT_STATE.md` beside it only when workspace state matters.
 
 Before acting, use the doctrine's lightweight responsive preflight: resolve
@@ -10,7 +11,7 @@ prompt conflict. Preserve mission and constraints, but choose routine method.
 
 The nearest project `CLAUDE.md` or `AGENTS.md` owns local rules; then load only
 its relevant state/contracts and the matching canonical skill at
-`/home/pc_pusaka/zandi/.agents/skills/<skill>/SKILL.md`.
+`<ZAOS_ROOT>/skills/<skill>/SKILL.md`.
 
-Do not load unrelated skills, Council, `/home/pc_pusaka/zandi/.archive/`, or
+Do not load unrelated skills, Council, workspace archive material, or
 library material by default. This is routing only; it does not copy the doctrine.

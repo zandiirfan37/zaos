@@ -1,33 +1,28 @@
-# Zandi agent foundation (ZAOS)
+# ZAOS
 
-`.agents` is Zandi's reusable agent intelligence — the Zandi Agentic Operating
-System. It is doctrine, adapters, and skills; not a software runtime.
-
-| Folder | Owns | Loaded |
-| --- | --- | --- |
-| `instructions/` | Canonical doctrine: `README.md` (start here), `BIG_SOP.md` (durable spine), `ENGINEERING_DOCTRINE.md` (on-demand engineering/ML layer), `PROJECT_INTELLIGENCE_SOP.md`, `MAINTENANCE_AND_MIGRATION.md`, `CURRENT_STATE.md`. Own Git repo. | `BIG_SOP` always; rest on demand |
-| `engines/` | Thin, human-authored Claude + Codex adapters that route to the doctrine. Never runtime state, never duplicated doctrine. | at engine bootstrap |
-| `skills/` | Reusable on-demand expertise (`SKILL.md` + `references/`, Agent Skills shape). Added only against repeated real need; TESTED before TRUSTED. | on demand, per task |
-| `eval/` | ZAOS-native evaluation harness (stdlib). Drives the `claude`/`codex` CLIs; evidence to `.runtime/eval/`. | on demand |
-| `library/` | Zandi-curated knowledge cards. A skill may cite one. | never automatically |
-
-Retired frameworks and vendored external checkouts live inert under
-`/home/pc_pusaka/zandi/.archive/` (see `instructions/MAINTENANCE_AND_MIGRATION.md`).
-Runtime engine state belongs in `.runtime/engines/`. Projects belong in
-`projects/`. Secrets belong in `.secrets/`.
-
-**Principles:** one owner per concept; minimum sufficient context; lazy
-capability loading; no blind clones; no empty structure without a concept that
-already owns it; complexity must pay rent.
-
-## Human launcher
-
-Install the tracked human-facing launcher into the user-local PATH with:
+ZAOS is a small, model-neutral operating framework for Codex and Claude. In a managed workspace, people use native commands:
 
 ```bash
-ln -sfn /path/to/zandi/.agents/engines/bin/zaos ~/.local/bin/zaos
+codex
+claude
 ```
 
-Then use `zaos`, `zaos terra`, or `zaos claude` from a project worktree. See
-[`engines/SESSION_PROVISIONING.md`](engines/SESSION_PROVISIONING.md) for the
-small public syntax and capability behavior.
+ZAOS discovers the project, selects proportional capability, then runs the real vendor engine. Outside that workspace, commands retain vendor behaviour. ZAOS never installs secrets or vendor software, and preserves raw-engine escape.
+
+## Quick start
+
+```bash
+git clone <canonical-zaos-url> zaos
+cd zaos
+./install.sh --workspace ~/my-workspace
+cd ~/my-workspace/my-project
+codex
+```
+
+One installed engine is enough. Run `./uninstall.sh` to remove ZAOS shims. `zaos update` performs a guarded update, not a blind `git pull`.
+
+Read [ZAOS_HUMAN.md](ZAOS_HUMAN.md) to use or recover ZAOS. Agents and orchestrators start with [ZAOS_ORCHESTRATOR.md](ZAOS_ORCHESTRATOR.md). Technical detail is under [engines/](engines/README.md) and [instructions/](instructions/README.md).
+
+## Repository shape
+
+This is the one canonical framework repository. `instructions/` is tracked here, not a submodule; its earlier standalone history is preserved in the consolidation merge. Projects, private runtime, secrets, caches, and the ZAOS book are outside it.

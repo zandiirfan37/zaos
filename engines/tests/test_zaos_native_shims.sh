@@ -3,6 +3,7 @@
 # isolated fake HOME/PATH — never touches the real ~/.local/bin or the real
 # codex/claude binaries.
 set -euo pipefail
+unset ZAOS_INTERNAL_EXEC
 
 ROOT=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." && pwd -P)
 INSTALLER="$ROOT/engines/bin/zaos-install-native-shims"
@@ -74,7 +75,7 @@ cap="$TMP/capture"
 mkdir -p "$FAKE_WORKSPACE/projects/demo"
 out=$(cd "$FAKE_WORKSPACE/projects/demo" && ZAOS_CAPTURE="$cap" codex --some-flag 2>&1)
 got=$(<"$cap")
-expect "$got" "ZAOS_ROUTED engine=terra"
+expect "$got" "ZAOS_ROUTED engine=codex"
 expect "$got" "--some-flag"
 
 out=$(cd "$FAKE_WORKSPACE/projects/demo" && ZAOS_CAPTURE="$cap" claude --some-flag 2>&1)

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Deliberately conservative framework updater: only a clean canonical repo.
+set -euo pipefail
+SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)
+ROOT=$(cd "$SCRIPT_DIR/../.." && pwd -P)
+old=$(git -C "$ROOT" rev-parse HEAD)
+if [ -n "$(git -C "$ROOT" status --porcelain)" ]; then echo 'BLOCKED: ZAOS repository is dirty; commit or stash it before update.' >&2; exit 75; fi
+remote=$(git -C "$ROOT" remote | head -1 || true)
+[ -n "$remote" ] || { echo 'BLOCKED: no canonical Git remote configured; refusing a blind update.' >&2; exit 75; }
+branch=$(git -C "$ROOT" branch --show-current)
+[ -n "$branch" ] || { echo 'BLOCKED: detached HEAD; refusing update.' >&2; exit 75; }
+git -C "$ROOT" fetch --prune "$remote"
+upstream="$remote/$branch"
+git -C "$ROOT" rev-parse --verify "$upstream" >/dev/null || { echo "BLOCKED: missing expected upstream $upstream." >&2; exit 75; }
+if git -C "$ROOT" merge --ff-only "$upstream"; then
+  for migration in "$ROOT"/migrations/[0-9][0-9][0-9]-*.sh; do [ -x "$migration" ] && "$migration" "$ROOT"; done
+  "$ROOT/engines/bin/zaos-install-native-shims" install
+  "$ROOT/engines/bin/zaos-engines" status
+  "$ROOT/engines/tools/zaos-doctor" --groups git >/dev/null
+  echo "PASS: ZAOS updated $(git -C "$ROOT" rev-parse --short "$old") → $(git -C "$ROOT" rev-parse --short HEAD)"
+else
+  git -C "$ROOT" reset --hard "$old" >/dev/null
+  echo 'BLOCKED: update verification failed; framework reset to its prior clean commit.' >&2
+  exit 75
+fi

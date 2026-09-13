@@ -1,6 +1,6 @@
 # Engine adapters
 
-The Git-tracked, Zandi-authored adapters are
+The Git-tracked ZAOS adapters are
 [`codex/AGENTS.md`](codex/AGENTS.md) and
 [`claude/CLAUDE.md`](claude/CLAUDE.md). They route rather than duplicate the
 one canonical doctrine: [`../instructions/BIG_SOP.md`](../instructions/BIG_SOP.md).
@@ -53,7 +53,8 @@ restores the original entries. See
 [`SESSION_PROVISIONING.md`](SESSION_PROVISIONING.md) for the recursion-guard
 and capability-declaration mechanics.
 
-`bin/zaos` (with public engine names `terra` / `claude`) and `bin/zaos-session`
+`bin/zaos` (with public engine names `codex` / `claude`; `terra` is a legacy
+admin alias) and `bin/zaos-session`
 remain the explicit admin/debug interfaces — use them directly for
 `--print-plan`, an explicit project path, or when diagnosing a broken shim.
 At the non-Git workspace root, routing intentionally enters `.agents`

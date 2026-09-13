@@ -42,7 +42,7 @@ the owning project's durable record. Historical pilot evidence remains in
 
 ## Legacy migration policy
 
-Migrate external legacy material (for example `/home/pc_pusaka/Eksperimen`)
+Migrate external legacy material (for example a separately inventoried legacy checkout)
 cautiously. Start with a read-only inventory; never move everything at once.
 Preserve each legacy project as read-only evidence until its replacement or
 parity target is validated. Require explicit Human Lead approval before moving,
@@ -71,7 +71,7 @@ intentionally drop.
 
 ## The active-workspace archive
 
-Inert, preserved-but-not-active material lives in `/home/pc_pusaka/zandi/.archive/`
+Inert, preserved-but-not-active material lives in workspace `.archive/`
 (retrieval and provenance storage, never operating authority). Its taxonomy:
 
 - `01_legacy_systems/` — retired frameworks and vendor checkouts (`zaine/`,

@@ -4,13 +4,16 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)
-WORKSPACE_ROOT=$(cd "$SCRIPT_DIR/../../.." && pwd -P)
 AGENTS_ROOT=$(cd "$SCRIPT_DIR/../.." && pwd -P)
+CONFIG_FILE="${ZAOS_SHIM_CONFIG_FILE:-${XDG_CONFIG_HOME:-$HOME/.config}/zaos-native/config.sh}"
+[ -r "$CONFIG_FILE" ] && source "$CONFIG_FILE"
+WORKSPACE_ROOT="${ZAOS_WORKSPACE_ROOT:-$(cd "$AGENTS_ROOT/.." && pwd -P)}"
 SESSION_BIN=${ZAOS_SESSION_BIN:-"$SCRIPT_DIR/zaos-session"}
 
 usage() {
   cat >&2 <<'EOF'
-usage: zaos [terra|claude] [PROJECT_PATH] [--local-dev] [-- ENGINE_ARGS...]
+usage: zaos [codex|claude] [PROJECT_PATH] [--local-dev] [-- ENGINE_ARGS...]
+       zaos {doctor|engines|update}
 
 Start a ZAOS session for the current Git project.  At the ZAOS workspace root,
 the default is framework maintenance.  Use --local-dev only when the task needs
@@ -18,13 +21,18 @@ the project's local services (database, RAGFlow, UAT, and similar).
 
 Examples:
   zaos
-  zaos terra
+  zaos codex
   zaos claude
-  zaos terra projects/05_chatbot_rag --local-dev
+  zaos codex /path/to/project --local-dev
 EOF
 }
 
-engine=terra
+case "${1:-}" in
+  doctor) shift; exec "$AGENTS_ROOT/engines/tools/zaos-doctor" "$@" ;;
+  engines) shift; exec "$AGENTS_ROOT/engines/bin/zaos-engines" "$@" ;;
+  update) shift; exec "$AGENTS_ROOT/engines/bin/zaos-update" "$@" ;;
+esac
+engine=codex
 engine_set=0
 project_arg=""
 local_dev=0
@@ -32,7 +40,7 @@ print_plan=0
 engine_args=()
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    terra|claude)
+    codex|terra|claude)
       if [ -n "$project_arg" ] || [ "$engine_set" = 1 ]; then
         printf 'zaos: engine may be specified once\n' >&2; usage; exit 64
       fi
@@ -74,7 +82,7 @@ elif [ "$(pwd -P)" = "$WORKSPACE_ROOT" ]; then
   # framework lives in the adjacent .agents worktree.
   resolve_git_project "$AGENTS_ROOT"
 else
-  printf 'zaos: no Git project found from %s; pass a project path (for example: zaos terra projects/05_chatbot_rag)\n' "$(pwd -P)" >&2
+  printf 'zaos: no Git project found from %s; pass a project path (for example: zaos codex /path/to/project)\n' "$(pwd -P)" >&2
   exit 65
 fi
 
@@ -108,7 +116,7 @@ else
 fi
 
 case "$engine" in
-  terra) internal_engine=codex ;;
+  codex|terra) internal_engine=codex ;;
   claude) internal_engine=claude ;;
 esac
 

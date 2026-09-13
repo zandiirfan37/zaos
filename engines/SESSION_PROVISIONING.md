@@ -6,17 +6,17 @@ class, capability, and public engine name before delegating to
 both the Git worktree and its actual metadata directory with Git; it never
 assumes `.git` is a directory.
 
-Public usage is `zaos [terra|claude] [PROJECT_PATH] [--local-dev] [-- ARGS]`.
+Admin/debug usage is `zaos [codex|claude] [PROJECT_PATH] [--local-dev] [-- ARGS]`.
 The current worktree is used by default; the deliberately non-Git workspace
 root routes to `.agents` with `ZAOS_MAINTENANCE`. Framework work always uses
-`ZAOS_MAINTENANCE`. Public `terra` maps to the internal Codex adapter, without
+`ZAOS_MAINTENANCE`. Public `codex` maps to the internal Codex adapter, without
 exposing that mapping in normal UX. This remains the explicit admin/debug
 interface; see `zaos-install-native-shims` below for the primary human UX.
 
 ## Native-command transparency (`zaos-install-native-shims`)
 
 Human Lead decision, 2026-09-13 (supersedes the same day's earlier "public
-routes are `terra`/`claude` verbs" decision): the primary human UX is the
+routes are `codex`/`claude` verbs" decision): the primary human UX is the
 native commands `codex` and `claude` themselves, scoped so ZAOS is invisible
 inside its own workspace and completely absent outside it.
 
@@ -150,7 +150,7 @@ resolution or launch routing. A fresh Codex `workspace-write` fixture session
 therefore wrote `prepatch.txt` but failed `git add` with a read-only
 `.git/index.lock`. The Codex CLI help documents `--add-dir` as an additional
 writable directory. Runtime session evidence for successful ZAOS commits shows
-the Codex session was started at `/home/pc_pusaka/zandi` and committed with
+the Codex session was started at the workspace root and committed with
 `git -C projects/04_zaos`; the failing fresh session was started directly at
 `projects/04_zaos` and reported its Git directory non-writable. The meaningful
 provisioning difference is therefore the workspace root / explicit writable

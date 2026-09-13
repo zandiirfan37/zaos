@@ -1,2 +1,4 @@
-# Independent repository retained outside this Zandi-owned agent-assets repository.
-instructions/
+# Disposable runtime and local release state.  Doctrine is tracked in this
+# repository; it is deliberately not a nested repository.
+.runtime/
+.zaos-state/
